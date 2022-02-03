@@ -1,13 +1,14 @@
-import React from "react"
+import React, {useState} from "react"
 import {Layout} from "../components/Layout"
 import {Container} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
 import {Form} from "../components/Form"
 import {USER_TYPE, CREATE_MODE} from "./constants"
-import {addDocument} from "../actions/DocumentControl"
 import {Alerts} from "../components/Alerts"
+import {DocumentHook} from "../hooks/DocumentHook"
 
 export const UserForm = () => {
+
     const {
 		connectionError,
         frames,
@@ -15,12 +16,17 @@ export const UserForm = () => {
         setSuccessMsg,
         errorMsg,
         setErrorMsg,
-        woqlClient
+        woqlClient,
+        clearMessages
 	} = WOQLClientObj()
+
+    const [extracted, setExtracted] = useState(false)
+    let result=DocumentHook(woqlClient, extracted, setSuccessMsg, setErrorMsg)
 
     function handleSubmit(data) {
         if(!data.hasOwnProperty("@type")) data["@type"] = USER_TYPE
-        addDocument(woqlClient, data, setSuccessMsg, setErrorMsg)
+        clearMessages()
+        setExtracted(data)
     }
 
     return <Container fluid="lg" className="mt-5 mb-5">

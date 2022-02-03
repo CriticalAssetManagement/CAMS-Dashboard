@@ -3,7 +3,7 @@ import {ALERT_DANGER, ALERT_SUCCESS} from "./constants"
 import {Alert} from "react-bootstrap"
 
 export const Alerts = ({successMsg, errorMsg})  => {
-    return <React.Fragment>
+    return <div className="mt-5">
         {successMsg &&
             <Alert variant={ALERT_SUCCESS}>
                 {successMsg}
@@ -14,5 +14,5 @@ export const Alerts = ({successMsg, errorMsg})  => {
                 {errorMsg}
             </Alert>
         }
-    </React.Fragment>
+    </div>
 }

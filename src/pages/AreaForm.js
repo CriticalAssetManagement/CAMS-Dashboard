@@ -1,11 +1,44 @@
-import React from "react"
+import React, {useState} from "react"
 import {Layout} from "../components/Layout"
 import {Container} from "react-bootstrap"
-import {AREA_FORM} from "../components/constants"
+import {WOQLClientObj} from '../init-woql-client'
+import {Form} from "../components/Form"
+import {AREA_TYPE, CREATE_MODE} from "./constants"
+import {Alerts} from "../components/Alerts"
+import {DocumentHook} from "../hooks/DocumentHook"
 
 export const AreaForm = () => {
+    const {
+		connectionError,
+        frames,
+        successMsg,
+        setSuccessMsg,
+        errorMsg,
+        setErrorMsg,
+        woqlClient,
+        clearMessages
+	} = WOQLClientObj()
+
+    const [extracted, setExtracted] = useState(false)
+    let result=DocumentHook(woqlClient, extracted, setSuccessMsg, setErrorMsg)
+
+    function handleSubmit(data) {
+        if(!data.hasOwnProperty("@type")) data["@type"] = AREA_TYPE
+        clearMessages()
+        setExtracted(data)
+    }
+
     return <Container fluid="lg" className="mt-5 mb-5">
         <Layout/>
-        {AREA_FORM}
+        <Alerts errorMsg={connectionError}/>
+        {frames &&
+            <Form frames={frames}
+                type={AREA_TYPE}
+                mode={CREATE_MODE}
+                onSubmit={handleSubmit}
+            />
+        }
+        <Alerts successMsg={successMsg}/>
+        <Alerts errorMsg={errorMsg}/>
     </Container>
 }

@@ -1,7 +1,7 @@
 export const DASHBOARD_TITLE = "Critical Management System"
 
 //variant
-export const VARIANT="dark"
+export const VARIANT="primary"
 
 //Menus
 export const HOME="HOME"

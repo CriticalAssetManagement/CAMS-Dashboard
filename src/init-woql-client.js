@@ -3,6 +3,7 @@ const TerminusDBClient = require("@terminusdb/terminusdb-client")
 export const WOQLContext = React.createContext()
 export const WOQLClientObj = () => useContext(WOQLContext)
 import {DATA_PRODUCT} from "./constants"
+import {HOME_PAGE} from './routing/constants'
 
 export const WOQLClientProvider = ({children, params}) => {
 
@@ -12,6 +13,7 @@ export const WOQLClientProvider = ({children, params}) => {
 
     const [woqlClient, setWoqlClient] = useState(false)
     const [connectionError, setConnectionError] = useState(false)
+    const [page, setPage] = useState(HOME_PAGE)
     const [frames, setFrames] = useState(false)
 
     const [successMsg, setSuccessMsg] = useState(false)
@@ -44,6 +46,16 @@ export const WOQLClientProvider = ({children, params}) => {
         })
     }, [woqlClient])
 
+    function clearMessages() {
+        setConnectionError(false)
+        setSuccessMsg(false)
+        setErrorMsg(false)
+    }
+
+    useEffect(() => {
+        clearMessages()
+    }, [page])
+
 
 
     return (
@@ -55,7 +67,9 @@ export const WOQLClientProvider = ({children, params}) => {
                 successMsg,
                 setSuccessMsg,
                 errorMsg,
-                setErrorMsg
+                setErrorMsg,
+                setPage,
+                clearMessages
             }}
         >
             {children}
