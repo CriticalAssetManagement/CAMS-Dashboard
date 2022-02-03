@@ -14,6 +14,9 @@ export const WOQLClientProvider = ({children, params}) => {
     const [connectionError, setConnectionError] = useState(false)
     const [frames, setFrames] = useState(false)
 
+    const [successMsg, setSuccessMsg] = useState(false)
+    const [errorMsg, setErrorMsg] = useState(false)
+
     const client = new TerminusDBClient.WOQLClient(`https://cloud.terminusdb.com/${team}/`, {
         user: user,
         organization: team
@@ -48,7 +51,11 @@ export const WOQLClientProvider = ({children, params}) => {
             value={{
                 woqlClient,
                 frames,
-                connectionError
+                connectionError,
+                successMsg,
+                setSuccessMsg,
+                errorMsg,
+                setErrorMsg
             }}
         >
             {children}

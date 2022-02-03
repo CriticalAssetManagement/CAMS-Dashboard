@@ -14,4 +14,4 @@ export const REPORTS="REPORTS"
 
 // alert variant colors
 export const ALERT_DANGER = "danger"
-
+export const ALERT_SUCCESS = "success"
