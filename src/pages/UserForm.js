@@ -31,7 +31,7 @@ export const UserForm = () => {
                 type={USER_TYPE}
                 mode={CREATE_MODE}
                 onSubmit={handleSubmit}
-                />
+            />
         }
         <Alerts successMsg={successMsg}/>
         <Alerts errorMsg={errorMsg}/>
