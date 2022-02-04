@@ -24,11 +24,6 @@ export const AssetForm = () => {
     const [extracted, setExtracted] = useState(false)
     let result=DocumentHook(woqlClient, extracted, setSuccessMsg, setErrorMsg)
 
-    // typed input into a select list
-    /*const [input, setInput] = useState(false)
-    const [inputType, setInputType] = useState(false)
-    let lists=SelectHook(woqlClient, input, inputType)*/
-
     function handleSubmit(data) {
         if(!data.hasOwnProperty("@type")) data["@type"] = ASSET_TYPE
         clearMessages()
@@ -38,10 +33,7 @@ export const AssetForm = () => {
     function handleSelect(inp, type) {
         if(!inp) return
         return handleDocumentSelect(woqlClient, inp, type)
-        //setInput(inp)
-        //setInputType(type)
     }
-
 
 
     return <Container fluid="lg" className="mt-5 mb-5">

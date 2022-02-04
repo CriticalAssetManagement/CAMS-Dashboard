@@ -6,6 +6,7 @@ import {Form} from "../components/Form"
 import {USER_TYPE, CREATE_MODE} from "./constants"
 import {Alerts} from "../components/Alerts"
 import {DocumentHook} from "../hooks/DocumentHook"
+import {handleDocumentSelect} from "../components/utils"
 
 export const UserForm = () => {
 
@@ -29,6 +30,12 @@ export const UserForm = () => {
         setExtracted(data)
     }
 
+    function handleSelect(inp, type) {
+        if(!inp) return
+        return handleDocumentSelect(woqlClient, inp, type)
+    }
+
+
     return <Container fluid="lg" className="mt-5 mb-5">
         <Layout/>
         <Alerts errorMsg={connectionError}/>
@@ -37,6 +44,7 @@ export const UserForm = () => {
                 type={USER_TYPE}
                 mode={CREATE_MODE}
                 onSubmit={handleSubmit}
+                onSelect={handleSelect}
             />
         }
         <Alerts successMsg={successMsg}/>

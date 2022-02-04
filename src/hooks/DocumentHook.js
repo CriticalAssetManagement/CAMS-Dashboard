@@ -1,12 +1,11 @@
 import {useEffect, useState} from 'react'
-import {DATA_PRODUCT} from "../constants"
 
 export function DocumentHook(woqlClient, document, setSuccessMsg, setErrorMsg) {
     const [result, setResult] = useState(false)
 
     async function addDocument() {
         try{
-            const res = await woqlClient.addDocument(document, null, DATA_PRODUCT)
+            const res = await woqlClient.addDocument(document, null, woqlClient.db())
             setResult(res)
             setSuccessMsg(`Successfully added`)
         }
@@ -20,6 +19,5 @@ export function DocumentHook(woqlClient, document, setSuccessMsg, setErrorMsg) {
     }, [document])
 
     return result
-
 }
 
