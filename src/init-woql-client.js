@@ -10,16 +10,19 @@ export const WOQLClientProvider = ({children, params}) => {
     let team = process.env.MY_TEAM
     let token = process.env.MY_TOKEN
     let user = process.env.MY_USER
+    let server = process.env.TERMINUSDB_SERVER
 
     const [woqlClient, setWoqlClient] = useState(false)
     const [connectionError, setConnectionError] = useState(false)
     const [page, setPage] = useState(HOME_PAGE)
     const [frames, setFrames] = useState(false)
 
+    const [loading, setLoading]=useState(true)
+    const [refresh, setRefresh]=useState(Date.now())
     const [successMsg, setSuccessMsg] = useState(false)
     const [errorMsg, setErrorMsg] = useState(false)
 
-    const client = new TerminusDBClient.WOQLClient(`https://cloud.terminusdb.com/${team}/`, {
+    const client = new TerminusDBClient.WOQLClient(`${server}${team}/`, {
         user: user,
         organization: team
     })
@@ -30,6 +33,7 @@ export const WOQLClientProvider = ({children, params}) => {
             client.setApiKey(token)
             client.db(DATA_PRODUCT)
             setWoqlClient(client)
+            setLoading(false)
         }
         catch(e) {
             setConnectionError(e)
@@ -69,7 +73,11 @@ export const WOQLClientProvider = ({children, params}) => {
                 errorMsg,
                 setErrorMsg,
                 setPage,
-                clearMessages
+                clearMessages,
+                loading,
+                setLoading,
+                refresh,
+                setRefresh
             }}
         >
             {children}

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
-import {DATA_PRODUCT} from "../constants"
 const TerminusDBClient = require("@terminusdb/terminusdb-client")
-import {ASSET_TYPE, LATITUDE, LONGITUDE} from "../pages/constants"
+import {VAR_DEPENDENT_ON, VAR_LATITUDE, LAT, LNG, VAR_LONGITUDE, VAR_NAME, VAR_CRITICAL, VAR_INDEX, VAR_ASSET, VAR_VALUE} from "./constants"
+import {MdAddAlert} from "react-icons/md"
 
 export async function handleDocumentSelect(woqlClient, inp, type) {
 
@@ -54,16 +54,72 @@ export function CustomCuisineFieldTemplate(props) {
     )
 }
 
+export function getCriticalButtons(cell) {
+    if(cell.row.original.critical === "true") { // critical is stored as string
+        return <MdAddAlert className="text-danger"/>
+    }
+    return <MdAddAlert className="text-success"/>
+}
+
 // function to extract latitude and longitude from query results
-export function extractLocations(results) {
+export function extractLocations(id, results) {
     let docs = []
     if(!Array.isArray(results)) return docs
     results.map(item => {
         docs.push({
-            latitude: item[LATITUDE]["@value"] ? item[LATITUDE]["@value"] : null,
-            longitude: item[LONGITUDE]["@value"] ? item[LONGITUDE]["@value"] : null
+            lat: item[VAR_LATITUDE]["@value"] ? item[VAR_LATITUDE]["@value"] : null,
+            lng: item[VAR_LONGITUDE]["@value"] ? item[VAR_LONGITUDE]["@value"] : null,
+            id: item[VAR_DEPENDENT_ON] ?  item[VAR_DEPENDENT_ON] : id,
+            name: item[VAR_NAME] ?  item[VAR_NAME]["@value"] : null,
+            critical: item[VAR_CRITICAL] ? item[VAR_CRITICAL]["@value"] : null
         })
     })
     return docs
 }
+
+// function to extract latitude and longitude of all assets
+export function extractAssetLocations(results) {
+    let docs = [], json = {}
+    if(!Array.isArray(results)) return docs
+    results.map(item => {
+        if(json.hasOwnProperty(item[VAR_ASSET])) { // if asset exists
+            if(item[VAR_INDEX]["@value"] === 0) json[item[VAR_ASSET]][LAT] = item[VAR_VALUE]["@value"]
+            if(item[VAR_INDEX]["@value"] === 1) json[item[VAR_ASSET]][LNG] = item[VAR_VALUE]["@value"]
+        }
+        else { // if asset dosent exists
+            json[item[VAR_ASSET]] = {
+                id: item[VAR_ASSET]
+            }
+            if(item[VAR_INDEX]["@value"] === 0) json[item[VAR_ASSET]][LAT] = item[VAR_VALUE]["@value"]
+            if(item[VAR_INDEX]["@value"] === 1) json[item[VAR_ASSET]][LNG] = item[VAR_VALUE]["@value"]
+            if(item.hasOwnProperty(VAR_NAME)) json[item[VAR_ASSET]]["name"] = item[VAR_NAME]["@value"]
+            if(item.hasOwnProperty(VAR_CRITICAL)) {
+                json[item[VAR_ASSET]]["critical"] = item[VAR_CRITICAL]["@value"].toString()
+            }
+        }
+    })
+    for(var things in json) {
+        docs.push(json[things])
+    }
+    //console.log("docs", docs)
+    return docs
+}
+
+
+
+
+
+/***
+ * triple("v:Asset", "rdf:type","@schema:Asset")
+.triple("v:Asset", "@schema:location", "v:Location")
+.triple("v:Location", "@schema:geometry_location", "v:Point")
+.triple("v:Point", "@schema:coordinates", "v:Coordinate_x")
+.triple("v:Point", "@schema:coordinates", "v:Coordinate_y")
+.triple("v:Coordinate_x", "sys:value", "v:X")
+.triple("v:Coordinate_x", "sys:index", "v:index_X")
+//.cast("v:index_X", "xsd:decimal", "v:IX")
+.triple("v:Coordinate_y", "sys:value", "v:Y")
+.triple("v:Coordinate_y", "sys:index", "v:index_y")
+//.cast("v:index_y", "xsd:decimal", "v:IY")
+ */
 

@@ -16,6 +16,17 @@ export const Menu = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
+                    <Navbar.Brand href="https://github.com/CriticalAssetManagement"
+                        title="Visit GitHub repository for more info"
+                        target="_blank">
+                        <img
+                            src="https://avatars.githubusercontent.com/u/93081083?s=200&v=4"
+                            width="30"
+                            height="30"
+                            className="d-inline-block align-top"
+                            alt="CAMS"
+                        />
+                    </Navbar.Brand>
                     <Nav.Link
                         as={RouterNavLink}
                         title={HOME}

@@ -1,11 +1,23 @@
 import React from "react"
 import {MapViewer} from "@terminusdb/terminusdb-documents-ui"
 
-export const Map = ({documents, display}) => {
+export const Map = ({documents, display, setOnMarkerClick, polyLine, zoom}) => {
+
+    /**
+     * id - Document ID
+     * latitude - latitude of Document ID
+     * longitude - longitude of Document ID
+     */
+    function handleMarkerClick (data) {
+        if(setOnMarkerClick) setOnMarkerClick(data)
+    }
+
     return <MapViewer
         documents={documents}
-        zoom={11}
+        zoom={zoom}
         scrollWheelZoom={true}
-        display={"Points"}
+        display={display}
+        polyLine={polyLine}
+        onMarkerClick={handleMarkerClick}
     />
 }
