@@ -105,7 +105,7 @@ export const DocumentContextProvider = ({children, params}) => {
     //function to manage user page tabs
     function manageUserTabs() {
         if(tabKey === VIEW_USER_LIST) {
-            //setRefresh(Date.now())
+            setRefresh(Date.now()) // review this refresh coz this results in two network calls
             clearClickedDocument()
         }
         else if(tabKey === CREATE_USER_TAB) {

@@ -6,64 +6,12 @@ import {Form} from "../components/Form"
 import {USER_TYPE, CREATE_MODE, VIEW_MODE, EDIT_MODE, USER_PAGE_TABLE_CSS, EDIT_CLICKED_USER, CREATE_USER_TAB, VIEW_USER_LIST, VIEW_CLICKED_USER} from "./constants"
 import {Alerts} from "../components/Alerts"
 import {DocumentHook, GetDocumentListHook, GetDocumentHook, DeleteDocumentHook, EditDocumentHook} from "../hooks/DocumentHook"
-import {Table} from "../components/Table"
 import {getUserConfig} from "../components/Views"
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
+import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
 
-const DisplayUsers = ({userResults, onRowClick}) => {
-    return <Row className="text-break">
-        <Table documents = {userResults}
-            config={getUserConfig(userResults, onRowClick)}
-            css={USER_PAGE_TABLE_CSS}/>
-    </Row>
-}
-
-const ViewDocument = ({frames, getDocumentToolBar, handleSelect, showDocument}) => {
-    return <React.Fragment>
-        <Row>
-            {getDocumentToolBar(showDocument)}
-        </Row>
-        <Row className="text-break">
-            <Form frames={frames}
-                type={USER_TYPE}
-                mode={VIEW_MODE}
-                hideSubmit={true}
-                onSelect={handleSelect}
-                formData={showDocument}
-            />
-        </Row>
-    </React.Fragment>
-}
-
-const CreateUser = ({frames, handleSelect, handleUserSubmit}) => {
-    return <Form frames={frames}
-        type={USER_TYPE}
-        mode={CREATE_MODE}
-        onSubmit={handleUserSubmit}
-        onSelect={handleSelect}
-        formData={{}}
-    />
-}
-
-const EditUser = ({frames, editDocument, getDocumentToolBar, handleUpdate, handleSelect}) => {
-
-    return <React.Fragment>
-        <Row>
-            {getDocumentToolBar(editDocument)}
-        </Row>
-        <Row className="text-break">
-            <Form frames={frames}
-                type={USER_TYPE}
-                mode={EDIT_MODE}
-                onSubmit={handleUpdate}
-                onSelect={handleSelect}
-                formData={editDocument}
-            />
-        </Row>
-    </React.Fragment>
-}
 
 export const UserForm = () => {
 
@@ -77,7 +25,7 @@ export const UserForm = () => {
         woqlClient,
         loading,
         setLoading,
-        refresh,
+        refresh
 	} = WOQLClientObj()
 
     const {
@@ -135,28 +83,34 @@ export const UserForm = () => {
             onSelect={(k) => setTabKey(k)}
             className="mb-3">
             <Tab eventKey={VIEW_USER_LIST} title={VIEW_USER_LIST}>
-                <DisplayUsers userResults={userResults}
+                <DisplayDocuments results={userResults}
+                    css={USER_PAGE_TABLE_CSS}
+                    config={getUserConfig(userResults, onRowClick)}
                     onRowClick={onRowClick}/>
             </Tab>
             {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_USER} title={VIEW_CLICKED_USER}>
+
                     <ViewDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
+                        type={USER_TYPE}
                         showDocument={showDocument}/>
                 </Tab>
             }
             {editDocument && <Tab eventKey={EDIT_CLICKED_USER} title={EDIT_CLICKED_USER}>
-                <EditUser frames={frames}
+                <EditDocument frames={frames}
                     getDocumentToolBar={getDocumentToolBar}
                     handleSelect={handleSelect}
+                    type={USER_TYPE}
                     handleUpdate={handleUpdate}
                     editDocument={editDocument}/>
                 </Tab>
             }
             <Tab eventKey={CREATE_USER_TAB} title={CREATE_USER_TAB}>
-                {frames && <CreateUser frames={frames}
+                {frames && <CreateDocument frames={frames}
                     handleSelect={handleSelect}
-                    handleUserSubmit={handleUserSubmit}/>}
+                    type={USER_TYPE}
+                    handleSubmit={handleUserSubmit}/>}
             </Tab>
         </Tabs>
 
