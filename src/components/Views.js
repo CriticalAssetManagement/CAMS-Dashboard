@@ -17,7 +17,7 @@ export function getCriticalAssetConfig(documents) {
         let columns = getColumnsFromResults(documents)
         tConf.column_order(...columns)
         tConf.column("Id").header("ID")
-        //tConf.column("critical").render(getCriticalButtons)
+        tConf.column("critical").render(getCriticalButtons)
         return tConf
     }
 }

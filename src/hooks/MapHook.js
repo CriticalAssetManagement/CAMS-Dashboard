@@ -39,7 +39,10 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
 
     // on results of clicked Asset
     useEffect(() => {
-        if(!Object.keys(queryResults).length) return
+        if(!Object.keys(queryResults).length) {
+            setLoading(false)
+            return
+        }
         let locs = extractAssetLocations(queryResults)
         setDependencies(locs)
         let gatherPolylines = [], json = {}

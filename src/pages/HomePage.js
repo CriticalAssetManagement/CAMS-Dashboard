@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react"
 import {Layout} from "../components/Layout"
-import {Container, ProgressBar, Col, Row} from "react-bootstrap"
+import {Container, ProgressBar, Row} from "react-bootstrap"
 import {Map} from "../components/Map"
 import {WOQLClientObj} from '../init-woql-client'
 import {QueryHook} from "../hooks/QueryHook"
@@ -10,7 +10,8 @@ import {MapHook} from "../hooks/MapHook"
 import {Table} from "../components/Table"
 import {Legend} from "../components/Legend"
 import {getCriticalAssetConfig} from "../components/Views"
-import {DEPENDENCY_RELATION_TYPE_TITLE, HOME_PAGE_TABLE_CSS} from "./constants"
+import {DEPENDENCY_RELATION_TYPE_TITLE, HOME_PAGE_TABLE_CSS, NO_DEPENDENCY_ALERT} from "./constants"
+import {Status} from "../components/Status"
 
 export const HomePage = () => {
     const [query, setQuery] = useState(false)
@@ -56,7 +57,6 @@ export const HomePage = () => {
     return <Container fluid="lg" className="mt-5 mb-5">
         <Layout/>
         <div className="mt-5 mb-5">
-            {loading && <ProgressBar animated now={100} variant="info"/>}
             {showAssets && <React.Fragment>
                 {onMarkerClick && <h3 className="text-info mb-1"> {`Asset - ${onMarkerClick.name}`}</h3>}
                 <Row className="m-2">
@@ -65,9 +65,11 @@ export const HomePage = () => {
                         setOnMarkerClick={setOnMarkerClick}
                         polyLine = {polyLine}
                     />
+                    {loading && <ProgressBar animated now={100} variant="info"/>}
                     {dependencies && <Legend/>}
                 </Row>
                 <Row className="text-break">
+                    {dependencies && <Status documents = {dependencies} onMarkerClick={onMarkerClick}/>}
                     <Table documents = {dependencies}
                         config={getCriticalAssetConfig(dependencies)}
                         title={DEPENDENCY_RELATION_TYPE_TITLE}

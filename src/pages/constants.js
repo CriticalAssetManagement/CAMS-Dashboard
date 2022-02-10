@@ -11,6 +11,7 @@ export const LOCATION = "location"
 
 export const DEPENDENCY_RELATION_TYPE_TITLE = "Dependency Relation"
 
+
 // control css to support mobile version
 export const HOME_PAGE_TABLE_CSS="homePageTableCss"
 export const USER_PAGE_TABLE_CSS="userPageTableCss"
