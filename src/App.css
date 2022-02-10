@@ -79,6 +79,9 @@ button.tdb__toolbar__base__button {
     display: none;
 }
 
+.toolbar-right {
+    text-align: right !important;
+}
 
 .tdb__view__input > input, .tdb__view__enum__input > select {
     color: #000 !important;

@@ -19,4 +19,5 @@ export const USER_PAGE_TABLE_CSS="userPageTableCss"
 export const CREATE_USER_TAB = "Create New User"
 export const VIEW_USER_LIST = "User List"
 export const VIEW_CLICKED_USER = "View User"
+export const EDIT_CLICKED_USER = "Edit User"
 

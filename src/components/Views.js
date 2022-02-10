@@ -34,7 +34,7 @@ export function getUserConfig(documents, onRowClick) {
         tConf.column("@id").header("ID")
         tConf.column("@type").hidden(true)
 
-        tConf.row().click(onRowClick)
+        if(onRowClick) tConf.row().click(onRowClick)
         return tConf
     }
 }
