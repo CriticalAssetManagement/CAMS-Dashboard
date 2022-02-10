@@ -100,7 +100,6 @@ export const UserForm = () => {
         setDocumentId
     } = DocumentContextObj()
 
-
     // create
     let result=DocumentHook(woqlClient, extracted, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     //view all document
@@ -125,11 +124,6 @@ export const UserForm = () => {
         }
     }, [documentResults])
 
-    console.log("************************documentId", documentId)
-    console.log("tabKey", tabKey)
-    console.log("editDocument", editDocument)
-    console.log("documentResults", documentResults)
-    console.log("showDocument", showDocument)
 
     return <Container fluid="lg" className="mt-5 mb-5">
         <Layout/>

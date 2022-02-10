@@ -5,9 +5,9 @@ export const SECONDARY_VARIANT="secondary"
 
 //Menus
 export const HOME="HOME"
-export const USER_FORM="USER FORM"
-export const AREA_FORM="AREA FORM"
-export const ASSET_FORM="ASSET FORM"
+export const USER_FORM="USERS"
+export const AREA_FORM="AREAS"
+export const ASSET_FORM="ASSETS"
 export const REPORTS="REPORTS"
 
 //query variables

@@ -17,8 +17,8 @@ export const Status = ({documents, onMarkerClick}) => {
                 if(docs.critical === 'true') criticalSum += 1 // have stored as string to display in WOQLTable
                 if(docs.critical === 'false') nonCriticalSum += 1
             })
-            if(criticalSum > 1) setCritical(criticalSum)
-            if(nonCriticalSum > 1) setNonCritical(nonCriticalSum)
+            setCritical(criticalSum)
+            setNonCritical(nonCriticalSum)
         }
     }, [documents])
 

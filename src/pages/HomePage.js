@@ -53,7 +53,7 @@ export const HomePage = () => {
         if(polyLine.length) setRefresh(Date.now())
     }, [polyLine])
 
-    //console.log("dependencies", dependencies)
+    console.log("polyLine", polyLine)
     return <Container fluid="lg" className="mt-5 mb-5">
         <Layout/>
         <div className="mt-5 mb-5">
@@ -69,11 +69,13 @@ export const HomePage = () => {
                     {dependencies && <Legend/>}
                 </Row>
                 <Row className="text-break">
-                    {dependencies && <Status documents = {dependencies} onMarkerClick={onMarkerClick}/>}
-                    <Table documents = {dependencies}
-                        config={getCriticalAssetConfig(dependencies)}
-                        title={DEPENDENCY_RELATION_TYPE_TITLE}
-                        css={HOME_PAGE_TABLE_CSS}/>
+                    {Array.isArray(dependencies) && dependencies.length && <React.Fragment>
+                        <Status documents = {dependencies} onMarkerClick={onMarkerClick}/>
+                        <Table documents = {dependencies}
+                            config={getCriticalAssetConfig(dependencies)}
+                            title={DEPENDENCY_RELATION_TYPE_TITLE}
+                            css={HOME_PAGE_TABLE_CSS}/>
+                    </React.Fragment>}
                 </Row>
             </React.Fragment>
             }
