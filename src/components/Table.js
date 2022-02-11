@@ -24,12 +24,11 @@ export const Table = ({documents, config, title, css}) => {
 
     if(Array.isArray(documents) && documents.length === 0) {
         return <Alert variant={SECONDARY_VARIANT}>
-            No dependents available
+           {` No ${title} available`}
         </Alert>
     }
 
     return <React.Fragment>
-        {documents && <h5 className="text-info mb-3 mt-3"> {title}</h5>}
         <span className={css}>
             {config && <WOQLTable
                 result={documents}

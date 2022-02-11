@@ -5,10 +5,11 @@ import {VIEW_MODE, CREATE_MODE, EDIT_MODE} from "../pages/constants"
 import {Row} from "react-bootstrap"
 import {Form} from "./Form"
 
-export const DisplayDocuments = ({results, css, config, onRowClick}) => {
+export const DisplayDocuments = ({results, css, config, title}) => {
     return <Row className="text-break">
         <Table documents = {results}
             config={config}
+            title={title}
             css={css}/>
     </Row>
 }

@@ -1,9 +1,8 @@
 import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
-import {Container, Row, ProgressBar} from "react-bootstrap"
+import {Container, ProgressBar} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
-import {Form} from "../components/Form"
-import {USER_TYPE, CREATE_MODE, VIEW_MODE, EDIT_MODE, USER_PAGE_TABLE_CSS, EDIT_CLICKED_USER, CREATE_USER_TAB, VIEW_USER_LIST, VIEW_CLICKED_USER} from "./constants"
+import {USER_TYPE, USER_PAGE_TABLE_CSS, EDIT_CLICKED_USER, CREATE_USER_TAB, VIEW_USER_LIST, VIEW_CLICKED_USER} from "./constants"
 import {Alerts} from "../components/Alerts"
 import {DocumentHook, GetDocumentListHook, GetDocumentHook, DeleteDocumentHook, EditDocumentHook} from "../hooks/DocumentHook"
 import {getUserConfig} from "../components/Views"
@@ -35,8 +34,8 @@ export const UserForm = () => {
         setTabKey,
         showDocument,
         setShowDocument,
-        manageUserTabs,
-        handleUserSubmit,
+        managePageTabs,
+        handleDocumentSubmit,
         extracted,
         handleSelect,
         deleteDocument,
@@ -49,20 +48,20 @@ export const UserForm = () => {
     } = DocumentContextObj()
 
     // create
-    let result=DocumentHook(woqlClient, extracted, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let result=DocumentHook(woqlClient, extracted, VIEW_USER_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     //view all document
     let userResults=GetDocumentListHook(woqlClient, USER_TYPE, refresh, setLoading, setSuccessMsg, setErrorMsg)
     //get a document
     let documentResults=GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMsg, setErrorMsg)
     // delete a document
-    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, VIEW_USER_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     // edit a document
-    let editResult=EditDocumentHook(woqlClient, extractedUpdate, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
+    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_CLICKED_USER, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
 
 
     useEffect(() => {
         // on changing tabs
-        manageUserTabs()
+        managePageTabs()
     }, [tabKey])
 
     useEffect(() => {
@@ -85,8 +84,8 @@ export const UserForm = () => {
             <Tab eventKey={VIEW_USER_LIST} title={VIEW_USER_LIST}>
                 <DisplayDocuments results={userResults}
                     css={USER_PAGE_TABLE_CSS}
-                    config={getUserConfig(userResults, onRowClick)}
-                    onRowClick={onRowClick}/>
+                    title={USER_TYPE}
+                    config={getUserConfig(userResults, onRowClick)}/>
             </Tab>
             {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_USER} title={VIEW_CLICKED_USER}>
 
@@ -110,7 +109,7 @@ export const UserForm = () => {
                 {frames && <CreateDocument frames={frames}
                     handleSelect={handleSelect}
                     type={USER_TYPE}
-                    handleSubmit={handleUserSubmit}/>}
+                    handleSubmit={handleDocumentSubmit}/>}
             </Tab>
         </Tabs>
 

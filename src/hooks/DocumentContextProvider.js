@@ -1,19 +1,19 @@
 import React, {useState, useEffect, useContext} from 'react'
 export const DocumentContext = React.createContext()
 export const DocumentContextObj = () => useContext(DocumentContext)
-import {VIEW_CLICKED_USER, VIEW_USER_LIST , CREATE_USER_TAB, USER_TYPE, EDIT_CLICKED_USER} from "../pages/constants"
 import {handleDocumentSelect} from "../components/utils"
 import {WOQLClientObj} from '../init-woql-client'
 import {Button, Row} from "react-bootstrap"
 import {VARIANT} from '../components/constants'
 
 export const DocumentContextProvider = ({children, params}) => {
+
     const [documentId, setDocumentId] = useState(false) // view a document
     const [extracted, setExtracted] = useState(false) //create document
     const [deleteDocument, setDeleteDocument] = useState(false) //delete document
     const [editDocument, setEditDocument] = useState(false) //edit document
     const [extractedUpdate, setExtractedUpdate] = useState(false)
-    const [tabKey, setTabKey] = useState(VIEW_USER_LIST)
+    const [tabKey, setTabKey] = useState(params.listTab)
     const [showDocument, setShowDocument] = useState(false)
 
     const {
@@ -28,11 +28,11 @@ export const DocumentContextProvider = ({children, params}) => {
     function onRowClick(row) {
         if(row.hasOwnProperty("values") && row.values.hasOwnProperty("@id")) {
             setDocumentId(row.values["@id"])
-            setTabKey(VIEW_CLICKED_USER)
+            setTabKey(params.viewTab)
         }
     }
 
-    // refresh user list after delete or create of a document
+    // refresh document list after delete or create of a document
     function handleRefresh(tab) {
         setTabKey(tab) //set to tab
         setEditDocument(false)
@@ -57,7 +57,7 @@ export const DocumentContextProvider = ({children, params}) => {
         function handleEdit (document) {
             setEditDocument(document)
             //setShowDocument(false)
-            setTabKey(EDIT_CLICKED_USER)
+            setTabKey(params.editTab)
         }
         return <Button className="btn-sm mr-1"
             variant={VARIANT}
@@ -81,17 +81,17 @@ export const DocumentContextProvider = ({children, params}) => {
         setShowDocument(false)
     }
 
-    // function to handle User Submit
-    function handleUserSubmit(data) {
-        if(!data.hasOwnProperty("@type")) data["@type"] = USER_TYPE
+    // function to handle document Submit
+    function handleDocumentSubmit(data) {
+        if(!data.hasOwnProperty("@type")) data["@type"] = params.type
         clearMessages()
         setExtracted(data)
     }
 
-    // function to handle User Update
+    // function to handle document Update
     function handleUpdate(data) {
         if(!data.hasOwnProperty("@id")) data["@id"] = editDocument["@id"]
-        if(!data.hasOwnProperty("@type")) data["@type"] = USER_TYPE
+        if(!data.hasOwnProperty("@type")) data["@type"] = params.type
         clearMessages()
         setExtractedUpdate(data)
     }
@@ -102,13 +102,13 @@ export const DocumentContextProvider = ({children, params}) => {
         return handleDocumentSelect(woqlClient, inp, type)
     }
 
-    //function to manage user page tabs
-    function manageUserTabs() {
-        if(tabKey === VIEW_USER_LIST) {
+    //function to manage page page tabs
+    function managePageTabs() {
+        if(tabKey === params.listTab) {
             setRefresh(Date.now()) // review this refresh coz this results in two network calls
             clearClickedDocument()
         }
-        else if(tabKey === CREATE_USER_TAB) {
+        else if(tabKey === params.createTab) {
             clearClickedDocument()
         }
         setSuccessMsg(false)
@@ -126,8 +126,8 @@ export const DocumentContextProvider = ({children, params}) => {
                 setTabKey,
                 showDocument,
                 setShowDocument,
-                manageUserTabs,
-                handleUserSubmit,
+                managePageTabs,
+                handleDocumentSubmit,
                 extracted,
                 setExtracted,
                 handleSelect,

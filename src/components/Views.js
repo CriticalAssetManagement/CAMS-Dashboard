@@ -38,3 +38,21 @@ export function getUserConfig(documents, onRowClick) {
         return tConf
     }
 }
+
+
+// get table config for area lists in Area Form Page
+export function getAreaConfig(documents, onRowClick) {
+    if(documents.length){
+        const tConf= TerminusDBClient.View.table()
+        tConf.pager("remote")
+        tConf.pagesize(20)
+
+        let columns = getColumnsFromResults(documents)
+        tConf.column_order(...columns)
+        tConf.column("@id").header("ID")
+        tConf.column("@type").hidden(true)
+
+        if(onRowClick) tConf.row().click(onRowClick)
+        return tConf
+    }
+}

@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react'
-import {VIEW_CLICKED_USER, VIEW_USER_LIST} from "../pages/constants"
 
-export function DocumentHook(woqlClient, document, handleRefresh, setLoading, setSuccessMsg, setErrorMsg) {
+export function DocumentHook(woqlClient, document, onRefreshTab, handleRefresh, setLoading, setSuccessMsg, setErrorMsg) {
     const [result, setResult] = useState(false)
 
     async function addDocument() {
@@ -9,7 +8,7 @@ export function DocumentHook(woqlClient, document, handleRefresh, setLoading, se
             setLoading(true)
             const res = await woqlClient.addDocument(document, null, woqlClient.db())
             setResult(res)
-            handleRefresh(VIEW_USER_LIST)
+            handleRefresh(onRefreshTab)
             setSuccessMsg(`Successfully added`)
             setLoading(false)
         }
@@ -77,7 +76,7 @@ export function GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMs
     return result
 }
 
-export function DeleteDocumentHook(woqlClient, documentId, handleRefresh, setLoading, setSuccessMsg, setErrorMsg) {
+export function DeleteDocumentHook(woqlClient, documentId, onRefreshTab, handleRefresh, setLoading, setSuccessMsg, setErrorMsg) {
     const [result, setResult] = useState(false)
 
     async function deleteDocument() {
@@ -87,7 +86,7 @@ export function DeleteDocumentHook(woqlClient, documentId, handleRefresh, setLoa
             let commitMsg=`Deleting document ${documentId}`
             setLoading(true)
             const res = await woqlClient.deleteDocument(params, woqlClient.db(), commitMsg)
-            handleRefresh(VIEW_USER_LIST)
+            handleRefresh(onRefreshTab)
             setSuccessMsg(`Successfully deleted ${documentId}`)
             setLoading(false)
         }
@@ -103,7 +102,7 @@ export function DeleteDocumentHook(woqlClient, documentId, handleRefresh, setLoa
     return result
 }
 
-export function EditDocumentHook(woqlClient, extractedUpdate, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg) {
+export function EditDocumentHook(woqlClient, extractedUpdate, onRefreshTab, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg) {
     const [result, setResult] = useState(false)
 
     async function updateDocument() {
@@ -116,7 +115,7 @@ export function EditDocumentHook(woqlClient, extractedUpdate, handleRefresh, set
             setLoading(true)
             const res = await woqlClient.updateDocument(update, params, woqlClient.db(), commitMsg)
             setDocumentId(documentId)
-            handleRefresh(VIEW_CLICKED_USER)
+            handleRefresh(onRefreshTab)
             setSuccessMsg(`Successfully updated ${documentId}`)
             setLoading(false)
         }
