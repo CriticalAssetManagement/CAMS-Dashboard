@@ -30,3 +30,9 @@ export const VIEW_AREA_LIST = "Area List"
 export const VIEW_CLICKED_AREA = "View Area"
 export const EDIT_CLICKED_AREA = "Edit Area"
 
+//Asset form Tab
+export const CREATE_ASSET_TAB = "Create New Asset"
+export const VIEW_ASSET_LIST = "Asset List"
+export const VIEW_CLICKED_ASSET = "View Asset"
+export const EDIT_CLICKED_ASSET = "Edit Asset"
+

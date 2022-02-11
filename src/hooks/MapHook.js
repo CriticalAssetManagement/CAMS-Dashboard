@@ -31,6 +31,8 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
         if(!onMarkerClick) return
         //console.log("onMarkerClick", onMarkerClick)
         if(onMarkerClick.hasOwnProperty("id")) {
+            setPolyLine(false)
+            setDependencies(false)
             setLoading(true)
             setDocumentID(onMarkerClick.id)
         }
