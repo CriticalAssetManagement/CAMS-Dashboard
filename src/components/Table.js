@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
-import {WOQLTable} from '@terminusdb-live/tdb-react-components'
-import {ControlledGetDocumentQuery} from '@terminusdb-live/tdb-react-components'
+import {WOQLTable} from '@terminusdb-live/terminusdb-react-table'
+import {ControlledGetDocumentQuery} from '@terminusdb-live/terminusdb-react-table'
 import {WOQLClientObj} from '../init-woql-client'
 import {Alert} from "react-bootstrap"
 import {SECONDARY_VARIANT} from "./constants"

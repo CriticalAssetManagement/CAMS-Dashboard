@@ -18,7 +18,7 @@ export const WOQLClientProvider = ({children, params}) => {
     const [frames, setFrames] = useState(false)
 
     const [loading, setLoading]=useState(true)
-    const [refresh, setRefresh]=useState(Date.now())
+    const [refresh, setRefresh]=useState(false)
     const [successMsg, setSuccessMsg] = useState(false)
     const [errorMsg, setErrorMsg] = useState(false)
 

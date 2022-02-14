@@ -13,6 +13,7 @@ export const DocumentContextProvider = ({children, params}) => {
     const [deleteDocument, setDeleteDocument] = useState(false) //delete document
     const [editDocument, setEditDocument] = useState(false) //edit document
     const [extractedUpdate, setExtractedUpdate] = useState(false)
+    const [type, setType] = useState(false)
     const [tabKey, setTabKey] = useState(params.listTab)
     const [showDocument, setShowDocument] = useState(false)
 
@@ -105,7 +106,6 @@ export const DocumentContextProvider = ({children, params}) => {
     //function to manage page page tabs
     function managePageTabs() {
         if(tabKey === params.listTab) {
-            setRefresh(Date.now()) // review this refresh coz this results in two network calls
             clearClickedDocument()
         }
         else if(tabKey === params.createTab) {
@@ -139,7 +139,9 @@ export const DocumentContextProvider = ({children, params}) => {
                 editDocument,
                 handleUpdate,
                 extractedUpdate,
-                setExtractedUpdate
+                setExtractedUpdate,
+                setType,
+                type
             }}
         >
             {children}

@@ -44,13 +44,15 @@ export const AreaForm = () => {
         handleRefresh,
         editDocument,
         extractedUpdate,
-        setDocumentId
+        setDocumentId,
+        setType,
+        type
     } = DocumentContextObj()
 
     // create
     let result=DocumentHook(woqlClient, extracted, VIEW_AREA_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     //view all document
-    let areaResults=GetDocumentListHook(woqlClient, AREA_TYPE, refresh, setLoading, setSuccessMsg, setErrorMsg)
+    let areaResults=GetDocumentListHook(woqlClient, type, setLoading, setSuccessMsg, setErrorMsg)
     //get a document
     let documentResults=GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMsg, setErrorMsg)
     // delete a document
@@ -65,12 +67,15 @@ export const AreaForm = () => {
     }, [tabKey])
 
     useEffect(() => {
+        setType(AREA_TYPE)
+    }, []) // refresh area Results list on reload or change of tabs
+
+    useEffect(() => {
         if(Object.keys(documentResults).length){
             // show view document tab only when a document is clicked
             setShowDocument(documentResults)
         }
     }, [documentResults])
-
 
     return <Container fluid="lg" className="mt-5 mb-5">
         <Layout/>

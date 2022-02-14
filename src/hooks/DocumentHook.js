@@ -24,7 +24,7 @@ export function DocumentHook(woqlClient, document, onRefreshTab, handleRefresh, 
     return result
 }
 
-export function GetDocumentListHook(woqlClient, type, refresh, setLoading, setSuccessMsg, setErrorMsg) {
+export function GetDocumentListHook(woqlClient, type, setLoading, setSuccessMsg, setErrorMsg) {
     const [result, setResult] = useState(false)
 
     async function getDocumentLists() {
@@ -45,7 +45,7 @@ export function GetDocumentListHook(woqlClient, type, refresh, setLoading, setSu
 
     useEffect(() => {
         if (type) getDocumentLists()
-    }, [type, refresh])
+    }, [type])
 
     return result
 }

@@ -44,13 +44,15 @@ export const AssetForm = () => {
         handleRefresh,
         editDocument,
         extractedUpdate,
-        setDocumentId
+        setDocumentId,
+        setType,
+        type
     } = DocumentContextObj()
 
     // create
     let result=DocumentHook(woqlClient, extracted, VIEW_ASSET_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     //view all document
-    let assetResults=GetDocumentListHook(woqlClient, ASSET_TYPE, refresh, setLoading, setSuccessMsg, setErrorMsg)
+    let assetResults=GetDocumentListHook(woqlClient, type, setLoading, setSuccessMsg, setErrorMsg)
     //get a document
     let documentResults=GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMsg, setErrorMsg)
     // delete a document
@@ -63,6 +65,10 @@ export const AssetForm = () => {
         // on changing tabs
         managePageTabs()
     }, [tabKey])
+
+    useEffect(() => {
+        setType(ASSET_TYPE)
+    }, []) // refresh asset Results list on reload or change of tabs
 
     useEffect(() => {
         if(Object.keys(documentResults).length){

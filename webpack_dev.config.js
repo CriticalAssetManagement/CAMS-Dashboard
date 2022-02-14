@@ -35,7 +35,7 @@ module.exports = {
       "@terminusdb/terminusdb-client": path.resolve('../terminusdb-client/index.js'),
       "@rjsf/core": path.resolve('../react-jsonschema-form/packages/core/src/index.js'),
       "@terminusdb/terminusdb-documents-ui": path.resolve('../terminusdb-documents-ui/src/index.js'),
-      "@terminusdb-live/tdb-react-components": path.resolve('../terminusdb-live-pattern-library/packages/tdb-react-components/src/index.js'),
+      "@terminusdb-live/terminusdb-react-table": path.resolve('../terminusdb-react-table/src/index.js'),
       react: path.resolve('./node_modules/react')
     },
     fallback: { "https": false },
