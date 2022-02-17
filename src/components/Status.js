@@ -8,8 +8,6 @@ export const Status = ({documents, onMarkerClick}) => {
 
     let documentId = onMarkerClick.hasOwnProperty("name") ? onMarkerClick.name : ""
 
-    console.log("documents", documents)
-
     useEffect(() => {
         if(Array.isArray(documents) && documents.length){
             let criticalSum = 0, nonCriticalSum = 0

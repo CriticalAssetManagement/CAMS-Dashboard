@@ -54,6 +54,38 @@ export function CustomCuisineFieldTemplate(props) {
     )
 }
 
+// function to modify results to be displayed in WOQLTable()
+// example - only display id of subdocument in WOQLTable
+export function displayResults(documentResults) {
+
+    var extractedResults=[]
+    documentResults.map(item=> {
+        var newJson={}
+        for(var key in item){
+            if(Array.isArray(item[key])){
+                /*var type = item[key][0]["@type"]
+                if(frames[`terminusdb:///schema#${type}`] && frames[`terminusdb:///schema#${type}`]["@subdocument"]){
+                    // this is a subdocument
+                    var newArray=[]
+                    item[key].map(thing => {
+                        newArray.push(thing["@id"])
+                    })
+                    newJson[key]=newArray
+                }*/
+            }
+            else if(item[key].hasOwnProperty("@id") && item[key]["@id"]){ // object
+                newJson[key]=item[key]["@id"]
+            }
+            else {
+                newJson[key]=item[key]
+            }
+        }
+        extractedResults.push(newJson)
+    })
+
+    return extractedResults
+}
+
 export function getCriticalButtons(cell) {
     if(cell.row.original.critical === "true") { // critical is stored as string
         return <MdAddAlert className="text-danger"/>
@@ -77,10 +109,12 @@ export function extractLocations(id, results) {
     return docs
 }
 
+
 // function to extract latitude and longitude of all assets
 export function extractAssetLocations(results) {
     let docs = [], json = {}
     if(!Array.isArray(results)) return docs
+
     results.map(item => {
         if(json.hasOwnProperty(item[VAR_ASSET])) { // if asset exists
             if(item[VAR_INDEX]["@value"] === 0) json[item[VAR_ASSET]][LAT] = item[VAR_VALUE]["@value"]
@@ -103,6 +137,15 @@ export function extractAssetLocations(results) {
     }
     //console.log("docs", docs)
     return docs
+}
+
+export function getAssetSelectOptions(list) {
+    if(!Array.isArray(list) && !list.length) return []
+    let opts = []
+    list.map(lst => {
+        opts.push({value: lst.id, label: lst.id})
+    })
+    return opts
 }
 
 

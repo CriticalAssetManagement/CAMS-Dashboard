@@ -87,8 +87,13 @@ button.tdb__toolbar__base__button {
     text-align: right !important;
 }
 
-.tdb__view__input > input, .tdb__view__enum__input > select {
+.tdb__view__input > input, .tdb__view__enum__input > select,
+.tdb__view__input > span.tdb__span__select {
     color: #000 !important;
+}
+
+form.rjsf > div > fieldset {
+    width: 100% !important;
 }
 
 

@@ -36,3 +36,19 @@ export const POLYLINE="Polyline"
 // alert variant colors
 export const ALERT_DANGER = "danger"
 export const ALERT_SUCCESS = "success"
+
+
+// map tool bar
+export const CRITICAL_LINKS="Critical Links"
+export const CRITICAL_LINKS_TITLE="Show Only Ciritcal Links"
+export const SEARCH_ASSET_PLACEHOLDER= "Select or Search for an Asset"
+export const SEARCH_ASSET_Label= "Filter by Asset ID"
+export const SHOW_ASSET_DETAIL="View Details"
+
+
+// details constants for Asset details
+export const ASSET_IDENTIFIER="asset_identifier"
+export const COMMISIONING_DATE="commisioning_date"
+export const DESIGN_STANDARDS="design_standards"
+export const LAST_MAINTAINED="last_maintained"
+export const LAST_MODIFIED="last_modified"

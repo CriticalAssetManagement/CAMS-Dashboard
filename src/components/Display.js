@@ -14,13 +14,15 @@ export const DisplayDocuments = ({results, css, config, title}) => {
     </Row>
 }
 
-export const ViewDocument = ({frames, type, getDocumentToolBar, handleSelect, showDocument}) => {
+export const ViewDocument = ({frames, type, getDocumentToolBar, FieldTemplate, uiFrame, handleSelect, showDocument}) => {
     return <React.Fragment>
         <Row>
-            {getDocumentToolBar(showDocument)}
+            {getDocumentToolBar && getDocumentToolBar(showDocument)}
         </Row>
         <Row className="text-break">
             <Form frames={frames}
+                uiFrame={uiFrame}
+                FieldTemplate={FieldTemplate}
                 type={type}
                 mode={VIEW_MODE}
                 hideSubmit={true}

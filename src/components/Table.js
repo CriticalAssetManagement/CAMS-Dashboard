@@ -4,6 +4,7 @@ import {ControlledGetDocumentQuery} from '@terminusdb-live/terminusdb-react-tabl
 import {WOQLClientObj} from '../init-woql-client'
 import {Alert} from "react-bootstrap"
 import {SECONDARY_VARIANT} from "./constants"
+import {displayResults} from "./utils"
 
 
 export const Table = ({documents, config, title, css}) => {
@@ -28,10 +29,11 @@ export const Table = ({documents, config, title, css}) => {
         </Alert>
     }
 
+
     return <React.Fragment>
         <span className={css}>
             {config && <WOQLTable
-                result={documents}
+                result={displayResults(documents)}
                 freewidth={true}
                 view={(config ? config.json() : {})}
                 limit={limit}

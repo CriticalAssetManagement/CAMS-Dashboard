@@ -52,7 +52,7 @@ export const AssetForm = () => {
     // create
     let result=DocumentHook(woqlClient, extracted, VIEW_ASSET_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     //view all document
-    let assetResults=GetDocumentListHook(woqlClient, type, setLoading, setSuccessMsg, setErrorMsg)
+    let assetResults=GetDocumentListHook(woqlClient, type, refresh, setLoading, setSuccessMsg, setErrorMsg)
     //get a document
     let documentResults=GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMsg, setErrorMsg)
     // delete a document

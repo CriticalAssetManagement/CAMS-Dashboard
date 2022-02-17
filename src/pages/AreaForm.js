@@ -52,7 +52,7 @@ export const AreaForm = () => {
     // create
     let result=DocumentHook(woqlClient, extracted, VIEW_AREA_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     //view all document
-    let areaResults=GetDocumentListHook(woqlClient, type, setLoading, setSuccessMsg, setErrorMsg)
+    let areaResults=GetDocumentListHook(woqlClient, type, refresh, setLoading, setSuccessMsg, setErrorMsg)
     //get a document
     let documentResults=GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMsg, setErrorMsg)
     // delete a document
