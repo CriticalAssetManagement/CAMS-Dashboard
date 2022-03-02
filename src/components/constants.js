@@ -2,8 +2,10 @@
 //variant
 export const VARIANT="dark"
 export const SECONDARY_VARIANT="secondary"
+export const SUCCESS_VARIANT="success"
 
 //Menus
+export const BRAND_TITLE="Critical Asset Management System"
 export const HOME="HOME"
 export const USER_FORM="USERS"
 export const AREA_FORM="AREAS"
@@ -40,6 +42,7 @@ export const ALERT_SUCCESS = "success"
 
 // map tool bar
 export const CRITICAL_LINKS="Critical Links"
+export const NON_CRITICAL_LINKS="Non Critical Links"
 export const CRITICAL_LINKS_TITLE="Show Only Ciritcal Links"
 export const SEARCH_ASSET_PLACEHOLDER= "Select or Search for an Asset"
 export const SEARCH_ASSET_Label= "Filter by Asset ID"
@@ -52,3 +55,5 @@ export const COMMISIONING_DATE="commisioning_date"
 export const DESIGN_STANDARDS="design_standards"
 export const LAST_MAINTAINED="last_maintained"
 export const LAST_MODIFIED="last_modified"
+
+export const EMPTY_PLACEHOLDER="No documents to display ..."

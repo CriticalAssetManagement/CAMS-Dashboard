@@ -18,21 +18,24 @@ export const USER_PAGE_TABLE_CSS="userPageTableCss"
 export const AREA_PAGE_TABLE_CSS="areaPageTableCss"
 
 //user form Tab
-export const CREATE_USER_TAB = "Create New User"
+export const CREATE_USER_TAB = "Load User"
 export const VIEW_USER_LIST = "User List"
 export const VIEW_CLICKED_USER = "View User"
 export const EDIT_CLICKED_USER = "Edit User"
 
 
 //Area form Tab
-export const CREATE_AREA_TAB = "Create New Area"
+export const CREATE_AREA_TAB = "Load Area"
 export const VIEW_AREA_LIST = "Area List"
 export const VIEW_CLICKED_AREA = "View Area"
 export const EDIT_CLICKED_AREA = "Edit Area"
 
 //Asset form Tab
-export const CREATE_ASSET_TAB = "Create New Asset"
+export const CREATE_ASSET_TAB = "Load Asset"
 export const VIEW_ASSET_LIST = "Asset List"
 export const VIEW_CLICKED_ASSET = "View Asset"
 export const EDIT_CLICKED_ASSET = "Edit Asset"
 
+
+//Search constants
+export const SEARCH_ASSET="Search for an Asset"

@@ -1,9 +1,33 @@
 import React from "react"
-import {HOME, USER_FORM, AREA_FORM, ASSET_FORM, REPORTS, VARIANT} from "./constants"
+import {HOME, USER_FORM, AREA_FORM, ASSET_FORM, REPORTS, BRAND_TITLE} from "./constants"
 import {USER_FORM_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE} from "../routing/constants"
 import {Nav, Navbar, Container} from "react-bootstrap"
 import { NavLink as RouterNavLink } from "react-router-dom"
 import {WOQLClientObj} from '../init-woql-client'
+import {GoHome} from "react-icons/go"
+import {FiMap, FiMapPin} from "react-icons/fi"
+import {BiBookReader} from "react-icons/bi"
+import {RiUserSmileLine} from "react-icons/ri"
+
+const MenuIcon = ({icon, title}) => {
+    return <div className="d-flex">
+        <h3 className="text-success ml-2">{icon}</h3>
+        <label className="m-2 text-muted fw-bold">{title}</label>
+    </div>
+}
+
+const BrandIcon = () => {
+    return <div className="bg-success p-2 rounded">
+        <img
+            //src="https://avatars.githubusercontent.com/u/93081083?s=200&v=4"
+            src="https://climateresilient.world/wp-content/uploads/2022/03/cams-logo-simple-light.png"
+            width="auto"
+            height="auto"
+            className="d-inline-block align-top"
+            alt="CAMS"
+        />
+    </div>
+}
 
 export const Menu = () => {
 
@@ -11,74 +35,66 @@ export const Menu = () => {
 		setPage
 	} = WOQLClientObj()
 
-    return <Navbar className={`navbar navbar-expand-lg navbar-dark bg-${VARIANT} mt-5 mb-3`}>
-        <Container>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="me-auto">
-                    <Navbar.Brand href="https://github.com/CriticalAssetManagement"
-                        title="Visit GitHub repository for more info"
-                        target="_blank">
-                        <img
-                            src="https://avatars.githubusercontent.com/u/93081083?s=200&v=4"
-                            width="30"
-                            height="30"
-                            className="d-inline-block align-top"
-                            alt="CAMS"
-                        />
-                    </Navbar.Brand>
-                    <Nav.Link
-                        as={RouterNavLink}
-                        title={HOME}
-                        to={HOME_PAGE}
-                        exact
-                        id={HOME}
-                        onClick={(e) => setPage(HOME_PAGE)}
+    return <Navbar expand="lg" className={`navbar navbar-transparent bg-${"light"} mb-3`}>
+        <Navbar.Brand href="https://climateresilient.world/"
+            title="Visit GitHub repository for more info"
+            target="_blank">
+                <BrandIcon/>
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
+            <Nav className="me-auto">
+                <Nav.Link
+                    as={RouterNavLink}
+                    title={HOME}
+                    to={HOME_PAGE}
+                    exact
+                    id={HOME}
+                    onClick={(e) => setPage(HOME_PAGE)}
+                >
+                    <MenuIcon icon={<GoHome/>} title={HOME}/>
+                </Nav.Link>
+                <Nav.Link
+                    as={RouterNavLink}
+                    title={USER_FORM}
+                    to={USER_FORM_PAGE}
+                    exact
+                    id={USER_FORM}
+                    onClick={(e) => setPage(USER_FORM_PAGE)}
                     >
-                        {HOME}
-                    </Nav.Link>
-                    <Nav.Link
-                        as={RouterNavLink}
-                        title={USER_FORM}
-                        to={USER_FORM_PAGE}
-                        exact
-                        id={USER_FORM}
-                        onClick={(e) => setPage(USER_FORM_PAGE)}
-                        >
-                        {USER_FORM}
-                    </Nav.Link>
-                    <Nav.Link
-                        as={RouterNavLink}
-                        title={AREA_FORM}
-                        to={AREA_FORM_PAGE}
-                        exact
-                        id={AREA_FORM}
-                        onClick={(e) => setPage(AREA_FORM_PAGE)}
-                        >
-                        {AREA_FORM}
-                    </Nav.Link>
-                    <Nav.Link
-                        as={RouterNavLink}
-                        title={ASSET_FORM}
-                        to={ASSET_FORM_PAGE}
-                        exact
-                        id={ASSET_FORM}
-                        onClick={(e) => setPage(ASSET_FORM_PAGE)}
-                        >
-                        {ASSET_FORM}
-                    </Nav.Link>
-                    <Nav.Link
-                        as={RouterNavLink}
-                        title={REPORTS}
-                        to={REPORTS_PAGE}
-                        exact
-                        id={REPORTS}
-                        onClick={(e) => setPage(REPORTS_PAGE)}
-                        >
-                        {REPORTS}
-                    </Nav.Link>
-                </Nav>
-            </Navbar.Collapse>
-        </Container>
+                        <MenuIcon icon={<RiUserSmileLine/>} title={USER_FORM}/>
+                </Nav.Link>
+                <Nav.Link
+                    as={RouterNavLink}
+                    title={AREA_FORM}
+                    to={AREA_FORM_PAGE}
+                    exact
+                    id={AREA_FORM}
+                    onClick={(e) => setPage(AREA_FORM_PAGE)}
+                    >
+                        <MenuIcon icon={<FiMap/>} title={AREA_FORM}/>
+                </Nav.Link>
+                <Nav.Link
+                    as={RouterNavLink}
+                    title={ASSET_FORM}
+                    to={ASSET_FORM_PAGE}
+                    exact
+                    id={ASSET_FORM}
+                    onClick={(e) => setPage(ASSET_FORM_PAGE)}
+                    >
+                        <MenuIcon icon={<FiMapPin/>} title={ASSET_FORM}/>
+                </Nav.Link>
+                <Nav.Link
+                    as={RouterNavLink}
+                    title={REPORTS}
+                    to={REPORTS_PAGE}
+                    exact
+                    id={REPORTS}
+                    onClick={(e) => setPage(REPORTS_PAGE)}
+                    >
+                            <MenuIcon icon={<BiBookReader/>} title={REPORTS}/>
+                </Nav.Link>
+            </Nav>
+        </Navbar.Collapse>
   </Navbar>
 }

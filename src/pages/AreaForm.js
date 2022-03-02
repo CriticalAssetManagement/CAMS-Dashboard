@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
-import {Container, ProgressBar} from "react-bootstrap"
+import {ProgressBar} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
 import {AREA_TYPE, AREA_PAGE_TABLE_CSS, EDIT_CLICKED_AREA, CREATE_AREA_TAB, VIEW_AREA_LIST, VIEW_CLICKED_AREA} from "./constants"
 import {Alerts} from "../components/Alerts"
@@ -77,7 +77,7 @@ export const AreaForm = () => {
         }
     }, [documentResults])
 
-    return <Container fluid="lg" className="mt-5 mb-5">
+    return <div className="mb-5">
         <Layout/>
         <Alerts errorMsg={connectionError}/>
         {loading && <ProgressBar animated now={100} variant="info"/>}
@@ -121,6 +121,6 @@ export const AreaForm = () => {
 
         <Alerts successMsg={successMsg}/>
         <Alerts errorMsg={errorMsg}/>
-    </Container>
+    </div>
 
 }

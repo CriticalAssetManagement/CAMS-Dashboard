@@ -7,6 +7,8 @@ function getColumnsFromResults (documents) {
     return columns
 }
 
+
+
 // get table config for asset lists in Home Page
 export function getCriticalAssetConfig(documents) {
     if(documents.length){
@@ -17,10 +19,15 @@ export function getCriticalAssetConfig(documents) {
         let columns = getColumnsFromResults(documents)
         tConf.column_order(...columns)
         tConf.column("Id").header("ID")
-        tConf.column("critical").render(getCriticalButtons)
+        tConf.column("lat").hidden(true)
+        tConf.column("lng").hidden(true)
+        tConf.column("critical").hidden(true)
         return tConf
     }
 }
+
+
+
 
 // get table config for user lists in user form Page
 export function getUserConfig(documents, onRowClick) {

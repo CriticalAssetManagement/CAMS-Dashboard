@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react"
 import {Layout} from "../components/Layout"
-import {Container, ProgressBar, Row} from "react-bootstrap"
+import {ProgressBar, Button, Row} from "react-bootstrap"
 import {Map} from "../components/Map"
 import {WOQLClientObj} from '../init-woql-client'
 import {QueryHook} from "../hooks/QueryHook"
@@ -10,9 +10,11 @@ import {MapHook} from "../hooks/MapHook"
 import {Table} from "../components/Table"
 import {Legend} from "../components/Legend"
 import {getCriticalAssetConfig} from "../components/Views"
-import {DEPENDENCY_RELATION_TYPE_TITLE, HOME_PAGE_TABLE_CSS, NO_DEPENDENCY_ALERT} from "./constants"
-import {Status} from "../components/Status"
+import {DEPENDENCY_RELATION_TYPE_TITLE, HOME_PAGE_TABLE_CSS, NO_DEPENDENCY_ALERT, SEARCH_ASSET} from "./constants"
 import {MapToolBar} from "../components/MapToolBar"
+import {OffCanvasSideBar} from "../components/OffCanvasSideBar"
+import {SearchBar} from "../components/SearchBar"
+import {DisplayMarkerInfo} from "../components/DisplayMarkerInfo"
 
 export const HomePage = () => {
     const [query, setQuery] = useState(false)
@@ -42,7 +44,6 @@ export const HomePage = () => {
     let queryResults = QueryHook(woqlClient, query, setLoading, setSuccessMsg, setErrorMsg)
 
 
-    console.log("polyLine", polyLine)
 
     useEffect(() => {
         if(!woqlClient) return
@@ -64,50 +65,50 @@ export const HomePage = () => {
     }, [polyLine])
 
 
-
     if(!showAssets && loading)
         return <ProgressBar animated now={100} variant="info"/>
 
-    return <Container fluid="lg" className="mt-5 mb-5">
+    return <React.Fragment>
         <Layout/>
-        <div className="mt-5 mb-5">
-            {showAssets && <React.Fragment>
-                {onMarkerClick && <h3 className="text-info mb-1"> {`Asset - ${onMarkerClick.name}`}</h3>}
-                <Row className="m-2">
-                    <MapToolBar
-                        showAssets={showAssets}
-                        filteredAssets={filteredAssets}
-                        setFilteredAssets={setFilteredAssets}
-                        polyLine={polyLine}
-                        setPolyLine={setPolyLine}
-                        setFilterAssetById={setFilterAssetById}
-                        setCriticalLinks={setCriticalLinks}
-                    />
-                    {!filteredAssets && <Map documents = {showAssets}
-                        zoom={13}
-                        setOnMarkerClick={setOnMarkerClick}
-                        polyLine = {polyLine}
-                    />}
-                    {filteredAssets && <Map documents = {filteredAssets}
-                        zoom={13}
-                        setOnMarkerClick={setOnMarkerClick}
-                        polyLine = {polyLine}
-                    />}
-                    {loading && <ProgressBar animated now={100} variant="info"/>}
-                    {dependencies && <Legend/>}
-                </Row>
-                <Row className="text-break">
-                    {Array.isArray(dependencies) && dependencies.length && <React.Fragment>
-                        <Status documents = {dependencies} onMarkerClick={onMarkerClick}/>
-                        <Table documents = {dependencies}
-                            config={getCriticalAssetConfig(dependencies)}
-                            title={DEPENDENCY_RELATION_TYPE_TITLE}
-                            css={HOME_PAGE_TABLE_CSS}
-                        />
-                    </React.Fragment>}
-                </Row>
-            </React.Fragment>
-            }
-        </div>
-    </Container>
+
+        <div className="sidebar"></div>
+        {showAssets && <React.Fragment>
+
+            <SearchBar placeholder={SEARCH_ASSET}/>
+
+            {/*onMarkerClick && <h3 className="text-info mb-1"> {`Asset - ${onMarkerClick.name}`}</h3>*/}
+
+            {onMarkerClick && <DisplayMarkerInfo dependencies={dependencies} info={onMarkerClick}/>}
+
+            <Row>
+                <Map documents = {showAssets}
+                    zoom={10}
+                    setOnMarkerClick={setOnMarkerClick}
+                    polyLine = {polyLine}
+                />
+
+                {loading && <ProgressBar animated now={100} variant="info"/>}
+                {onMarkerClick && dependencies && <Legend/>}
+
+            </Row>
+        </React.Fragment>
+        }
+
+
+
+    </React.Fragment>
 }
+
+
+/*
+
+<Row className="text-break">
+                {Array.isArray(dependencies) && dependencies.length && <React.Fragment>
+                    <Table documents = {dependencies}
+                        config={getCriticalAssetConfig(dependencies)}
+                        title={DEPENDENCY_RELATION_TYPE_TITLE}
+                        css={HOME_PAGE_TABLE_CSS}
+                    />
+                </React.Fragment>}
+            </Row>
+            */

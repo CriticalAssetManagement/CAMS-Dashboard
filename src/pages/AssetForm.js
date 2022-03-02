@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
-import {Container, ProgressBar} from "react-bootstrap"
+import {ProgressBar} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
 import {ASSET_TYPE, AREA_PAGE_TABLE_CSS, EDIT_CLICKED_ASSET, CREATE_ASSET_TAB, VIEW_ASSET_LIST, VIEW_CLICKED_ASSET} from "./constants"
 import {Alerts} from "../components/Alerts"
@@ -78,7 +78,7 @@ export const AssetForm = () => {
     }, [documentResults])
 
 
-    return <Container fluid="lg" className="mt-5 mb-5">
+    return <div className="mb-5">
         <Layout/>
         <Alerts errorMsg={connectionError}/>
         {loading && <ProgressBar animated now={100} variant="info"/>}
@@ -122,6 +122,6 @@ export const AssetForm = () => {
 
         <Alerts successMsg={successMsg}/>
         <Alerts errorMsg={errorMsg}/>
-    </Container>
+    </div>
 
 }

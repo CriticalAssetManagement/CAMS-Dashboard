@@ -1,3 +1,7 @@
+body {
+    background-color: #f8f9fa !important;
+}
+
 table > thead > tr:first-child {
     display: none;
 }
@@ -95,5 +99,20 @@ button.tdb__toolbar__base__button {
 form.rjsf > div > fieldset {
     width: 100% !important;
 }
+
+
+.search-bar {
+    position: absolute;
+    z-index: 999;
+    left: 50px;
+    top: 118px;
+    height: fit-content;
+    bottom: 20px;
+    border-radius: 5px;
+    overflow: auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 5px 0 rgb(0 0 0 / 30%);
+  }
+
 
 
