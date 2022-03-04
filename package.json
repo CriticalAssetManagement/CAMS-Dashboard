@@ -38,9 +38,9 @@
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.20.0",
-    "@terminusdb-live/terminusdb-react-table": "github:terminusdb/terminusdb-react-table#main",
-    "@terminusdb/terminusdb-client": "github:terminusdb/terminusdb-client-js#main",
-    "@terminusdb/terminusdb-documents-ui": "github:terminusdb/terminusdb-documents-ui#main",
+    "@terminusdb/terminusdb-react-table": "^0.0.5",
+    "@terminusdb/terminusdb-client": "^10.0.5",
+    "@terminusdb/terminusdb-documents-ui": "^v1.0.0",
     "axios": "^0.21.1",
     "classnames": "^2.2.5",
     "codemirror": "^5.64.0",
