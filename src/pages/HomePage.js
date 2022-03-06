@@ -43,7 +43,8 @@ export const HomePage = () => {
 
     let queryResults = QueryHook(woqlClient, query, setLoading, setSuccessMsg, setErrorMsg)
 
-
+    //console.log("filteredAssets", filteredAssets)
+    //console.log("polyLine", JSON.stringify(polyLine, null, 2))
 
     useEffect(() => {
         if(!woqlClient) return
@@ -71,24 +72,35 @@ export const HomePage = () => {
     return <React.Fragment>
         <Layout/>
 
-        <div className="sidebar"></div>
+
         {showAssets && <React.Fragment>
 
-            <SearchBar placeholder={SEARCH_ASSET}/>
+            <SearchBar placeholder={SEARCH_ASSET} setFilterAssetById={setFilterAssetById}/>
 
             {/*onMarkerClick && <h3 className="text-info mb-1"> {`Asset - ${onMarkerClick.name}`}</h3>*/}
 
             {onMarkerClick && <DisplayMarkerInfo dependencies={dependencies} info={onMarkerClick}/>}
 
             <Row>
-                <Map documents = {showAssets}
-                    zoom={10}
-                    setOnMarkerClick={setOnMarkerClick}
-                    polyLine = {polyLine}
-                />
+
+                {!filteredAssets &&
+                    <Map documents = {showAssets}
+                        zoom={10}
+                        setOnMarkerClick={setOnMarkerClick}
+                        polyLine = {polyLine}
+                    />
+                }
+
+                {filteredAssets &&
+                    <Map documents = {filteredAssets}
+                        zoom={10}
+                        setOnMarkerClick={setOnMarkerClick}
+                        polyLine = {polyLine}
+                    />
+                }
 
                 {loading && <ProgressBar animated now={100} variant="info"/>}
-                {onMarkerClick && dependencies && <Legend/>}
+
 
             </Row>
         </React.Fragment>
@@ -99,7 +111,7 @@ export const HomePage = () => {
     </React.Fragment>
 }
 
-
+//{onMarkerClick && dependencies && <Legend/>}
 /*
 
 <Row className="text-break">

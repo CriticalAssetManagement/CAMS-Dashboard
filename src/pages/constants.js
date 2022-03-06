@@ -38,4 +38,4 @@ export const EDIT_CLICKED_ASSET = "Edit Asset"
 
 
 //Search constants
-export const SEARCH_ASSET="Search for an Asset"
+export const SEARCH_ASSET="Search for an Asset by identifier"

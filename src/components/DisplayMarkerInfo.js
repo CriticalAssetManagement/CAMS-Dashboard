@@ -1,15 +1,58 @@
 
 import React, {useState, useLayoutEffect} from "react"
-import {Offcanvas, Container, Row, Col} from "react-bootstrap"
+import {Offcanvas, Nav} from "react-bootstrap"
+import {ASSET_FORM} from "./constants"
+import {ASSET_FORM_PAGE} from "../routing/constants"
+import {NavLink as RouterNavLink} from "react-router-dom"
 import {Status} from "./Status"
 import {InfoIcons} from "./InfoIcons"
+import {WOQLClientObj} from '../init-woql-client'
 import {RiArrowGoBackFill} from "react-icons/ri"
+import {FiMoreHorizontal} from "react-icons/fi"
+
+const ClickedMarkerInfo = ({info}) => {
+    if(!Object.keys(info).length) return <div/>
+    let displayInfo = []
+
+    const {
+		setPage
+	} = WOQLClientObj()
+
+    for(var key in info) {
+        if(key === "refresh") continue
+        displayInfo.push(<span className="d-flex m-2">
+            <small className="col-md-6 text-break text-info fw-bold">{key}</small>
+            <span className="col-md-6 text-break">{info[key]}</span>
+        </span>)
+    }
+
+    return <React.Fragment>
+        {displayInfo}
+        <Nav.Link
+            as={RouterNavLink}
+            title={ASSET_FORM}
+            to={ASSET_FORM_PAGE}
+            exact
+            id={ASSET_FORM}
+            onClick={(e) => setPage(ASSET_FORM_PAGE)}
+        >
+            <div className="d-flex bg-light justify-content-center">
+
+                <label className="m-2 text-dark ">More Info</label>
+                <h5 className="text-dark mt-2"><FiMoreHorizontal/></h5>
+            </div>
+        </Nav.Link>
+    </React.Fragment>
+}
 
 const DisplayLinks = ({dependencies, info}) => {
     if (!Array.isArray(dependencies)) return <div/>
 
     return <React.Fragment>
+        <ClickedMarkerInfo info={info}/>
+        <hr/>
         <Status documents = {dependencies} info={info}/>
+        <hr/>
         <InfoIcons documents = {dependencies}/>
     </React.Fragment>
 }
@@ -30,6 +73,7 @@ export const DisplayMarkerInfo = ({info, dependencies}) => {
     if(!info) return <div/>
 
     return <React.Fragment>
+
         <Offcanvas show={sidebarOpen} onHide={handleViewSidebar} backdrop={false} placement={position} className="h-auto">
             <Offcanvas.Header closeButton closeLabel={getCloseLabel()}>
                 <Offcanvas.Title>{info.name}</Offcanvas.Title>
@@ -40,6 +84,7 @@ export const DisplayMarkerInfo = ({info, dependencies}) => {
                 <DisplayLinks dependencies={dependencies} info={info}/>
             </Offcanvas.Body>
         </Offcanvas>
+
         {/*<button onClick={handleViewSidebar} className="sidebar-toggle">
             Toggle Sidebar
         </button>*/}

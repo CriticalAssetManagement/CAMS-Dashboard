@@ -1,5 +1,6 @@
 import React from "react"
-import {MapViewer} from "@terminusdb/terminusdb-documents-ui"
+//import {MapViewer} from "@terminusdb/terminusdb-documents-ui"
+import {Viewer} from "./Maps/Viewer"
 
 export const Map = ({documents, display, setOnMarkerClick, polyLine, zoom, children}) => {
 
@@ -11,8 +12,9 @@ export const Map = ({documents, display, setOnMarkerClick, polyLine, zoom, child
     function handleMarkerClick (data) {
         if(setOnMarkerClick) setOnMarkerClick(data)
     }
+    //console.log("polyLine", polyLine)
 
-    return <MapViewer
+    return <Viewer
         documents={documents}
         zoom={zoom}
         scrollWheelZoom={true}

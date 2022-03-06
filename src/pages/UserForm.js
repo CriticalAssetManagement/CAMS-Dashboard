@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
-import {ProgressBar} from "react-bootstrap"
+import {ProgressBar, Container} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
 import {USER_TYPE, USER_PAGE_TABLE_CSS, EDIT_CLICKED_USER, CREATE_USER_TAB, VIEW_USER_LIST, VIEW_CLICKED_USER} from "./constants"
 import {Alerts} from "../components/Alerts"

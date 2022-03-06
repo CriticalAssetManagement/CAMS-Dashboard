@@ -23,7 +23,7 @@ export const VAR_INDEX="Index"
 export const VAR_ASSET="Asset"
 export const VAR_VALUE="Value"
 
-export const CRITICAL_COLOR="#dc3545"
+export const CRITICAL_COLOR="#bf0a30"//"#dc3545"
 export const NON_CRITICAL_COLOR="#198754"
 
 //react leaflet variables
