@@ -1,18 +1,18 @@
 import React from "react"
-import {HOME, USER_FORM, AREA_FORM, ASSET_FORM, REPORTS, BRAND_TITLE} from "./constants"
-import {USER_FORM_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE} from "../routing/constants"
+import {HOME, USER_FORM, AREA_FORM, ASSET_FORM, ASSETS_LINK, REPORTS, BRAND_TITLE} from "./constants"
+import {USER_FORM_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE, ASSETS_LINK_PAGE} from "../routing/constants"
 import {Nav, Navbar, Container} from "react-bootstrap"
 import { NavLink as RouterNavLink } from "react-router-dom"
 import {WOQLClientObj} from '../init-woql-client'
 import {GoHome} from "react-icons/go"
-import {FiMap, FiMapPin} from "react-icons/fi"
+import {FiMap, FiMapPin, FiLink} from "react-icons/fi"
 import {BiBookReader} from "react-icons/bi"
 import {RiUserSmileLine} from "react-icons/ri"
 
 const MenuIcon = ({icon, title}) => {
     return <div className="d-flex">
         <h3 className="text-success ml-2">{icon}</h3>
-        <label className="m-2 text-muted fw-bold">{title}</label>
+        <label role="button" className="m-2 text-muted fw-bold">{title}</label>
     </div>
 }
 
@@ -35,7 +35,7 @@ export const Menu = () => {
 		setPage
 	} = WOQLClientObj()
 
-    return <Navbar expand="lg" className={`navbar navbar-transparent bg-${"light"}`}>
+    return <Navbar expand="lg" className={`p-3 navbar navbar-transparent bg-${"light"}`}>
         <Navbar.Brand href="https://climateresilient.world/"
             title="Visit GitHub repository for more info"
             target="_blank">
@@ -43,7 +43,7 @@ export const Menu = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
-            <Nav className="me-auto">
+            <Nav className="me-auto m-3">
                 <Nav.Link
                     as={RouterNavLink}
                     title={HOME}
@@ -83,6 +83,16 @@ export const Menu = () => {
                     onClick={(e) => setPage(ASSET_FORM_PAGE)}
                     >
                         <MenuIcon icon={<FiMapPin/>} title={ASSET_FORM}/>
+                </Nav.Link>
+                <Nav.Link
+                    as={RouterNavLink}
+                    title={ASSETS_LINK}
+                    to={ASSETS_LINK_PAGE}
+                    exact
+                    id={ASSETS_LINK}
+                    onClick={(e) => setPage(ASSETS_LINK_PAGE)}
+                    >
+                            <MenuIcon icon={<FiLink/>} title={ASSETS_LINK}/>
                 </Nav.Link>
                 <Nav.Link
                     as={RouterNavLink}

@@ -9,6 +9,7 @@ import {InfoIcons} from "./InfoIcons"
 import {WOQLClientObj} from '../init-woql-client'
 import {RiArrowGoBackFill} from "react-icons/ri"
 import {FiMoreHorizontal} from "react-icons/fi"
+import {AccordianSection} from "./AccordianSection"
 
 const ClickedMarkerInfo = ({info}) => {
     if(!Object.keys(info).length) return <div/>
@@ -21,7 +22,7 @@ const ClickedMarkerInfo = ({info}) => {
     for(var key in info) {
         if(key === "refresh") continue
         displayInfo.push(<span className="d-flex m-2">
-            <small className="col-md-6 text-break text-info fw-bold">{key}</small>
+            <small className="col-md-6 text-break text-primary fw-bold">{key}</small>
             <span className="col-md-6 text-break">{info[key]}</span>
         </span>)
     }
@@ -37,8 +38,7 @@ const ClickedMarkerInfo = ({info}) => {
             onClick={(e) => setPage(ASSET_FORM_PAGE)}
         >
             <div className="d-flex bg-light justify-content-center">
-
-                <label className="m-2 text-dark ">More Info</label>
+                <label className="m-2 text-dark ">View Asset</label>
                 <h5 className="text-dark mt-2"><FiMoreHorizontal/></h5>
             </div>
         </Nav.Link>
@@ -53,6 +53,7 @@ const DisplayLinks = ({dependencies, info}) => {
         <hr/>
         <Status documents = {dependencies} info={info}/>
         <hr/>
+        <AccordianSection asset = {info.id}/>
         <InfoIcons documents = {dependencies}/>
     </React.Fragment>
 }
@@ -74,7 +75,7 @@ export const DisplayMarkerInfo = ({info, dependencies}) => {
 
     return <React.Fragment>
 
-        <Offcanvas show={sidebarOpen} onHide={handleViewSidebar} backdrop={false} placement={position} className="h-auto">
+        <Offcanvas show={sidebarOpen} scroll={true} onHide={handleViewSidebar} backdrop={false} placement={position} className="h-auto">
             <Offcanvas.Header closeButton closeLabel={getCloseLabel()}>
                 <Offcanvas.Title>{info.name}</Offcanvas.Title>
             </Offcanvas.Header>
@@ -91,31 +92,3 @@ export const DisplayMarkerInfo = ({info, dependencies}) => {
     </React.Fragment>
 }
 
-/*
-<Offcanvas show={true} backdrop={false} placement={"bottom"} style={{height: "fit-content"}}>
-        <Offcanvas.Header closeButton>
-        <Offcanvas.Title>Offcanvas</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-            Some text as placeholder. In real life you can have the elements you
-            have chosen. Like, text, images, lists, etc.
-        </Offcanvas.Body>
-    </Offcanvas>
-    */
-
-    /*
-    const [sidebarOpen, setSideBarOpen] = useState(true);
-    const handleViewSidebar = () => {
-        setSideBarOpen(!sidebarOpen);
-    }
-
-    const sidebarClass = sidebarOpen ? "sidebar open" : "sidebar";
-
-    return <div className={`${sidebarClass} `}>
-        <div> I slide into view </div>
-        <div> Me Too! </div>
-        <div> Me Three! </div>
-        <button onClick={handleViewSidebar} className="sidebar-toggle">
-            Toggle Sidebar
-        </button>
-    </div>*/

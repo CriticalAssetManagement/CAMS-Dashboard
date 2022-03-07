@@ -6,6 +6,7 @@ export const VIEW_MODE = "View"
 export const USER_TYPE = "Person"
 export const AREA_TYPE = "Area"
 export const ASSET_TYPE = "Asset"
+export const LINK_TYPE = "DependencyRelation"
 export const DEPENDENT = "dependent"
 export const LOCATION = "location"
 
@@ -35,6 +36,12 @@ export const CREATE_ASSET_TAB = "Load Asset"
 export const VIEW_ASSET_LIST = "Asset List"
 export const VIEW_CLICKED_ASSET = "View Asset"
 export const EDIT_CLICKED_ASSET = "Edit Asset"
+
+//Links form Tab
+export const CREATE_LINK_TAB = "Load Link"
+export const VIEW_LINK_LIST = "Links List"
+export const VIEW_CLICKED_LINK = "View Link"
+export const EDIT_CLICKED_LINK = "Edit Link"
 
 
 //Search constants

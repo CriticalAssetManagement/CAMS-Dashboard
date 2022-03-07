@@ -30,9 +30,9 @@ export const filterStatusDependencyQuery = (documentID, critical) =>{
 }
 
 //query to get asset by id
-export const filterAssetsByIDQuery=(assets) => {
+export const filterAssetsByIDQuery=(asset) => {
     let WOQL= TerminusDBClient.WOQL
-    let documentID=assets
+    let documentID=asset
     return WOQL.triple("v:Asset", "rdf:type","@schema:Asset").eq("v:Asset", documentID)
         .triple("v:Asset", "@schema:location", "v:Location")
         .triple("v:Asset", "@schema:name", "v:Name")
@@ -60,3 +60,13 @@ export const getAvailableAssets = () => {
 
 //to c array val for coordinates
 //triple("Array_8ce4bb1279bfdec43a11dec861e0e4fd3257382cabb1c7dc0a0880bebabb9d2a", "v:A", "v:C")
+
+export const getOwnerDetailsQuery = (asset) => {
+    let WOQL= TerminusDBClient.WOQL
+    let documentID=asset
+    return WOQL.triple(documentID, "@schema:owner", "v:Owner")
+        .triple("v:Owner", "@schema:name", "v:Name")
+        .triple("v:Owner", "@schema:contact_person", "v:Person")
+        .triple("v:Person", "@schema:phone_number", "v:PhoneNumber")
+        .triple("v:Person", "@schema:email_address", "v:Email")
+}

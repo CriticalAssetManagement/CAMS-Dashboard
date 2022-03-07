@@ -11,6 +11,7 @@ export const USER_FORM="USERS"
 export const AREA_FORM="AREAS"
 export const ASSET_FORM="ASSETS"
 export const REPORTS="REPORTS"
+export const ASSETS_LINK = "LINKS"
 
 //query variables
 export const VAR_DEPENDENT="Dependent"
@@ -56,4 +57,16 @@ export const DESIGN_STANDARDS="design_standards"
 export const LAST_MAINTAINED="last_maintained"
 export const LAST_MODIFIED="last_modified"
 
+// empty placeholders
 export const EMPTY_PLACEHOLDER="No documents to display ..."
+export const NO_OWNER_INFO="No contact details available ..."
+
+// Accordian titles
+export const OWNER_ACCORDIAN_TITLE = "Contact Info"
+export const ASSET_DEPENDENCY_ACCORDIAN_TITLE = "Links Info"
+
+// Dropdown
+export const HAZARD_DROPDOWN_TITLE="Hazard Events"
+
+//types
+export const HAZARD_TYPE = "Hazard"
