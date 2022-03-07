@@ -20,7 +20,7 @@
   "scripts": {
     "build-es6": "rimraf es6 && cross-env NODE_ENV=es6 babel ./src -d es6 --extensions '.js'",
     "build": "webpack --mode production",
-    "start": "webpack serve --mode development  --open --progress --port 3036 --host localhost --config ./webpack_dev.config.js --history-api-fallback",
+    "start": "webpack serve --mode development  --open --progress --port 3036 --config ./webpack_dev.config.js --history-api-fallback",
     "test": "exit 0",
     "lint": "eslint src",
     "autofix": "eslint src --fix"
