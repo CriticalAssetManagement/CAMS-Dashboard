@@ -42,9 +42,17 @@ export const AccordianSection = ({asset, documents}) =>{
             queryResults.map(qr=> {
                 info.push(
                 <React.Fragment>
-                    <div className="mt-2 mb-2 text-muted"><BsBookmark className="me-2"/>{qr.Name["@value"]}</div>
-                    <div><span className="me-4 text-primary">Phone</span><span>{qr.PhoneNumber["@value"]}</span></div>
-                    <div><span className="me-4 text-primary">Email</span><span>{qr.Email["@value"]}</span></div>
+                    <div className="mt-2 mb-2 text-muted">
+                        <BsBookmark className="me-2"/>{qr.Name["@value"]}
+                    </div>
+                    <div>
+                        <span className="me-4 text-muted">Phone</span>
+                        <a href={`tel:${qr.PhoneNumber["@value"]}`}>{qr.PhoneNumber["@value"]}</a>
+                    </div>
+                    <div>
+                        <span className="me-4 text-muted">Email</span>
+                        <span>{qr.Email["@value"]}</span>
+                    </div>
                     <hr/>
                 </React.Fragment>
                 )

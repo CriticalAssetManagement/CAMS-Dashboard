@@ -72,6 +72,7 @@
     "react-json-editor-ajrm": "^2.5.13",
     "react-json-view": "^1.21.3",
     "react-leaflet": "^3.2.5",
+    "react-multiselect-checkboxes": "^0.1.1",
     "react-pro-sidebar": "^0.6.0",
     "react-router-dom": "^5.2.0",
     "react-scrollable-anchor": "^0.6.1",

@@ -23,6 +23,7 @@ export const VAR_CRITICAL="Critical"
 export const VAR_INDEX="Index"
 export const VAR_ASSET="Asset"
 export const VAR_VALUE="Value"
+export const VAR_PATH="Path"
 
 export const CRITICAL_COLOR="#bf0a30"//"#dc3545"
 export const NON_CRITICAL_COLOR="#198754"
@@ -67,6 +68,7 @@ export const ASSET_DEPENDENCY_ACCORDIAN_TITLE = "Links Info"
 
 // Dropdown
 export const HAZARD_DROPDOWN_TITLE="Hazard Events"
+export const FAILURE_CHAIN_TITLE="Failure Chain"
 
 //types
 export const HAZARD_TYPE = "Hazard"

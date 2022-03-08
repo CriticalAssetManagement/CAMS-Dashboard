@@ -79,48 +79,51 @@ export const AreaForm = () => {
 
     return <div className="mb-5">
         <Layout/>
-        <Alerts errorMsg={connectionError}/>
-        {loading && <ProgressBar animated now={100} variant="info"/>}
+        <div className="px-3">
+            <Alerts errorMsg={connectionError}/>
+            {loading && <ProgressBar animated now={100} variant="info"/>}
 
-        <Tabs id="controlled-tab"
-            activeKey={tabKey}
-            onSelect={(k) => setTabKey(k)}
-            className="mb-3">
-            <Tab eventKey={VIEW_AREA_LIST} title={VIEW_AREA_LIST}>
-                <DisplayDocuments results={areaResults}
-                    css={AREA_PAGE_TABLE_CSS}
-                    config={getAreaConfig(areaResults, onRowClick)}
-                    title={AREA_TYPE}
-                    onRowClick={onRowClick}/>
-            </Tab>
-            {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_AREA} title={VIEW_CLICKED_AREA}>
+            <Tabs id="controlled-tab"
+                activeKey={tabKey}
+                onSelect={(k) => setTabKey(k)}
+                className="mb-3">
+                <Tab eventKey={VIEW_AREA_LIST} title={VIEW_AREA_LIST}>
+                    <DisplayDocuments results={areaResults}
+                        css={AREA_PAGE_TABLE_CSS}
+                        config={getAreaConfig(areaResults, onRowClick)}
+                        title={AREA_TYPE}
+                        onRowClick={onRowClick}/>
+                </Tab>
+                {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_AREA} title={VIEW_CLICKED_AREA}>
 
-                    <ViewDocument frames={frames}
+                        <ViewDocument frames={frames}
+                            getDocumentToolBar={getDocumentToolBar}
+                            handleSelect={handleSelect}
+                            type={AREA_TYPE}
+                            showDocument={showDocument}/>
+                    </Tab>
+                }
+                {editDocument && <Tab eventKey={EDIT_CLICKED_AREA} title={EDIT_CLICKED_AREA}>
+                    <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
                         type={AREA_TYPE}
-                        showDocument={showDocument}/>
+                        handleUpdate={handleUpdate}
+                        editDocument={editDocument}/>
+                    </Tab>
+                }
+                <Tab eventKey={CREATE_AREA_TAB} title={CREATE_AREA_TAB}>
+                    {frames && <CreateDocument frames={frames}
+                        handleSelect={handleSelect}
+                        type={AREA_TYPE}
+                        handleSubmit={handleDocumentSubmit}/>}
                 </Tab>
-            }
-            {editDocument && <Tab eventKey={EDIT_CLICKED_AREA} title={EDIT_CLICKED_AREA}>
-                <EditDocument frames={frames}
-                    getDocumentToolBar={getDocumentToolBar}
-                    handleSelect={handleSelect}
-                    type={AREA_TYPE}
-                    handleUpdate={handleUpdate}
-                    editDocument={editDocument}/>
-                </Tab>
-            }
-            <Tab eventKey={CREATE_AREA_TAB} title={CREATE_AREA_TAB}>
-                {frames && <CreateDocument frames={frames}
-                    handleSelect={handleSelect}
-                    type={AREA_TYPE}
-                    handleSubmit={handleDocumentSubmit}/>}
-            </Tab>
-        </Tabs>
+            </Tabs>
 
-        <Alerts successMsg={successMsg}/>
-        <Alerts errorMsg={errorMsg}/>
+            <Alerts successMsg={successMsg}/>
+            <Alerts errorMsg={errorMsg}/>
+        </div>
+
     </div>
 
 }

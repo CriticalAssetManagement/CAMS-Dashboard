@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import {QueryHook} from "./QueryHook"
 import {NON_CRITICAL_COLOR, CRITICAL_COLOR, CRITICAL_LINKS, NON_CRITICAL_LINKS} from "../components/constants"
-import {filterStatusDependencyQuery, filterAssetsByIDQuery, getAssetDependentOnQuery} from "./queries"
+import {filterAssetsByIDQuery, getAssetFailureChain, getAssetsByEventsQuery, getAssetDependentOnQuery} from "./queries"
 import {DEPENDENT} from "../pages/constants"
 import {extractLocations, handleDocumentSelect, extractAssetLocations} from "../components/utils"
 
@@ -16,18 +16,32 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
 
     const [onMarkerClick, setOnMarkerClick] = useState(false)
 
-
     //filter constants
-    const [criticalLinks, setCriticalLinks]=useState(false)
     const [filterAssetById, setFilterAssetById]=useState(false)
     const [filterByAssetQuery, setFilterByAssetQuery]=useState(false)
     const [filteredAssets, setFilteredAssets]=useState(false)
+
+    // filter by event constants
+    const [filterAssetByEvent, setFilterAssetByEvent]=useState(false)
+    const [filterAssetByEventQuery, setFilterAssetByEventQuery]=useState(false)
+
+    //failure chain constants
+    const [failureChain, setFailureChain] = useState(false)
+    const [failureChainPathQuery, setFailureChainPathQuery] = useState(false)
+    const [displayFailureChains, setDisplayFailureChains] = useState(false)
+    let failureChainResults = QueryHook(woqlClient, failureChainPathQuery, setLoading, setSuccessMsg, setErrorMsg)
 
     // get document location on select of an Asset
     let queryResults = QueryHook(woqlClient, query, setLoading, setSuccessMsg, setErrorMsg)
 
     // get document location on filtering of an Asset
-    let filteredByAssetResults = QueryHook(woqlClient, filterByAssetQuery, setLoading, setSuccessMsg, setErrorMsg)
+    //let filteredByAssetResults = QueryHook(woqlClient, filterByAssetQuery, setLoading, setSuccessMsg, setErrorMsg)
+
+
+    let filteredByAssetResults = QueryHook(woqlClient, filterAssetByEventQuery, setLoading, setSuccessMsg, setErrorMsg)
+
+    console.log("onMarkerClick", onMarkerClick)
+    //console.log("**** failureChainResults", queryResults, failureChainResults)
 
     // on select of Asset
     useEffect(() => { // get dependent on assets
@@ -39,7 +53,7 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
     // on click of Asset
     useEffect(() => {
         if(!onMarkerClick) return
-        console.log("onMarkerClick", onMarkerClick)
+        //console.log("onMarkerClick", onMarkerClick)
         if(onMarkerClick.hasOwnProperty("id")) {
             setPolyLine(false)
             setDependencies(false)
@@ -97,13 +111,7 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
     }, [queryResults])
 
 
-    // on click of critical link checkboxes
-    useEffect(() => {
-        if(!documentID) return
-        if(criticalLinks === undefined) return
-        let q = filterStatusDependencyQuery(documentID, criticalLinks)
-        setQuery(q)
-    }, [criticalLinks])
+
 
     // on flitering by Asset ID
     useEffect(() => {
@@ -124,21 +132,102 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
         setLoading(false)
     }, [filteredByAssetResults])
 
+    //filter by events
+    useEffect(() => {
+        //console.log("filterAssetByEvent", filterAssetByEvent)
+        // list of hazard event checkboxes
+        if(Array.isArray(filterAssetByEvent) && filterAssetByEvent.length) {
+            let q = getAssetsByEventsQuery(filterAssetByEvent)
+            setFilterAssetByEventQuery(q)
+        }
+    }, [filterAssetByEvent])
+
+    // if failure chain is checked
+    useEffect(() => {
+        if(failureChain && Object.keys(onMarkerClick).length && onMarkerClick.hasOwnProperty("id")) {
+            let q = getAssetFailureChain(onMarkerClick["id"])
+            setFailureChainPathQuery(q)
+        }
+    }, [failureChain])
+
+    /*useEffect(() => {
+        if(Array.isArray(queryResults) && Array.isArray(failureChainResults)) {
+            let locs = extractAssetLocations(queryResults) //clean up and extract lat and long
+            let directLinkedAssets = [], newFailureChainResults = []
+            locs.map(lcs => {
+                directLinkedAssets.push(lcs.id)
+            })
+            let failureChainResultsLocs = extractAssetLocations(failureChainResults) //clean up and extract lat and long
+
+            // remove direct links from failure chain results
+            failureChainResultsLocs.map(fcs => {
+                if(fcs.hasOwnProperty("id")) {
+                    let match = false
+                    directLinkedAssets.map(dla => {
+                        if(dla === fcs["id"]) { // direct links found - we remove it so as to display dashed links for failure chains
+                            match = dla
+                            return match
+                        }
+                    })
+                    if(!match) newFailureChainResults.push(fcs)
+                }
+            })
+            if(Array.isArray(newFailureChainResults) && newFailureChainResults.length)
+                setDisplayFailureChains(newFailureChainResults)
+        }
+    }, [failureChainResults])*/
+
+    useEffect(() => {
+        if(Array.isArray(failureChainResults) && onMarkerClick.hasOwnProperty("id")) {
+            console.log("failureChainResults", failureChainResults)
+        }
+    }, [failureChainResults])
+
+
     return {
         setOnMarkerClick,
         polyLine,
         dependencies,
         onMarkerClick,
-        criticalLinks,
-        setCriticalLinks,
         setPolyLine,
         filterAssetById,
         setFilterAssetById,
         filteredAssets,
-        setFilteredAssets
+        setFilteredAssets,
+        setFilterAssetByEvent,
+        setFailureChain,
+        displayFailureChains
     }
 }
 
+
+
+
+/*let doc = "Asset/Portsmouth%20Hospital"
+
+and (
+  path(doc, "(<depends_on,dependent>)*", "v:Asset").
+  triple("v:Relation", "@schema:depends_on", "v:Asset").
+  triple("v:Relation", "@schema:dependent", "v:NewAsset")
+ )*/
+
+
+
+
+let testCoords = [
+	[15.583331, -61.4666648], //portsmouth
+	[15.30083213, -61.386331788], //roseau
+	[15.53743, -61.282] // marigot
+]
+
+
+
+
+let failureChainCoords = [
+	[15.53743, -61.282], //marigot
+	[15.32768, -61.24753], // La Plaine
+	[15.36667, -61.35] //Pont Cassé
+]
 
 
     // on results of clicked Asset

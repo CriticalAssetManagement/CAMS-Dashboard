@@ -43,3 +43,17 @@ export const ARROW_OPTIONS = {
 	fill: 2,
 	offsets: { end: "15px" }
 }
+
+export const DASH_LINES_OPTIONS = {
+	"delay": 800,
+	"dashArray": [
+	  10,
+	  20
+	],
+	"weight": 5,
+	"color": "#842029",
+	"pulseColor": "#FFFFFF",
+	"paused": false,
+	"reverse": false,
+	"hardwareAccelerated": true
+  }

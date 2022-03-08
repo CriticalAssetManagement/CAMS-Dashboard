@@ -126,6 +126,24 @@ form.rjsf > div > fieldset > div.form-group > div.checkbox > label > span {
     box-shadow: 0 0 5px 0 rgb(0 0 0 / 30%);
 }*/
 
+div.hazard-select-button > div > button {
+    border: 1px solid #2fb380 !important;
+    color: #2fb380  !important;
+    border-radius: 4px  !important;
+    width: 200px  !important;
+}
+
+button.failure-chain-button:hover {
+    background-color: transparent !important;
+    cursor: auto;
+}
+
+input.failure-chain-checkbox {
+    cursor: pointer;
+}
+
+
+
 
 
 

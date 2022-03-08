@@ -85,47 +85,51 @@ export const LinkForm = () => {
 
     return <div className="mb-5">
         <Layout/>
-        <Alerts errorMsg={connectionError}/>
-        {loading && <ProgressBar animated now={100} variant="info"/>}
 
-        <Tabs id="controlled-tab"
-            activeKey={tabKey}
-            onSelect={(k) => {setTabKey(k)}}
-            className="mb-3">
-            <Tab eventKey={VIEW_LINK_LIST} title={VIEW_LINK_LIST}>
-                <DisplayDocuments results={linkResults}
-                    css={USER_PAGE_TABLE_CSS}
-                    title={LINK_TYPE}
-                    config={getUserConfig(linkResults, onRowClick)}/>
-            </Tab>
-            {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_LINK} title={VIEW_CLICKED_LINK}>
+        <div className="px-3">
+            <Alerts errorMsg={connectionError}/>
+            {loading && <ProgressBar animated now={100} variant="info"/>}
 
-                    <ViewDocument frames={frames}
+            <Tabs id="controlled-tab"
+                activeKey={tabKey}
+                onSelect={(k) => {setTabKey(k)}}
+                className="mb-3">
+                <Tab eventKey={VIEW_LINK_LIST} title={VIEW_LINK_LIST}>
+                    <DisplayDocuments results={linkResults}
+                        css={USER_PAGE_TABLE_CSS}
+                        title={LINK_TYPE}
+                        config={getUserConfig(linkResults, onRowClick)}/>
+                </Tab>
+                {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_LINK} title={VIEW_CLICKED_LINK}>
+
+                        <ViewDocument frames={frames}
+                            getDocumentToolBar={getDocumentToolBar}
+                            handleSelect={handleSelect}
+                            type={LINK_TYPE}
+                            showDocument={showDocument}/>
+                    </Tab>
+                }
+                {editDocument && <Tab eventKey={EDIT_CLICKED_LINK} title={EDIT_CLICKED_LINK}>
+                    <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
                         type={LINK_TYPE}
-                        showDocument={showDocument}/>
+                        handleUpdate={handleUpdate}
+                        editDocument={editDocument}/>
+                    </Tab>
+                }
+                <Tab eventKey={CREATE_LINK_TAB} title={CREATE_LINK_TAB}>
+                    {frames && <CreateDocument frames={frames}
+                        handleSelect={handleSelect}
+                        type={LINK_TYPE}
+                        handleSubmit={handleDocumentSubmit}/>}
                 </Tab>
-            }
-            {editDocument && <Tab eventKey={EDIT_CLICKED_LINK} title={EDIT_CLICKED_LINK}>
-                <EditDocument frames={frames}
-                    getDocumentToolBar={getDocumentToolBar}
-                    handleSelect={handleSelect}
-                    type={LINK_TYPE}
-                    handleUpdate={handleUpdate}
-                    editDocument={editDocument}/>
-                </Tab>
-            }
-            <Tab eventKey={CREATE_LINK_TAB} title={CREATE_LINK_TAB}>
-                {frames && <CreateDocument frames={frames}
-                    handleSelect={handleSelect}
-                    type={LINK_TYPE}
-                    handleSubmit={handleDocumentSubmit}/>}
-            </Tab>
-        </Tabs>
+            </Tabs>
 
-        <Alerts successMsg={successMsg}/>
-        <Alerts errorMsg={errorMsg}/>
+            <Alerts successMsg={successMsg}/>
+            <Alerts errorMsg={errorMsg}/>
+        </div>
+
     </div>
 
 }

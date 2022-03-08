@@ -1,6 +1,6 @@
 
 import React, {useState, useLayoutEffect} from "react"
-import {Offcanvas, Nav} from "react-bootstrap"
+import {Offcanvas, Nav, Button} from "react-bootstrap"
 import {ASSET_FORM} from "./constants"
 import {ASSET_FORM_PAGE} from "../routing/constants"
 import {NavLink as RouterNavLink} from "react-router-dom"
@@ -10,6 +10,7 @@ import {WOQLClientObj} from '../init-woql-client'
 import {RiArrowGoBackFill} from "react-icons/ri"
 import {FiMoreHorizontal} from "react-icons/fi"
 import {AccordianSection} from "./AccordianSection"
+import {MdOutlineDoubleArrow} from "react-icons/md"
 
 const ClickedMarkerInfo = ({info}) => {
     if(!Object.keys(info).length) return <div/>
@@ -58,25 +59,23 @@ const DisplayLinks = ({dependencies, info}) => {
     </React.Fragment>
 }
 
-function getCloseLabel() {
-    return <RiArrowGoBackFill/>
-}
+
 
 export const DisplayMarkerInfo = ({info, dependencies}) => {
     const [sidebarOpen, setSideBarOpen] = useState(true)
     const [position, setPosition] = useState("end")
 
-
     const handleViewSidebar = () => {
-        setSideBarOpen(!sidebarOpen);
+        setSideBarOpen(!sidebarOpen)
     }
+
 
     if(!info) return <div/>
 
     return <React.Fragment>
 
         <Offcanvas show={sidebarOpen} scroll={true} onHide={handleViewSidebar} backdrop={false} placement={position} className="h-auto">
-            <Offcanvas.Header closeButton closeLabel={getCloseLabel()}>
+            <Offcanvas.Header closeButton>
                 <Offcanvas.Title>{info.name}</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
@@ -86,9 +85,12 @@ export const DisplayMarkerInfo = ({info, dependencies}) => {
             </Offcanvas.Body>
         </Offcanvas>
 
-        {/*<button onClick={handleViewSidebar} className="sidebar-toggle">
-            Toggle Sidebar
-        </button>*/}
+        {/*!sidebarOpen && <Offcanvas show={true} onHide={handleViewSidebar} backdrop={false} placement={position} className="offcanvas-show-button">
+            <Button onClick={handleViewSidebar} variant={"light"} className="sidebar-toggle">
+                TOGGLE
+                <MdOutlineDoubleArrow/>
+            </Button>
+        </Offcanvas>*/}
     </React.Fragment>
 }
 

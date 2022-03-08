@@ -80,48 +80,52 @@ export const AssetForm = () => {
 
     return <div className="mb-5">
         <Layout/>
-        <Alerts errorMsg={connectionError}/>
-        {loading && <ProgressBar animated now={100} variant="info"/>}
 
-        <Tabs id="controlled-tab"
-            activeKey={tabKey}
-            onSelect={(k) => setTabKey(k)}
-            className="mb-3">
-            <Tab eventKey={VIEW_ASSET_LIST} title={VIEW_ASSET_LIST}>
-                <DisplayDocuments results={assetResults}
-                    css={AREA_PAGE_TABLE_CSS}
-                    config={getAssetConfig(assetResults, onRowClick)}
-                    title={ASSET_TYPE}
-                    onRowClick={onRowClick}/>
-            </Tab>
-            {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_ASSET} title={VIEW_CLICKED_ASSET}>
+        <div className="px-3">
+            <Alerts errorMsg={connectionError}/>
+            {loading && <ProgressBar animated now={100} variant="info"/>}
 
-                    <ViewDocument frames={frames}
+            <Tabs id="controlled-tab"
+                activeKey={tabKey}
+                onSelect={(k) => setTabKey(k)}
+                className="mb-3">
+                <Tab eventKey={VIEW_ASSET_LIST} title={VIEW_ASSET_LIST}>
+                    <DisplayDocuments results={assetResults}
+                        css={AREA_PAGE_TABLE_CSS}
+                        config={getAssetConfig(assetResults, onRowClick)}
+                        title={ASSET_TYPE}
+                        onRowClick={onRowClick}/>
+                </Tab>
+                {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_ASSET} title={VIEW_CLICKED_ASSET}>
+
+                        <ViewDocument frames={frames}
+                            getDocumentToolBar={getDocumentToolBar}
+                            handleSelect={handleSelect}
+                            type={ASSET_TYPE}
+                            showDocument={showDocument}/>
+                    </Tab>
+                }
+                {editDocument && <Tab eventKey={EDIT_CLICKED_ASSET} title={EDIT_CLICKED_ASSET}>
+                    <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
                         type={ASSET_TYPE}
-                        showDocument={showDocument}/>
+                        handleUpdate={handleUpdate}
+                        editDocument={editDocument}/>
+                    </Tab>
+                }
+                <Tab eventKey={CREATE_ASSET_TAB} title={CREATE_ASSET_TAB}>
+                    {frames && <CreateDocument frames={frames}
+                        handleSelect={handleSelect}
+                        type={ASSET_TYPE}
+                        handleSubmit={handleDocumentSubmit}/>}
                 </Tab>
-            }
-            {editDocument && <Tab eventKey={EDIT_CLICKED_ASSET} title={EDIT_CLICKED_ASSET}>
-                <EditDocument frames={frames}
-                    getDocumentToolBar={getDocumentToolBar}
-                    handleSelect={handleSelect}
-                    type={ASSET_TYPE}
-                    handleUpdate={handleUpdate}
-                    editDocument={editDocument}/>
-                </Tab>
-            }
-            <Tab eventKey={CREATE_ASSET_TAB} title={CREATE_ASSET_TAB}>
-                {frames && <CreateDocument frames={frames}
-                    handleSelect={handleSelect}
-                    type={ASSET_TYPE}
-                    handleSubmit={handleDocumentSubmit}/>}
-            </Tab>
-        </Tabs>
+            </Tabs>
 
-        <Alerts successMsg={successMsg}/>
-        <Alerts errorMsg={errorMsg}/>
+            <Alerts successMsg={successMsg}/>
+            <Alerts errorMsg={errorMsg}/>
+        </div>
+
     </div>
 
 }

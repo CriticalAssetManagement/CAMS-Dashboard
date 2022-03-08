@@ -15,7 +15,8 @@ import {MapToolBar} from "../components/MapToolBar"
 import {SearchBar} from "../components/SearchBar"
 import {DisplayMarkerInfo} from "../components/DisplayMarkerInfo"
 import "leaflet-arrowheads"
-import {LATITUDE, LONGITUDE, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH}  from "../components/Maps/constants"
+import {antPath} from 'leaflet-ant-path'
+import {LATITUDE, LONGITUDE, DASH_LINES_OPTIONS, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH}  from "../components/Maps/constants"
 
 export const HomePage = () => {
     const [query, setQuery] = useState(false)
@@ -89,10 +90,9 @@ export const HomePage = () => {
     }
 
     function changeMap () {
-        let vectorJson = []
+        let vectorJson = [], failureChainJson = []
 
         if(polyLine && Array.isArray(polyLine)) {
-
             // Draw markers
 			polyLine.map(pl => {
 				if(!pl.hasOwnProperty("data")) return
@@ -100,7 +100,7 @@ export const HomePage = () => {
 					let linkArray = arr
 					linkArray.map(la => {
 						// get marker lat lng
-						let coord = {lat: la.lat, lng: la.lng}
+						let coord = {name: la.name, lat: la.lat, lng: la.lng}
 						let marker = L.marker(coord , MARKER_OPTIONS)
 						    .bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
 						    .on('click', function(e) {
@@ -123,15 +123,27 @@ export const HomePage = () => {
 					})
 				})
 				vectorJson.push({color: pl.color, title: pl.title, data: vectorCoords})
-			})
+			}) //failureChainJson
 		}
 
+
+        // if failure chain
+        if(Array.isArray(displayFailureChains) && displayFailureChains.length) {
+            displayFailureChains.map(fcs =>     {
+                let coord = {name: fcs.name ,lat: fcs.lat, lng: fcs.lng}
+                failureChainJson.push([fcs.lat, fcs.lng])
+                let marker = L.marker(coord , MARKER_OPTIONS)
+                    .bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
+                    marker.addTo(mapComponent)
+            })
+        }
+
+
         // get vector and add arrows
-		function getVector (vector) { // working
+		function getVector (vector, failureChainJson) { // working
 			let layerJson = {}
 
             clearMap()
-
 			vector.map(vc => {
 				var things = L.polyline(vc.data , { color: vc.color })
 					.arrowheads(ARROW_OPTIONS)
@@ -143,12 +155,33 @@ export const HomePage = () => {
 				layerJson[vc.title] = things.addTo(mapComponent)
 			})
 
+            if(Array.isArray(failureChainJson) && failureChainJson.length) {
+                failureChainJson.map(fcs => {
+                    var things = L.polyline(failureChainJson, {
+                            color: "maroon",
+                            dashArray: '10, 10'
+                        })
+                        .arrowheads(ARROW_OPTIONS)
+                        .bindPopup(
+                            `<code>var simpleVector0: L.polyline(coords).arrowheads()</code>`,
+                            { maxWidth: 2000 }
+                        )
+                    layerJson["Failure Nodes"] = things.addTo(mapComponent)
+                })
+            }
+
 			return layerJson
 		}
 
 		L.control
-			.layers(null, getVector(vectorJson),  {position: 'bottomleft', collapsed: false})
+			.layers(null, getVector(vectorJson, failureChainJson),  {position: 'bottomleft', collapsed: false})
 			.addTo(mapComponent)
+
+        // add dashed lines to map to show indirect links
+        if(Array.isArray(failureChainJson) && failureChainJson.length) {
+            var  antPolyline = L.polyline.antPath(failureChainJson, DASH_LINES_OPTIONS)
+    	    antPolyline.addTo(mapComponent)
+        }
 
     }
 
@@ -165,12 +198,16 @@ export const HomePage = () => {
         polyLine,
         dependencies,
         onMarkerClick,
-        setCriticalLinks,
         setPolyLine,
         setFilterAssetById,
         filteredAssets,
-        setFilteredAssets
+        setFilteredAssets,
+        setFilterAssetByEvent,
+        setFailureChain,
+        displayFailureChains
     } = MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg)
+
+    console.log("displayFailureChains", displayFailureChains)
 
     let queryResults = QueryHook(woqlClient, query, setLoading, setSuccessMsg, setErrorMsg)
 
@@ -198,6 +235,14 @@ export const HomePage = () => {
     }, [polyLine])
 
     useEffect(() => {
+        if(Array.isArray(displayFailureChains) && displayFailureChains.length) {
+            setRefresh(Date.now())
+            changeMap()
+        }
+    }, [displayFailureChains])
+
+
+    useEffect(() => {
         if(filteredAssets.length) {
             setRefresh(Date.now())
             setPolyLine(false)
@@ -208,18 +253,22 @@ export const HomePage = () => {
     if(!showAssets && loading)
         return <ProgressBar animated now={100} variant="info"/>
 
+
+
     return <React.Fragment>
         <Layout/>
 
-        <MapToolBar showAssets={showAssets} setFilterAssetById={setFilterAssetById} setFilteredAssets={setFilteredAssets}/>
+        <MapToolBar setFilterAssetByEvent={setFilterAssetByEvent} setFailureChain={setFailureChain} showAssets={showAssets} setFilterAssetById={setFilterAssetById} setFilteredAssets={setFilteredAssets}/>
 
         {showAssets && <React.Fragment>
 
             {/*<SearchBar placeholder={SEARCH_ASSET} setFilterAssetById={setFilterAssetById}/>*/}
 
+            {onMarkerClick && <DisplayMarkerInfo dependencies={dependencies} info={onMarkerClick}/>}
+
             <div id={mapRef.current} style={{ height: "100vh" }}></div>
 
-            {onMarkerClick && <DisplayMarkerInfo dependencies={dependencies} info={onMarkerClick}/>}
+
 
             {loading && <ProgressBar animated now={100} variant="info"/>}
 
