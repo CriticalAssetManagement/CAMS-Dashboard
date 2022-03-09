@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 const TerminusDBClient = require("@terminusdb/terminusdb-client")
-import {VAR_DEPENDENT_ON, VAR_LATITUDE, LAT, LNG, VAR_LONGITUDE, VAR_NAME, VAR_CRITICAL, VAR_PATH, VAR_INDEX, VAR_ASSET, VAR_VALUE} from "./constants"
+import {VAR_DEPENDENT_ON, VAR_LATITUDE, LAT, LNG, VAR_LONGITUDE, VAR_LINKED_ASSET, VAR_NAME, VAR_CRITICAL, VAR_PATH, VAR_INDEX, VAR_ASSET, VAR_VALUE} from "./constants"
 import {MdAddAlert} from "react-icons/md"
 
 export async function handleDocumentSelect(woqlClient, inp, type) {
@@ -133,7 +133,41 @@ export function extractAssetLocations(results) {
             if(item.hasOwnProperty(VAR_PATH)) {
                 json[item[VAR_ASSET]]["path"] = item[VAR_PATH]
             }
+        }
+    })
+    for(var things in json) {
+        docs.push(json[things])
+    }
+    //console.log("docs", docs)
+    return docs
+}
 
+// function to extract latitude and longitude of all assets
+export function extractNewAssetLocations(results) {
+    let docs = [], json = {}
+    if(!Array.isArray(results)) return docs
+
+    results.map(item => {
+        if(json.hasOwnProperty(item[VAR_LINKED_ASSET])) { // if asset exists
+            if(item[VAR_INDEX]["@value"] === 0) json[item[VAR_LINKED_ASSET]][LAT] = item[VAR_VALUE]["@value"]
+            if(item[VAR_INDEX]["@value"] === 1) json[item[VAR_LINKED_ASSET]][LNG] = item[VAR_VALUE]["@value"]
+        }
+        else { // if asset dosent exists
+            json[item[VAR_LINKED_ASSET]] = {
+                [VAR_LINKED_ASSET]: item[VAR_LINKED_ASSET]
+            }
+            if(item[VAR_INDEX]["@value"] === 0) json[item[VAR_LINKED_ASSET]][LAT] = item[VAR_VALUE]["@value"]
+            if(item[VAR_INDEX]["@value"] === 1) json[item[VAR_LINKED_ASSET]][LNG] = item[VAR_VALUE]["@value"]
+            if(item.hasOwnProperty(VAR_NAME)) json[item[VAR_LINKED_ASSET]]["name"] = item[VAR_NAME]["@value"]
+            if(item.hasOwnProperty(VAR_CRITICAL)) {
+                json[item[VAR_LINKED_ASSET]]["critical"] = item[VAR_CRITICAL]["@value"].toString()
+            }
+            if(item.hasOwnProperty(VAR_PATH)) {
+                json[item[VAR_LINKED_ASSET]]["path"] = item[VAR_PATH]
+            }
+            if(item.hasOwnProperty(VAR_ASSET)) {
+                json[item[VAR_LINKED_ASSET]][VAR_ASSET] = item[VAR_ASSET]
+            }
         }
     })
     for(var things in json) {

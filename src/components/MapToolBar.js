@@ -54,7 +54,7 @@ export const MapToolBar = ({setFilterAssetByEvent, setFailureChain, showAssets, 
                     </div>
                     }
                 </Col>
-                <Col md={1}>
+                <Col md={2}>
                     <Button className="ml-3 failure-chain-button" variant="outline-success">
                         <input className="text-success failure-chain-checkbox"
                             type="checkbox"

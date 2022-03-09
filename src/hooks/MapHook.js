@@ -1,9 +1,10 @@
 import {useEffect, useState} from 'react'
-import {QueryHook} from "./QueryHook"
-import {NON_CRITICAL_COLOR, CRITICAL_COLOR, CRITICAL_LINKS, NON_CRITICAL_LINKS} from "../components/constants"
+import {QueryHook, executeQuery} from "./QueryHook"
+import {NON_CRITICAL_COLOR, CRITICAL_COLOR, CRITICAL_LINKS, NON_CRITICAL_LINKS, VAR_ASSET, VAR_LINKED_ASSET} from "../components/constants"
 import {filterAssetsByIDQuery, getAssetFailureChain, getAssetsByEventsQuery, getAssetDependentOnQuery} from "./queries"
 import {DEPENDENT} from "../pages/constants"
-import {extractLocations, handleDocumentSelect, extractAssetLocations} from "../components/utils"
+import {extractLocations, handleDocumentSelect, extractAssetLocations, extractNewAssetLocations} from "../components/utils"
+import { arrayOf } from 'prop-types'
 
 export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
 
@@ -28,7 +29,7 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
     //failure chain constants
     const [failureChain, setFailureChain] = useState(false)
     const [failureChainPathQuery, setFailureChainPathQuery] = useState(false)
-    const [displayFailureChains, setDisplayFailureChains] = useState(false)
+    const [displayFailureChains, setDisplayFailureChains] = useState([])
     let failureChainResults = QueryHook(woqlClient, failureChainPathQuery, setLoading, setSuccessMsg, setErrorMsg)
 
     // get document location on select of an Asset
@@ -150,36 +151,50 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
         }
     }, [failureChain])
 
-    /*useEffect(() => {
-        if(Array.isArray(queryResults) && Array.isArray(failureChainResults)) {
-            let locs = extractAssetLocations(queryResults) //clean up and extract lat and long
-            let directLinkedAssets = [], newFailureChainResults = []
-            locs.map(lcs => {
-                directLinkedAssets.push(lcs.id)
-            })
-            let failureChainResultsLocs = extractAssetLocations(failureChainResults) //clean up and extract lat and long
-
-            // remove direct links from failure chain results
-            failureChainResultsLocs.map(fcs => {
-                if(fcs.hasOwnProperty("id")) {
-                    let match = false
-                    directLinkedAssets.map(dla => {
-                        if(dla === fcs["id"]) { // direct links found - we remove it so as to display dashed links for failure chains
-                            match = dla
-                            return match
-                        }
-                    })
-                    if(!match) newFailureChainResults.push(fcs)
-                }
-            })
-            if(Array.isArray(newFailureChainResults) && newFailureChainResults.length)
-                setDisplayFailureChains(newFailureChainResults)
-        }
-    }, [failureChainResults])*/
 
     useEffect(() => {
-        if(Array.isArray(failureChainResults) && onMarkerClick.hasOwnProperty("id")) {
-            console.log("failureChainResults", failureChainResults)
+        // get failure node
+        if(Array.isArray(failureChainResults) && failureChainResults.length && onMarkerClick.hasOwnProperty("id")) {
+
+            //console.log("failureChainResults", extractNewAssetLocations(failureChainResults))
+
+            let locationResults = extractNewAssetLocations(failureChainResults), display=[]
+            let linkArray=[], doc = onMarkerClick.id // get links from whichever marker is clicked
+
+            function getAltered(lcs) {
+                let altered ={}
+                for(var key in lcs) {
+                    if(key === "LinkedAsset") continue
+                    if(key === "Asset") {
+                        altered[key]=lcs["LinkedAsset"]
+                    }
+                    else altered[key]=lcs[key]
+                }
+                return altered
+            }
+
+            function getOtherLinks (asset, results) {
+                results.map(lcs => {
+                    if(lcs.Asset === asset){
+                        let altered = getAltered(lcs)
+                        linkArray.push(altered)
+                        getOtherLinks(lcs.LinkedAsset, results)
+                    }
+                })
+            }
+
+            locationResults.map(res => {
+                linkArray=[]
+                if(res["Asset"] === doc) {
+                    let altered = getAltered(res)
+                    linkArray.push(altered)
+                    getOtherLinks(res["LinkedAsset"], locationResults)
+                }
+                if(linkArray.length) display.push(linkArray)
+            })
+
+           setDisplayFailureChains(display)
+
         }
     }, [failureChainResults])
 
@@ -201,7 +216,20 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
 }
 
 
+/**
+ * let first = [
+                {Asset: 'Asset/Saint%20Joseph', lng: -61.43333, name: 'Saint Joseph', lat: 15.4},
+                {Asset: 'Asset/Marigot', lat: 15.53743, name: 'Marigot', lng: -61.282},
+                {Asset: 'Asset/Wesley', lng: -61.31667, name: 'Wesley', lat: 15.56667}
+            ]
 
+            let second = [
+                {Asset: 'Asset/Salisbury', lat: 15.43689, name: 'Salisbury', lng: -61.43637},
+                {Asset: 'Asset/Mahaut', lat: 15.36357, name: 'Mahaut', lng: -61.39701}
+            ]
+
+           // setDisplayFailureChains([first, second])
+ */
 
 /*let doc = "Asset/Portsmouth%20Hospital"
 
@@ -211,45 +239,3 @@ and (
   triple("v:Relation", "@schema:dependent", "v:NewAsset")
  )*/
 
-
-
-
-let testCoords = [
-	[15.583331, -61.4666648], //portsmouth
-	[15.30083213, -61.386331788], //roseau
-	[15.53743, -61.282] // marigot
-]
-
-
-
-
-let failureChainCoords = [
-	[15.53743, -61.282], //marigot
-	[15.32768, -61.24753], // La Plaine
-	[15.36667, -61.35] //Pont Cassé
-]
-
-
-    // on results of clicked Asset
-    /*useEffect(() => { //working
-        if(!Object.keys(queryResults).length) {
-            setLoading(false)
-            setPolyLine(false)
-            return
-        }
-        let locs = extractAssetLocations(queryResults)
-        setDependencies(locs)
-        let gatherPolylines = [], json = {}
-        locs.map(lcs => {
-            let link = []
-            link.push(onMarkerClick)
-            link.push(lcs)
-            gatherPolylines.push({
-                color: lcs.critical === "true" ? CRITICAL_COLOR : NON_CRITICAL_COLOR,
-                data: link
-            })
-        })
-        //console.log("gatherPolylines", gatherPolylines)
-        setPolyLine(gatherPolylines)
-        setLoading(false)
-    }, [queryResults])*/

@@ -90,6 +90,7 @@ export const HomePage = () => {
     }
 
     function changeMap () {
+
         let vectorJson = [], failureChainJson = []
 
         if(polyLine && Array.isArray(polyLine)) {
@@ -118,26 +119,28 @@ export const HomePage = () => {
 				let vectorCoords = []
 				pl.data.map(arr => {
 					let linkArray = arr
-					linkArray.map(la => {
-						vectorCoords.push([la.lat, la.lng])
-					})
+					//linkArray.map(la => {
+					//	vectorCoords.push([la.lat, la.lng])
+					//})
+                    vectorJson.push({color: pl.color, title: pl.title, data: linkArray})
 				})
-				vectorJson.push({color: pl.color, title: pl.title, data: vectorCoords})
-			}) //failureChainJson
+
+			})
 		}
 
-
-        // if failure chain
-        if(Array.isArray(displayFailureChains) && displayFailureChains.length) {
-            displayFailureChains.map(fcs =>     {
-                let coord = {name: fcs.name ,lat: fcs.lat, lng: fcs.lng}
-                failureChainJson.push([fcs.lat, fcs.lng])
-                let marker = L.marker(coord , MARKER_OPTIONS)
-                    .bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
-                    marker.addTo(mapComponent)
+        // gather failure chain markers
+        if(displayFailureChains && Array.isArray(displayFailureChains )) {
+            displayFailureChains.map(linkChains => {
+                if(Array.isArray(linkChains)){
+                    linkChains.map(link => {
+                        let coord = { name:link.name, lat: link.lat, lng: link.lng }
+                        let marker = L.marker(coord , MARKER_OPTIONS)
+                            .bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
+			            marker.addTo(mapComponent)
+                    })
+                }
             })
         }
-
 
         // get vector and add arrows
 		function getVector (vector, failureChainJson) { // working
@@ -155,18 +158,25 @@ export const HomePage = () => {
 				layerJson[vc.title] = things.addTo(mapComponent)
 			})
 
-            if(Array.isArray(failureChainJson) && failureChainJson.length) {
-                failureChainJson.map(fcs => {
-                    var things = L.polyline(failureChainJson, {
-                            color: "maroon",
-                            dashArray: '10, 10'
-                        })
-                        .arrowheads(ARROW_OPTIONS)
-                        .bindPopup(
-                            `<code>var simpleVector0: L.polyline(coords).arrowheads()</code>`,
-                            { maxWidth: 2000 }
-                        )
-                    layerJson["Failure Nodes"] = things.addTo(mapComponent)
+            // display Failure Chains
+            if(displayFailureChains && Array.isArray(displayFailureChains )) {
+                displayFailureChains.map(linkChains => {
+                    if(Array.isArray(linkChains)){
+                            var things = L.polyline(linkChains, {
+                                color: "maroon",
+                                dashArray: '10, 10'
+                            })
+                            .arrowheads(ARROW_OPTIONS)
+                            .bindPopup(
+                                `<code>var simpleVector0: L.polyline(coords).arrowheads()</code>`,
+                                { maxWidth: 2000 }
+                            )
+                        layerJson["Failure Nodes"] = things.addTo(mapComponent)
+
+                        // add dashed lines to map to show indirect links
+                        var  antPolyline = L.polyline.antPath(linkChains, DASH_LINES_OPTIONS)
+                        antPolyline.addTo(mapComponent)
+                    }
                 })
             }
 
@@ -177,13 +187,13 @@ export const HomePage = () => {
 			.layers(null, getVector(vectorJson, failureChainJson),  {position: 'bottomleft', collapsed: false})
 			.addTo(mapComponent)
 
-        // add dashed lines to map to show indirect links
-        if(Array.isArray(failureChainJson) && failureChainJson.length) {
-            var  antPolyline = L.polyline.antPath(failureChainJson, DASH_LINES_OPTIONS)
-    	    antPolyline.addTo(mapComponent)
-        }
 
-    }
+
+    } //changeMap()
+
+
+
+
 
     const {
         woqlClient,

@@ -22,6 +22,7 @@ export const VAR_NAME="Name"
 export const VAR_CRITICAL="Critical"
 export const VAR_INDEX="Index"
 export const VAR_ASSET="Asset"
+export const VAR_LINKED_ASSET="LinkedAsset"
 export const VAR_VALUE="Value"
 export const VAR_PATH="Path"
 

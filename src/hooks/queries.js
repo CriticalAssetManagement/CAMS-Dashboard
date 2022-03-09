@@ -88,19 +88,19 @@ export const getAssetFailureChain = (asset) => {
     let WOQL=TerminusDBClient.WOQL
     let documentID=asset
 
-    return WOQL.and (
+    /*return WOQL.and (
         WOQL.path(documentID, "(<depends_on,dependent>)*", "v:Asset")
             .triple("v:Relation", "@schema:depends_on", "v:Asset")
             .triple("v:Relation", "@schema:dependent", "v:NewAsset")
-    )
+    )*/
 
     return WOQL.and (
         WOQL.path(documentID, "(<depends_on,dependent>)*", "v:Asset")
             .triple("v:Relation", "@schema:depends_on", "v:Asset")
-            .triple("v:Relation", "@schema:dependent", "v:NewAsset")
+            .triple("v:Relation", "@schema:dependent", "v:LinkedAsset")
     )
-    .triple("v:NewAsset", "@schema:name", "v:Name")
-    .triple("v:NewAsset", "@schema:location", "v:Location")
+    .triple("v:LinkedAsset", "@schema:name", "v:Name")
+    .triple("v:LinkedAsset", "@schema:location", "v:Location")
     .triple("v:Location", "@schema:geometry_location", "v:Point")
     .triple("v:Point", "@schema:coordinates", "v:Coordinates")
     .triple("v:Coordinates", "sys:value", "v:Value")
