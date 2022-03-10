@@ -13,25 +13,33 @@ For more information about the full project, please visit the [CAMS Repo](https:
 
 ### Step 1 - TerminusX
 
-TerminusX is used as our database back-end to store the critical assets.
-
 - Sign into TerminusX https://terminusdb.com/
 
 - Create a new Data Product by the ID ```CAMSDemo```
 
 - Add the CAMS schema which you will find https://github.com/CriticalAssetManagement/CAMS-Dashboard/schema.json
 
-### Step 2 - Clone CAMS Dashboard repo ```CAMS-Dashboard```
+### Step 2 - Clone a dependency repo ```terminusdb-documents-ui```
+
+- As of now, we use a dependency ```terminusdb-documents-ui```.
+  We havent published this repo yet, so you will have to clone locally too for CAMS Dashboadr to clone
+  https://github.com/terminusdb/terminusdb-documents-ui
+    ``` https://github.com/terminusdb/terminusdb-documents-ui.git ```
+
+- After cloning ```cd terminusdb-documents-ui```
+
+- ```npm run install ```
+
+### Step 3 - Clone CAMS Dashboard repo ```CAMS-Dashboard```
 
 - Clone https://github.com/CriticalAssetManagement/CAMS-Dashboard locally
-  ```
-  git clone https://github.com/CriticalAssetManagement/CAMS-Dashboard.git
-  cd CAMS-Dashboard
-  ```
+  ``` git clone https://github.com/CriticalAssetManagement/CAMS-Dashboard.git ```
 
-### Step 3: Set up ENV for TerminusX
+- After cloning ```cd CAMS-Dashboard```
 
-- Create an ```.env``` file in the CAMS-Dashboard directory and include the below variables.
+- ```npm run install ```
+
+- Create an ```.env``` file and include the below variables.
 
     ```
     let team = process.env.MY_TEAM                  // your team
@@ -43,14 +51,9 @@ TerminusX is used as our database back-end to store the critical assets.
     Refer https://terminusdb.com/docs/index/terminusx/quick-start/get-api-key on how to get your team and token information
     from TerminusX.
 
-### Step 4 - Run development environment (NodeJS locally)
-
-Run inside the CAMS-dashboard directory:
-- `npm run install`
+- Run locally ```npm run start ```
 
 
-- Run locally `npm run start`
 
-### Step 4 - Run development environment (docker-compose)
 
-- Run `docker-compose up`
+

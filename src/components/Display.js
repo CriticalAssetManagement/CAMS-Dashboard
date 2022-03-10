@@ -2,20 +2,20 @@
 import React, {useEffect} from "react"
 import {Table} from "./Table"
 import {VIEW_MODE, CREATE_MODE, EDIT_MODE} from "../pages/constants"
-import {Row} from "react-bootstrap"
+import {Row, Card} from "react-bootstrap"
 import {Form} from "./Form"
 
 export const DisplayDocuments = ({results, css, config, title}) => {
-    return <Row className="text-break">
+    return <div className="text-break m-2 border-0">
         <Table documents = {results}
             config={config}
             title={title}
             css={css}/>
-    </Row>
+    </div>
 }
 
 export const ViewDocument = ({frames, type, getDocumentToolBar, FieldTemplate, uiFrame, handleSelect, showDocument}) => {
-    return <React.Fragment>
+    return <Card className="text-break p-4">
         <Row>
             {getDocumentToolBar && getDocumentToolBar(showDocument)}
         </Row>
@@ -30,23 +30,25 @@ export const ViewDocument = ({frames, type, getDocumentToolBar, FieldTemplate, u
                 formData={showDocument}
             />
         </Row>
-    </React.Fragment>
+    </Card>
 }
 
 
 export const CreateDocument = ({frames, type, handleSelect, handleSubmit}) => {
-    return <Form frames={frames}
-        type={type}
-        mode={CREATE_MODE}
-        onSubmit={handleSubmit}
-        onSelect={handleSelect}
-        formData={{}}
-    />
+    return <Card className="text-break p-4">
+        <Form frames={frames}
+            type={type}
+            mode={CREATE_MODE}
+            onSubmit={handleSubmit}
+            onSelect={handleSelect}
+            formData={{}}
+        />
+    </Card>
 }
 
 export const EditDocument = ({frames, type, editDocument, getDocumentToolBar, handleUpdate, handleSelect}) => {
 
-    return <React.Fragment>
+    return <Card className="text-break p-4">
         <Row>
             {getDocumentToolBar(editDocument)}
         </Row>
@@ -59,6 +61,6 @@ export const EditDocument = ({frames, type, editDocument, getDocumentToolBar, ha
                 formData={editDocument}
             />
         </Row>
-    </React.Fragment>
+    </Card>
 }
 

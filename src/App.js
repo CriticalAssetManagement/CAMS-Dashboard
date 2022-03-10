@@ -6,8 +6,9 @@ import {Reports} from "./pages/Reports"
 import {ManageUser} from "./routing/ManageUser"
 import {ManageArea} from "./routing/ManageArea"
 import {ManageAsset} from "./routing/ManageAsset"
+import {ManageLinks} from "./routing/ManageLinks"
 import history from "./routing/history"
-import {USER_FORM_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE} from "./routing/constants"
+import {USER_FORM_PAGE, ASSETS_LINK_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE} from "./routing/constants"
 
 
 export function App (props){
@@ -20,6 +21,7 @@ export function App (props){
 					<Route path={USER_FORM_PAGE} component = {ManageUser} exact/>
 					<Route path={AREA_FORM_PAGE} component = {ManageArea} exact/>
 					<Route path={ASSET_FORM_PAGE} component = {ManageAsset} exact/>
+					<Route path={ASSETS_LINK_PAGE} component = {ManageLinks} exact/>
 					<Route path={REPORTS_PAGE} component = {Reports} exact/>
 				</Switch>
 			</Router>

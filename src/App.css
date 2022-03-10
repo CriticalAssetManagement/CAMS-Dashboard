@@ -1,3 +1,8 @@
+body {
+    background-color: #f8f9fa !important;
+
+}
+
 table > thead > tr:first-child {
     display: none;
 }
@@ -92,8 +97,54 @@ button.tdb__toolbar__base__button {
     color: #000 !important;
 }
 
+.offcanvas-end {
+    width: 500px !important;
+}
+
+/** css to change look and feel  **/
 form.rjsf > div > fieldset {
     width: 100% !important;
 }
+
+label.control-label,
+label.form-label,
+form.rjsf > div > fieldset > div.form-group > div.checkbox > label > span {
+    color: #3459e6 !important;
+}
+
+/** search bar css to come over map **/
+/*.search-bar {
+    position: absolute;
+    z-index: 999;
+    left: 70px;
+    top: 110px;
+    height: fit-content;
+    bottom: 20px;
+    border-radius: 5px;
+    overflow: auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 5px 0 rgb(0 0 0 / 30%);
+}*/
+
+div.hazard-select-button > div > button {
+    border: 1px solid #2fb380 !important;
+    color: #2fb380  !important;
+    border-radius: 4px  !important;
+    width: 200px  !important;
+}
+
+button.failure-chain-button:hover {
+    background-color: transparent !important;
+    cursor: auto;
+}
+
+input.failure-chain-checkbox {
+    cursor: pointer;
+}
+
+
+
+
+
 
 

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 const TerminusDBClient = require("@terminusdb/terminusdb-client")
-import {VAR_DEPENDENT_ON, VAR_LATITUDE, LAT, LNG, VAR_LONGITUDE, VAR_NAME, VAR_CRITICAL, VAR_INDEX, VAR_ASSET, VAR_VALUE} from "./constants"
+import {VAR_DEPENDENT_ON, VAR_LATITUDE, LAT, LNG, VAR_LONGITUDE, VAR_NAME, VAR_CRITICAL, VAR_PATH, VAR_INDEX, VAR_ASSET, VAR_VALUE} from "./constants"
 import {MdAddAlert} from "react-icons/md"
 
 export async function handleDocumentSelect(woqlClient, inp, type) {
@@ -130,6 +130,10 @@ export function extractAssetLocations(results) {
             if(item.hasOwnProperty(VAR_CRITICAL)) {
                 json[item[VAR_ASSET]]["critical"] = item[VAR_CRITICAL]["@value"].toString()
             }
+            if(item.hasOwnProperty(VAR_PATH)) {
+                json[item[VAR_ASSET]]["path"] = item[VAR_PATH]
+            }
+
         }
     })
     for(var things in json) {

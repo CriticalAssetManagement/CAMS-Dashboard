@@ -2,13 +2,17 @@
 //variant
 export const VARIANT="dark"
 export const SECONDARY_VARIANT="secondary"
+export const SUCCESS_VARIANT="success"
 
 //Menus
+export const BRAND_TITLE="Critical Asset Management System"
 export const HOME="HOME"
 export const USER_FORM="USERS"
 export const AREA_FORM="AREAS"
 export const ASSET_FORM="ASSETS"
 export const REPORTS="REPORTS"
+export const ASSETS_LINK = "LINKS"
+export const USER_MANAGMENT = "USER MANAGEMENT"
 
 //query variables
 export const VAR_DEPENDENT="Dependent"
@@ -20,8 +24,9 @@ export const VAR_CRITICAL="Critical"
 export const VAR_INDEX="Index"
 export const VAR_ASSET="Asset"
 export const VAR_VALUE="Value"
+export const VAR_PATH="Path"
 
-export const CRITICAL_COLOR="#dc3545"
+export const CRITICAL_COLOR="#bf0a30"//"#dc3545"
 export const NON_CRITICAL_COLOR="#198754"
 
 //react leaflet variables
@@ -40,6 +45,7 @@ export const ALERT_SUCCESS = "success"
 
 // map tool bar
 export const CRITICAL_LINKS="Critical Links"
+export const NON_CRITICAL_LINKS="Non Critical Links"
 export const CRITICAL_LINKS_TITLE="Show Only Ciritcal Links"
 export const SEARCH_ASSET_PLACEHOLDER= "Select or Search for an Asset"
 export const SEARCH_ASSET_Label= "Filter by Asset ID"
@@ -52,3 +58,18 @@ export const COMMISIONING_DATE="commisioning_date"
 export const DESIGN_STANDARDS="design_standards"
 export const LAST_MAINTAINED="last_maintained"
 export const LAST_MODIFIED="last_modified"
+
+// empty placeholders
+export const EMPTY_PLACEHOLDER="No documents to display ..."
+export const NO_OWNER_INFO="No contact details available ..."
+
+// Accordian titles
+export const OWNER_ACCORDIAN_TITLE = "Contact Info"
+export const ASSET_DEPENDENCY_ACCORDIAN_TITLE = "Links Info"
+
+// Dropdown
+export const HAZARD_DROPDOWN_TITLE="Hazard Events"
+export const FAILURE_CHAIN_TITLE="Failure Chain"
+
+//types
+export const HAZARD_TYPE = "Hazard"

@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
-import {Container, ProgressBar} from "react-bootstrap"
+import {ProgressBar, Container} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
 import {USER_TYPE, USER_PAGE_TABLE_CSS, EDIT_CLICKED_USER, CREATE_USER_TAB, VIEW_USER_LIST, VIEW_CLICKED_USER} from "./constants"
 import {Alerts} from "../components/Alerts"
@@ -83,49 +83,53 @@ export const UserForm = () => {
     }, [documentResults])
 
 
-    return <Container fluid="lg" className="mt-5 mb-5">
+    return <div className="mb-5">
         <Layout/>
-        <Alerts errorMsg={connectionError}/>
-        {loading && <ProgressBar animated now={100} variant="info"/>}
 
-        <Tabs id="controlled-tab"
-            activeKey={tabKey}
-            onSelect={(k) => {setTabKey(k)}}
-            className="mb-3">
-            <Tab eventKey={VIEW_USER_LIST} title={VIEW_USER_LIST}>
-                <DisplayDocuments results={userResults}
-                    css={USER_PAGE_TABLE_CSS}
-                    title={USER_TYPE}
-                    config={getUserConfig(userResults, onRowClick)}/>
-            </Tab>
-            {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_USER} title={VIEW_CLICKED_USER}>
+        <div className="px-3">
+            <Alerts errorMsg={connectionError}/>
+            {loading && <ProgressBar animated now={100} variant="info"/>}
 
-                    <ViewDocument frames={frames}
+            <Tabs id="controlled-tab"
+                activeKey={tabKey}
+                onSelect={(k) => {setTabKey(k)}}
+                className="mb-3">
+                <Tab eventKey={VIEW_USER_LIST} title={VIEW_USER_LIST}>
+                    <DisplayDocuments results={userResults}
+                        css={USER_PAGE_TABLE_CSS}
+                        title={USER_TYPE}
+                        config={getUserConfig(userResults, onRowClick)}/>
+                </Tab>
+                {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_USER} title={VIEW_CLICKED_USER}>
+
+                        <ViewDocument frames={frames}
+                            getDocumentToolBar={getDocumentToolBar}
+                            handleSelect={handleSelect}
+                            type={USER_TYPE}
+                            showDocument={showDocument}/>
+                    </Tab>
+                }
+                {editDocument && <Tab eventKey={EDIT_CLICKED_USER} title={EDIT_CLICKED_USER}>
+                    <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
                         type={USER_TYPE}
-                        showDocument={showDocument}/>
+                        handleUpdate={handleUpdate}
+                        editDocument={editDocument}/>
+                    </Tab>
+                }
+                <Tab eventKey={CREATE_USER_TAB} title={CREATE_USER_TAB}>
+                    {frames && <CreateDocument frames={frames}
+                        handleSelect={handleSelect}
+                        type={USER_TYPE}
+                        handleSubmit={handleDocumentSubmit}/>}
                 </Tab>
-            }
-            {editDocument && <Tab eventKey={EDIT_CLICKED_USER} title={EDIT_CLICKED_USER}>
-                <EditDocument frames={frames}
-                    getDocumentToolBar={getDocumentToolBar}
-                    handleSelect={handleSelect}
-                    type={USER_TYPE}
-                    handleUpdate={handleUpdate}
-                    editDocument={editDocument}/>
-                </Tab>
-            }
-            <Tab eventKey={CREATE_USER_TAB} title={CREATE_USER_TAB}>
-                {frames && <CreateDocument frames={frames}
-                    handleSelect={handleSelect}
-                    type={USER_TYPE}
-                    handleSubmit={handleDocumentSubmit}/>}
-            </Tab>
-        </Tabs>
+            </Tabs>
 
-        <Alerts successMsg={successMsg}/>
-        <Alerts errorMsg={errorMsg}/>
-    </Container>
+            <Alerts successMsg={successMsg}/>
+            <Alerts errorMsg={errorMsg}/>
+        </div>
+
+    </div>
 
 }
