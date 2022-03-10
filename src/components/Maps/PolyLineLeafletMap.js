@@ -36,7 +36,7 @@ export const PolyLineLeafletMap = ({polyLine, onMarkerClick}) => {
 					let linkArray = arr
 					linkArray.map(la => {
 						// get marker lat lng
-						let coord = {lat: la.lat, lng: la.lng}
+						let coord = {name:la[VAR_NAME], lat: la.lat, lng: la.lng}
 						let marker = L.marker(coord , MARKER_OPTIONS)
 						    .bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
 						    .on('click', function(e) {

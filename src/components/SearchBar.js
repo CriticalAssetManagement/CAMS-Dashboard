@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react"
-import {Form, Card} from "react-bootstrap"
+import {Form, Button} from "react-bootstrap"
 import {BsSearch} from "react-icons/bs"
 
 export const SearchBar = ({placeholder, setFilterAssetById}) => {
@@ -10,9 +10,11 @@ export const SearchBar = ({placeholder, setFilterAssetById}) => {
     }
 
     return <React.Fragment>
-        <Form className="col-md-3 search-bar d-flex">
-            <Form.Control type="text" placeholder={placeholder} className="border-0" onBlur={handleInput}/>
-            <BsSearch className="col-md-1 m-3"/>
-        </Form>
+        <div className="search-bar d-flex">
+            <Form.Control type="text" placeholder={placeholder} className="form-control border-0" onBlur={handleInput}/>
+            <Button variant="outline-success" className="col-md-1 btn-sm border-0">
+                <BsSearch className=" m-2 search-button text-muted fw-bold"/>
+            </Button>
+        </div>
     </React.Fragment>
 }

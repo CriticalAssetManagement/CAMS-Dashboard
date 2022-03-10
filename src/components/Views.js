@@ -10,7 +10,7 @@ function getColumnsFromResults (documents) {
 
 
 // get table config for asset lists in Home Page
-export function getCriticalAssetConfig(documents) {
+export function getCriticalAssetConfig(documents, onRowClick) {
     if(documents.length){
         const tConf= TerminusDBClient.View.table()
         tConf.pager("remote")
@@ -22,6 +22,8 @@ export function getCriticalAssetConfig(documents) {
         tConf.column("lat").hidden(true)
         tConf.column("lng").hidden(true)
         tConf.column("critical").hidden(true)
+
+        if(onRowClick) tConf.row().click(onRowClick)
         return tConf
     }
 }

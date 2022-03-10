@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import {QueryHook, executeQuery} from "./QueryHook"
 import {NON_CRITICAL_COLOR, CRITICAL_COLOR, CRITICAL_LINKS, NON_CRITICAL_LINKS, VAR_ASSET, VAR_LINKED_ASSET} from "../components/constants"
-import {filterAssetsByIDQuery, getAssetFailureChain, getAssetsByEventsQuery, getAssetDependentOnQuery} from "./queries"
+import {getAssetFailureChain, getAssetsByEventsOrIDQuery, getAssetDependentOnQuery} from "./queries"
 import {DEPENDENT} from "../pages/constants"
 import {extractLocations, handleDocumentSelect, extractAssetLocations, extractNewAssetLocations} from "../components/utils"
 import { arrayOf } from 'prop-types'
@@ -19,12 +19,11 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
 
     //filter constants
     const [filterAssetById, setFilterAssetById]=useState(false)
-    const [filterByAssetQuery, setFilterByAssetQuery]=useState(false)
     const [filteredAssets, setFilteredAssets]=useState(false)
 
     // filter by event constants
     const [filterAssetByEvent, setFilterAssetByEvent]=useState(false)
-    const [filterAssetByEventQuery, setFilterAssetByEventQuery]=useState(false)
+    const [filterAssetByEventOrIDQuery, setFilterAssetByEventOrIDQuery]=useState(false)
 
     //failure chain constants
     const [failureChain, setFailureChain] = useState(false)
@@ -35,13 +34,10 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
     // get document location on select of an Asset
     let queryResults = QueryHook(woqlClient, query, setLoading, setSuccessMsg, setErrorMsg)
 
-    // get document location on filtering of an Asset
-    //let filteredByAssetResults = QueryHook(woqlClient, filterByAssetQuery, setLoading, setSuccessMsg, setErrorMsg)
+    let filteredByAssetResults = QueryHook(woqlClient, filterAssetByEventOrIDQuery, setLoading, setSuccessMsg, setErrorMsg)
 
-
-    let filteredByAssetResults = QueryHook(woqlClient, filterAssetByEventQuery, setLoading, setSuccessMsg, setErrorMsg)
-
-    console.log("onMarkerClick", onMarkerClick)
+    //console.log("filterAssetById", filterAssetById, filteredByAssetResults)
+    //console.log("onMarkerClick", onMarkerClick)
     //console.log("**** failureChainResults", queryResults, failureChainResults)
 
     // on select of Asset
@@ -112,16 +108,6 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
     }, [queryResults])
 
 
-
-
-    // on flitering by Asset ID
-    useEffect(() => {
-        if(!filterAssetById) return
-        setPolyLine(false)
-        let q = filterAssetsByIDQuery(filterAssetById)
-        setFilterByAssetQuery(q)
-    }, [filterAssetById])
-
     // on results of filtering by asset
     useEffect(() => {
         if(!Object.keys(filteredByAssetResults).length) {
@@ -133,15 +119,12 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
         setLoading(false)
     }, [filteredByAssetResults])
 
-    //filter by events
+    //filter by events/ Asset ID
     useEffect(() => {
-        //console.log("filterAssetByEvent", filterAssetByEvent)
-        // list of hazard event checkboxes
-        if(Array.isArray(filterAssetByEvent) && filterAssetByEvent.length) {
-            let q = getAssetsByEventsQuery(filterAssetByEvent)
-            setFilterAssetByEventQuery(q)
-        }
-    }, [filterAssetByEvent])
+        setPolyLine(false)
+        let q = getAssetsByEventsOrIDQuery(filterAssetByEvent, filterAssetById)
+        setFilterAssetByEventOrIDQuery(q)
+    }, [filterAssetByEvent, filterAssetById])
 
     // if failure chain is checked
     useEffect(() => {
@@ -149,6 +132,7 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
             let q = getAssetFailureChain(onMarkerClick["id"])
             setFailureChainPathQuery(q)
         }
+        else if(!failureChain) setDisplayFailureChains([])
     }, [failureChain])
 
 
@@ -207,10 +191,9 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
         setPolyLine,
         filterAssetById,
         setFilterAssetById,
-        filteredAssets,
-        setFilteredAssets,
         setFilterAssetByEvent,
         setFailureChain,
+        filteredAssets,
         displayFailureChains
     }
 }

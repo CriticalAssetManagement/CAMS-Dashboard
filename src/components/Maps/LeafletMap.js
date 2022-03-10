@@ -35,7 +35,7 @@ export const LeafletMap = ({documents, onMarkerClick}) => {
 		//{id: 'Asset/Portsmouth%20Hospital', lat: 15.58333, name: 'Portsmouth', lng: -61.46667, refresh: 1646317993667}
 		// Draw Markers
 		documents.map(docs => {
-			let coord = { id:docs.id, name: docs.name, lat: docs.lat, lng: docs.lng } // set lat and long
+			let coord = { id:docs.id, name: docs[VAR_NAME], lat: docs.lat, lng: docs.lng } // set lat and long
 			let marker = L.marker(coord , MARKER_OPTIONS).bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`).on('click', function(e) {
 				//let cData = coord.id
 				let cData = coord

@@ -1,13 +1,13 @@
 
 import React, {useState, useEffect} from "react"
 import {Row, Alert} from "react-bootstrap"
-import {CRITICAL_LINKS, NON_CRITICAL_LINKS} from "./constants"
+import {CRITICAL_LINKS, NON_CRITICAL_LINKS, VAR_NAME} from "./constants"
 
 export const Status = ({documents, info}) => {
     const [critical, setCritical]=useState(false)
     const [nonCritical, setNonCritical]=useState(false)
 
-    let documentId = info.hasOwnProperty("name") ? info.name : ""
+    let documentId = info.hasOwnProperty(VAR_NAME) ? info[VAR_NAME] : ""
 
     useEffect(() => {
         if(Array.isArray(documents) && documents.length){

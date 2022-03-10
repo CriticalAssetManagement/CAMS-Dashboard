@@ -25,6 +25,9 @@ export const VAR_ASSET="Asset"
 export const VAR_LINKED_ASSET="LinkedAsset"
 export const VAR_VALUE="Value"
 export const VAR_PATH="Path"
+export const VAR_ASSET_IDENTIFIER="AssetIdentifier"
+export const VAR_DESIGN_STANDARDS="DesignStandards"
+export const VAR_LAST_MAINTAINED="LastMaintained"
 
 export const CRITICAL_COLOR="#bf0a30"//"#dc3545"
 export const NON_CRITICAL_COLOR="#198754"
@@ -47,9 +50,11 @@ export const ALERT_SUCCESS = "success"
 export const CRITICAL_LINKS="Critical Links"
 export const NON_CRITICAL_LINKS="Non Critical Links"
 export const CRITICAL_LINKS_TITLE="Show Only Ciritcal Links"
-export const SEARCH_ASSET_PLACEHOLDER= "Select or Search for an Asset"
+export const SEARCH_ASSET_PLACEHOLDER= "Input an Asset to search"
 export const SEARCH_ASSET_Label= "Filter by Asset ID"
 export const SHOW_ASSET_DETAIL="View Details"
+export const SHOW_ALL_ASSETS="Clear Filters"
+export const SHOW_ALL_ASSETS_TITLE="Clear filters and Show All Available Assets"
 
 
 // details constants for Asset details

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 const TerminusDBClient = require("@terminusdb/terminusdb-client")
-import {VAR_DEPENDENT_ON, VAR_LATITUDE, LAT, LNG, VAR_LONGITUDE, VAR_LINKED_ASSET, VAR_NAME, VAR_CRITICAL, VAR_PATH, VAR_INDEX, VAR_ASSET, VAR_VALUE} from "./constants"
+import {VAR_DEPENDENT_ON, VAR_LATITUDE, VAR_LAST_MAINTAINED, LAT, LNG, VAR_LONGITUDE, VAR_DESIGN_STANDARDS, VAR_ASSET_IDENTIFIER, VAR_LINKED_ASSET, VAR_NAME, VAR_CRITICAL, VAR_PATH, VAR_INDEX, VAR_ASSET, VAR_VALUE} from "./constants"
 import {MdAddAlert} from "react-icons/md"
 
 export async function handleDocumentSelect(woqlClient, inp, type) {
@@ -33,26 +33,6 @@ export async function handleDocumentSelect(woqlClient, inp, type) {
 
 }
 
-
-//custom field for <FormViewer/>
-export function CustomCuisineFieldTemplate(props) {
-    const {id, classNames, label, help, required, description, errors, children} = props
-
-    var css = "d-none"
-    if(props.schema.title === "dependent") {
-        css = "d-flex"
-    }
-    if(props.id === "root") css="d-flex"
-
-    return (
-        <div className={css}>
-            {description}
-            {children}
-            {errors}
-            {help}
-        </div>
-    )
-}
 
 // function to modify results to be displayed in WOQLTable()
 // example - only display id of subdocument in WOQLTable
@@ -103,7 +83,7 @@ export function extractLocations(id, results) {
             lng: item[VAR_LONGITUDE]["@value"] ? item[VAR_LONGITUDE]["@value"] : null,
             id: item[VAR_DEPENDENT_ON] ?  item[VAR_DEPENDENT_ON] : id,
             name: item[VAR_NAME] ?  item[VAR_NAME]["@value"] : null,
-            critical: item[VAR_CRITICAL] ? item[VAR_CRITICAL]["@value"] : null
+            critical: item[VAR_CRITICAL] ? item[VAR_CRITICAL]["@value"] : null,
         })
     })
     return docs
@@ -126,7 +106,20 @@ export function extractAssetLocations(results) {
             }
             if(item[VAR_INDEX]["@value"] === 0) json[item[VAR_ASSET]][LAT] = item[VAR_VALUE]["@value"]
             if(item[VAR_INDEX]["@value"] === 1) json[item[VAR_ASSET]][LNG] = item[VAR_VALUE]["@value"]
-            if(item.hasOwnProperty(VAR_NAME)) json[item[VAR_ASSET]]["name"] = item[VAR_NAME]["@value"]
+            if(item.hasOwnProperty(VAR_NAME)) json[item[VAR_ASSET]][VAR_NAME] = item[VAR_NAME]["@value"]
+
+            if(item.hasOwnProperty(VAR_ASSET_IDENTIFIER))
+                json[item[VAR_ASSET]][VAR_ASSET_IDENTIFIER] = item[VAR_ASSET_IDENTIFIER]["@value"]
+
+            if(item.hasOwnProperty(VAR_DESIGN_STANDARDS))
+                json[item[VAR_ASSET]][VAR_DESIGN_STANDARDS] = item[VAR_DESIGN_STANDARDS]["@value"]
+                VAR_LAST_MAINTAINED
+
+            if(item.hasOwnProperty(VAR_LAST_MAINTAINED))
+                json[item[VAR_ASSET]][VAR_LAST_MAINTAINED] = item[VAR_LAST_MAINTAINED]["@value"]
+
+
+            if(item.hasOwnProperty(VAR_NAME)) json[item[VAR_ASSET]][VAR_NAME] = item[VAR_NAME]["@value"]
             if(item.hasOwnProperty(VAR_CRITICAL)) {
                 json[item[VAR_ASSET]]["critical"] = item[VAR_CRITICAL]["@value"].toString()
             }
@@ -158,7 +151,7 @@ export function extractNewAssetLocations(results) {
             }
             if(item[VAR_INDEX]["@value"] === 0) json[item[VAR_LINKED_ASSET]][LAT] = item[VAR_VALUE]["@value"]
             if(item[VAR_INDEX]["@value"] === 1) json[item[VAR_LINKED_ASSET]][LNG] = item[VAR_VALUE]["@value"]
-            if(item.hasOwnProperty(VAR_NAME)) json[item[VAR_LINKED_ASSET]]["name"] = item[VAR_NAME]["@value"]
+            if(item.hasOwnProperty(VAR_NAME)) json[item[VAR_LINKED_ASSET]][VAR_NAME] = item[VAR_NAME]["@value"]
             if(item.hasOwnProperty(VAR_CRITICAL)) {
                 json[item[VAR_LINKED_ASSET]]["critical"] = item[VAR_CRITICAL]["@value"].toString()
             }

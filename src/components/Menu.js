@@ -20,7 +20,8 @@ const BrandIcon = () => {
     return <div className="bg-success p-2 rounded">
         <img
             //src="https://avatars.githubusercontent.com/u/93081083?s=200&v=4"
-            src="https://climateresilient.world/wp-content/uploads/2022/03/cams-logo-simple-light.png"
+            //src="https://climateresilient.world/wp-content/uploads/2022/03/cams-logo-simple-light.png"
+            src="https://climateresilient.world/wp-content/uploads/2022/03/CAMS-Logo-Light-Simple-200px.png"
             width="auto"
             height="auto"
             className="d-inline-block align-top"

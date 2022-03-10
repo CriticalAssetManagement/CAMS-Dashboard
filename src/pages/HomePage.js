@@ -1,10 +1,10 @@
-import React, {useState, useRef, useEffect} from "react"
+import React, {useState, useRef, useEffect, useContext} from "react"
 import {Layout} from "../components/Layout"
 import {ProgressBar, Button, Row} from "react-bootstrap"
-//import {Map} from "../components/Map"
+import {VAR_NAME} from "../components/constants"
 import {WOQLClientObj} from '../init-woql-client'
 import {QueryHook} from "../hooks/QueryHook"
-import {getAvailableAssets, filterAssetsByIDQuery} from "../hooks/queries"
+import {getAvailableAssets} from "../hooks/queries"
 import {extractAssetLocations} from "../components/utils"
 import {MapHook} from "../hooks/MapHook"
 import {Table} from "../components/Table"
@@ -15,12 +15,14 @@ import {MapToolBar} from "../components/MapToolBar"
 import {SearchBar} from "../components/SearchBar"
 import {DisplayMarkerInfo} from "../components/DisplayMarkerInfo"
 import "leaflet-arrowheads"
+
 import {antPath} from 'leaflet-ant-path'
 import {LATITUDE, LONGITUDE, DASH_LINES_OPTIONS, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH}  from "../components/Maps/constants"
 
 export const HomePage = () => {
     const [query, setQuery] = useState(false)
     const [showAssets, setShowAssets] = useState(false)
+    const [resetMap, setResetMap] = useState(false)
     const [refresh, setRefresh]=useState(false)
 
     //map constants
@@ -51,7 +53,6 @@ export const HomePage = () => {
         map.addLayer(mg)
         setLayerGroup(mg)
 
-
 		window.map = map
 
 	}
@@ -68,6 +69,7 @@ export const HomePage = () => {
                 .on('click', function(e) {
                     let cData = asset //coord
                     cData[REFRESH] = Date.now()
+                    map.setView(e.latlng, 13)
                     if(setOnMarkerClick) setOnMarkerClick(cData)
                 })
                 .addTo(layerGroup)
@@ -101,12 +103,13 @@ export const HomePage = () => {
 					let linkArray = arr
 					linkArray.map(la => {
 						// get marker lat lng
-						let coord = {name: la.name, lat: la.lat, lng: la.lng}
+						let coord = {name: la[VAR_NAME], lat: la.lat, lng: la.lng}
 						let marker = L.marker(coord , MARKER_OPTIONS)
 						    .bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
 						    .on('click', function(e) {
                                 let cData = la //coord
                                 cData[REFRESH] = Date.now()
+                                mapComponent.setView(e.latlng, 13) // zoom in on click
                                 if(setOnMarkerClick) setOnMarkerClick(cData)
                             })
 						marker.addTo(mapComponent)
@@ -119,9 +122,6 @@ export const HomePage = () => {
 				let vectorCoords = []
 				pl.data.map(arr => {
 					let linkArray = arr
-					//linkArray.map(la => {
-					//	vectorCoords.push([la.lat, la.lng])
-					//})
                     vectorJson.push({color: pl.color, title: pl.title, data: linkArray})
 				})
 
@@ -133,7 +133,7 @@ export const HomePage = () => {
             displayFailureChains.map(linkChains => {
                 if(Array.isArray(linkChains)){
                     linkChains.map(link => {
-                        let coord = { name:link.name, lat: link.lat, lng: link.lng }
+                        let coord = { name:link[VAR_NAME], lat: link.lat, lng: link.lng }
                         let marker = L.marker(coord , MARKER_OPTIONS)
                             .bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
 			            marker.addTo(mapComponent)
@@ -211,7 +211,6 @@ export const HomePage = () => {
         setPolyLine,
         setFilterAssetById,
         filteredAssets,
-        setFilteredAssets,
         setFilterAssetByEvent,
         setFailureChain,
         displayFailureChains
@@ -237,6 +236,8 @@ export const HomePage = () => {
     }, [queryResults])
 
 
+
+
     useEffect(() => {
         if(polyLine.length) {
             setRefresh(Date.now())
@@ -250,6 +251,19 @@ export const HomePage = () => {
             changeMap()
         }
     }, [displayFailureChains])
+
+
+    useEffect(() => {
+        if(mapComponent) {
+            console.log("showAssets",showAssets)
+            var mg = L.layerGroup()
+            mapComponent.addLayer(mg)
+            loadMarkers (showAssets, mg)
+        }
+    }, [resetMap])
+
+
+
 
 
     useEffect(() => {
@@ -268,7 +282,10 @@ export const HomePage = () => {
     return <React.Fragment>
         <Layout/>
 
-        <MapToolBar setFilterAssetByEvent={setFilterAssetByEvent} setFailureChain={setFailureChain} showAssets={showAssets} setFilterAssetById={setFilterAssetById} setFilteredAssets={setFilteredAssets}/>
+        <MapToolBar setResetMap={setResetMap}
+            setFilterAssetByEvent={setFilterAssetByEvent}
+            setFailureChain={setFailureChain}
+            setFilterAssetById={setFilterAssetById}/>
 
         {showAssets && <React.Fragment>
 
