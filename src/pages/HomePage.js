@@ -15,7 +15,6 @@ import {MapToolBar} from "../components/MapToolBar"
 import {SearchBar} from "../components/SearchBar"
 import {DisplayMarkerInfo} from "../components/DisplayMarkerInfo"
 import "leaflet-arrowheads"
-
 import {antPath} from 'leaflet-ant-path'
 import {LATITUDE, LONGITUDE, DASH_LINES_OPTIONS, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH}  from "../components/Maps/constants"
 
@@ -191,10 +190,6 @@ export const HomePage = () => {
 
     } //changeMap()
 
-
-
-
-
     const {
         woqlClient,
         setSuccessMsg,
@@ -216,7 +211,7 @@ export const HomePage = () => {
         displayFailureChains
     } = MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg)
 
-    console.log("displayFailureChains", displayFailureChains)
+    console.log("onMarkerClick", onMarkerClick)
 
     let queryResults = QueryHook(woqlClient, query, setLoading, setSuccessMsg, setErrorMsg)
 
@@ -236,8 +231,6 @@ export const HomePage = () => {
     }, [queryResults])
 
 
-
-
     useEffect(() => {
         if(polyLine.length) {
             setRefresh(Date.now())
@@ -255,7 +248,7 @@ export const HomePage = () => {
 
     useEffect(() => {
         if(mapComponent) {
-            console.log("showAssets",showAssets)
+            //console.log("showAssets",showAssets)
             var mg = L.layerGroup()
             mapComponent.addLayer(mg)
             loadMarkers (showAssets, mg)
@@ -289,13 +282,9 @@ export const HomePage = () => {
 
         {showAssets && <React.Fragment>
 
-            {/*<SearchBar placeholder={SEARCH_ASSET} setFilterAssetById={setFilterAssetById}/>*/}
-
-            {onMarkerClick && <DisplayMarkerInfo dependencies={dependencies} info={onMarkerClick}/>}
+            {onMarkerClick.refresh && <DisplayMarkerInfo dependencies={dependencies} info={onMarkerClick}/>}
 
             <div id={mapRef.current} style={{ height: "100vh" }}></div>
-
-
 
             {loading && <ProgressBar animated now={100} variant="info"/>}
 

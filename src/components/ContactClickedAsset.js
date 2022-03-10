@@ -13,9 +13,7 @@ export const ContactClickedAsset =({info, ownerResults}) => {
 
     useEffect(() => {
         setOpen(true)
-    }, [ownerResults[0].Owner])
-
-    console.log("open", open)
+    }, [ownerResults[0].Owner]) // onchange of owner
 
 
     return <Offcanvas show={open} restoreFocus={true} scroll={true} onHide={handleViewSidebar} backdrop={false} placement={"end"} className="h-auto">

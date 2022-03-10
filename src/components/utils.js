@@ -108,18 +108,18 @@ export function extractAssetLocations(results) {
             if(item[VAR_INDEX]["@value"] === 1) json[item[VAR_ASSET]][LNG] = item[VAR_VALUE]["@value"]
             if(item.hasOwnProperty(VAR_NAME)) json[item[VAR_ASSET]][VAR_NAME] = item[VAR_NAME]["@value"]
 
-            if(item.hasOwnProperty(VAR_ASSET_IDENTIFIER))
+            if(item.hasOwnProperty(VAR_ASSET_IDENTIFIER) && item[VAR_ASSET_IDENTIFIER] !== null)
                 json[item[VAR_ASSET]][VAR_ASSET_IDENTIFIER] = item[VAR_ASSET_IDENTIFIER]["@value"]
 
-            if(item.hasOwnProperty(VAR_DESIGN_STANDARDS))
+            if(item.hasOwnProperty(VAR_DESIGN_STANDARDS) && item[VAR_DESIGN_STANDARDS] !== null)
                 json[item[VAR_ASSET]][VAR_DESIGN_STANDARDS] = item[VAR_DESIGN_STANDARDS]["@value"]
                 VAR_LAST_MAINTAINED
 
-            if(item.hasOwnProperty(VAR_DESCRIPTION))
+            if(item.hasOwnProperty(VAR_DESCRIPTION) && item[VAR_DESCRIPTION] !== null)
                 json[item[VAR_ASSET]][VAR_DESCRIPTION] = item[VAR_DESCRIPTION]["@value"]
                 VAR_LAST_MAINTAINED
 
-            if(item.hasOwnProperty(VAR_LAST_MAINTAINED))
+            if(item.hasOwnProperty(VAR_LAST_MAINTAINED)&& item[VAR_LAST_MAINTAINED] !== null)
                 json[item[VAR_ASSET]][VAR_LAST_MAINTAINED] = item[VAR_LAST_MAINTAINED]["@value"]
 
 

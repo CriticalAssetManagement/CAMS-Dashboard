@@ -1,5 +1,5 @@
 
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import {Offcanvas} from "react-bootstrap"
 import {VAR_NAME, LAT, LNG, EMPTY_DESCRIPTION, VAR_ASSET_IDENTIFIER, VAR_DESCRIPTION, VAR_LAST_MAINTAINED, VAR_DESIGN_STANDARDS} from "./constants"
 import {ASSET_FORM_PAGE} from "../routing/constants"
@@ -99,14 +99,20 @@ const DisplayLinks = ({dependencies, info}) => {
 
 
 export const DisplayMarkerInfo = ({info, dependencies}) => {
-    const [sidebarOpen, setSideBarOpen] = useState(true)
+    const [sidebarOpen, setSideBarOpen] = useState(null)
     const [position, setPosition] = useState("end")
 
     const handleViewSidebar = () => {
-        setSideBarOpen(!sidebarOpen)
+        setSideBarOpen(null)
     }
 
     if(!info) return <div/>
+
+    console.log("info", info, sidebarOpen)
+
+    useEffect(() => {
+        setSideBarOpen(true)
+    }, [info.refresh]) // onchange of owner
 
     return <React.Fragment>
 

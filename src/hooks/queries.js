@@ -7,7 +7,7 @@ export const getAssetDependentOnQuery = (documentID) =>{
         .triple("v:DependencyRelation", "@schema:critical", "v:Critical")
         .triple("v:DependencyRelation", "@schema:dependent", "v:Asset")
         .triple("v:Asset", "@schema:name", "v:Name")
-        .triple("v:Asset", "@schema:description", "v:Description")
+        .opt(WOQL.triple("v:Asset", "@schema:description", "v:Description"))
         .triple("v:Asset", "@schema:asset_identifier", "v:AssetIdentifier")
         .triple("v:Asset", "@schema:design_standards", "v:DesignStandards")
         .triple("v:Asset", "@schema:last_maintained", "v:LastMaintained")
@@ -18,12 +18,13 @@ export const getAssetDependentOnQuery = (documentID) =>{
         .triple("v:Coordinates", "sys:index", "v:Index")
 }
 
+
 //query to get all assets
 export const getAvailableAssets = () => {
     let WOQL= TerminusDBClient.WOQL
     return WOQL.triple("v:Asset", "rdf:type","@schema:Asset")
         .triple("v:Asset", "@schema:name", "v:Name")
-        .triple("v:Asset", "@schema:description", "v:Description")
+        .opt(WOQL.triple("v:Asset", "@schema:description", "v:Description"))
         .triple("v:Asset", "@schema:asset_identifier", "v:AssetIdentifier")
         .triple("v:Asset", "@schema:design_standards", "v:DesignStandards")
         .triple("v:Asset", "@schema:last_maintained", "v:LastMaintained")
