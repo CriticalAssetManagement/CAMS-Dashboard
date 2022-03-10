@@ -1,5 +1,6 @@
 const TerminusDBClient = require("@terminusdb/terminusdb-client")
 import {getCriticalButtons} from "./utils"
+import {LNG, LAT, VAR_ASSET_IDENTIFIER, VAR_DESIGN_STANDARDS, VAR_LAST_MAINTAINED, VAR_DESCRIPTION} from "./constants"
 
 function getColumnsFromResults (documents) {
     let columns = []
@@ -19,9 +20,13 @@ export function getCriticalAssetConfig(documents, onRowClick) {
         let columns = getColumnsFromResults(documents)
         tConf.column_order(...columns)
         tConf.column("Id").header("ID")
-        tConf.column("lat").hidden(true)
-        tConf.column("lng").hidden(true)
+        tConf.column(LAT).hidden(true)
+        tConf.column(LNG).hidden(true)
         tConf.column("critical").hidden(true)
+        tConf.column(VAR_ASSET_IDENTIFIER).hidden(true)
+        tConf.column(VAR_DESIGN_STANDARDS).hidden(true)
+        tConf.column(VAR_LAST_MAINTAINED).hidden(true)
+        tConf.column(VAR_DESCRIPTION).hidden(true)
 
         if(onRowClick) tConf.row().click(onRowClick)
         return tConf

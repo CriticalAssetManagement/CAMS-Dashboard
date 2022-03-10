@@ -62,7 +62,7 @@ export const MapToolBar = ({setResetMap, setFilterAssetByEvent, setFailureChain,
                     </div>
                     }
                 </Col>
-                <Col md={1}>
+                <Col md={2}>
                     <Button className="failure-chain-button" variant="outline-success">
                         <input className="text-success failure-chain-checkbox"
                             type="checkbox"
@@ -74,7 +74,7 @@ export const MapToolBar = ({setResetMap, setFilterAssetByEvent, setFailureChain,
                     </Button>
                 </Col>
 
-                <Col md={1}>
+                <Col md={2}>
                     <Button variant="outline-success" onClick={handleShowAll} title={SHOW_ALL_ASSETS_TITLE}>
                         {SHOW_ALL_ASSETS}
                     </Button>

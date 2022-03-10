@@ -28,6 +28,7 @@ export const VAR_PATH="Path"
 export const VAR_ASSET_IDENTIFIER="AssetIdentifier"
 export const VAR_DESIGN_STANDARDS="DesignStandards"
 export const VAR_LAST_MAINTAINED="LastMaintained"
+export const VAR_DESCRIPTION="Description"
 
 export const CRITICAL_COLOR="#bf0a30"//"#dc3545"
 export const NON_CRITICAL_COLOR="#198754"
@@ -66,6 +67,7 @@ export const LAST_MODIFIED="last_modified"
 
 // empty placeholders
 export const EMPTY_PLACEHOLDER="No documents to display ..."
+export const EMPTY_DESCRIPTION="No description provided ..."
 export const NO_OWNER_INFO="No contact details available ..."
 
 // Accordian titles

@@ -1,21 +1,21 @@
 
-import React, {useState, useLayoutEffect} from "react"
-import {Offcanvas, Nav, Button} from "react-bootstrap"
-import {ASSET_FORM, VAR_NAME, LAT, LNG, VAR_ASSET_IDENTIFIER, VAR_LAST_MAINTAINED, VAR_DESIGN_STANDARDS} from "./constants"
+import React, {useState} from "react"
+import {Offcanvas} from "react-bootstrap"
+import {VAR_NAME, LAT, LNG, EMPTY_DESCRIPTION, VAR_ASSET_IDENTIFIER, VAR_DESCRIPTION, VAR_LAST_MAINTAINED, VAR_DESIGN_STANDARDS} from "./constants"
 import {ASSET_FORM_PAGE} from "../routing/constants"
-import {NavLink as RouterNavLink} from "react-router-dom"
-import {Status} from "./Status"
+import {InfoBar} from "./InfoBar"
 import {DependentStatus} from "./DependentStatus"
 import {WOQLClientObj} from '../init-woql-client'
 import {RiArrowGoBackFill} from "react-icons/ri"
-import {FiMoreHorizontal, FiCompass} from "react-icons/fi"
+import {FiCompass} from "react-icons/fi"
 import {AccordianSection} from "./AccordianSection"
 import {MdDesignServices} from "react-icons/md"
 import {FaMapMarkerAlt, FaGlasses} from "react-icons/fa"
 import {BsCalendarDate} from "react-icons/bs"
-import Badge from 'react-bootstrap/Badge'
 
-const ClickedMarkerInfo = ({info}) => {
+
+
+export const ClickedMarkerInfo = ({info, dependencies}) => {
     if(!Object.keys(info).length) return <div/>
     let displayInfo = []
 
@@ -76,28 +76,12 @@ const ClickedMarkerInfo = ({info}) => {
         setPage(ASSET_FORM_PAGE)
     }
 
+    // if only info and no dependencies available
+    if(!Array.isArray(dependencies)) return <React.Fragment>{displayInfo}</React.Fragment>
+
     return <React.Fragment>
         {displayInfo}
-
-        <div class="text-right">
-            <Badge bg="transparent" pill className="mt-3 h6 go-to-asset-badge">
-                <Nav.Link
-                    as={RouterNavLink}
-                    title={ASSET_FORM}
-                    to={ASSET_FORM_PAGE}
-                    exact
-                    style={{padding: 0}}
-                    id={ASSET_FORM}
-                    onClick={(e) => handleMoreInfo(e)}
-                >
-                    <div className="d-flex justify-content-center">
-                        <label className="m-1 text-primary mt-2">More Info</label>
-                        <h5 className="text-primary "><FiMoreHorizontal/></h5>
-                    </div>
-                </Nav.Link>
-            </Badge>
-        </div>
-        <hr/>
+        <InfoBar documents = {dependencies} info={info}/>
         <AccordianSection asset = {info.id}/>
 
     </React.Fragment>
@@ -107,11 +91,7 @@ const DisplayLinks = ({dependencies, info}) => {
     if (!Array.isArray(dependencies)) return <div/>
 
     return <React.Fragment>
-        <ClickedMarkerInfo info={info}/>
-        <hr/>
-
-        <Status documents = {dependencies} info={info}/>
-        <hr/>
+        <ClickedMarkerInfo info={info} dependencies={dependencies}/>
         <DependentStatus documents = {dependencies}/>
     </React.Fragment>
 }
@@ -126,7 +106,6 @@ export const DisplayMarkerInfo = ({info, dependencies}) => {
         setSideBarOpen(!sidebarOpen)
     }
 
-
     if(!info) return <div/>
 
     return <React.Fragment>
@@ -136,8 +115,8 @@ export const DisplayMarkerInfo = ({info, dependencies}) => {
                 <Offcanvas.Title>{info[VAR_NAME]}</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
-                {`Some text or description regarding chosen asset ${info[VAR_NAME]}. Can be generic
-                    status or deets on this asset - maybe a picture? `}
+                {info.hasOwnProperty(VAR_DESCRIPTION) && info[VAR_DESCRIPTION].length && info[VAR_DESCRIPTION]}
+                {!info.hasOwnProperty(VAR_DESCRIPTION) && EMPTY_DESCRIPTION }
                 <DisplayLinks dependencies={dependencies} info={info}/>
             </Offcanvas.Body>
         </Offcanvas>
