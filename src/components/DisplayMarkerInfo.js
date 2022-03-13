@@ -1,7 +1,7 @@
 
 import React, {useState, useEffect} from "react"
-import {Offcanvas} from "react-bootstrap"
-import {VAR_NAME, LAT, LNG, EMPTY_DESCRIPTION, VAR_ASSET_IDENTIFIER, VAR_DESCRIPTION, VAR_LAST_MAINTAINED, VAR_DESIGN_STANDARDS} from "./constants"
+import {Offcanvas,Button} from "react-bootstrap"
+import {VAR_NAME, LAT, LNG, EMPTY_DESCRIPTION, VAR_ASSET_IDENTIFIER, HIDE_OFFCANVAS_TITLE, VAR_DESCRIPTION, VAR_LAST_MAINTAINED, VAR_DESIGN_STANDARDS} from "./constants"
 import {ASSET_FORM_PAGE} from "../routing/constants"
 import {InfoBar} from "./InfoBar"
 import {DependentStatus} from "./DependentStatus"
@@ -12,7 +12,7 @@ import {AccordianSection} from "./AccordianSection"
 import {MdDesignServices} from "react-icons/md"
 import {FaMapMarkerAlt, FaGlasses} from "react-icons/fa"
 import {BsCalendarDate} from "react-icons/bs"
-
+import {GoTriangleLeft} from "react-icons/go"
 
 
 export const ClickedMarkerInfo = ({info, dependencies}) => {
@@ -99,16 +99,20 @@ const DisplayLinks = ({dependencies, info}) => {
 
 
 export const DisplayMarkerInfo = ({info, dependencies}) => {
-    const [sidebarOpen, setSideBarOpen] = useState(null)
+    const [sidebarOpen, setSideBarOpen] = useState(false)
     const [position, setPosition] = useState("end")
 
     const handleViewSidebar = () => {
-        setSideBarOpen(null)
+        setSideBarOpen(false)
     }
 
     if(!info) return <div/>
 
-    console.log("info", info, sidebarOpen)
+    console.log("sidebarOpen", sidebarOpen)
+
+    function handleClickToggle() {
+        setSideBarOpen(true)
+    }
 
     useEffect(() => {
         setSideBarOpen(true)
@@ -116,9 +120,12 @@ export const DisplayMarkerInfo = ({info, dependencies}) => {
 
     return <React.Fragment>
 
-        <Offcanvas show={sidebarOpen} scroll={true} onHide={handleViewSidebar} backdrop={false} placement={position} className="h-auto">
-            <Offcanvas.Header closeButton>
+        <Offcanvas show={sidebarOpen} scroll={true} restoreFocus={true} backdrop={false} placement={position} className="h-auto">
+            <Offcanvas.Header>
                 <Offcanvas.Title>{info[VAR_NAME]}</Offcanvas.Title>
+                <Button variant="light"  onClick={handleViewSidebar} title={HIDE_OFFCANVAS_TITLE}>
+                    <RiArrowGoBackFill/>
+                </Button>
             </Offcanvas.Header>
             <Offcanvas.Body>
                 {info.hasOwnProperty(VAR_DESCRIPTION) && info[VAR_DESCRIPTION].length && info[VAR_DESCRIPTION]}
@@ -129,12 +136,11 @@ export const DisplayMarkerInfo = ({info, dependencies}) => {
 
 
 
-        {/*!sidebarOpen && <Offcanvas show={true} onHide={handleViewSidebar} backdrop={false} placement={position} className="offcanvas-show-button">
-            <Button onClick={handleViewSidebar} variant={"light"} className="sidebar-toggle">
-                TOGGLE
-                <MdOutlineDoubleArrow/>
+        {!sidebarOpen && <Offcanvas show={true} backdrop={false} placement={position} className="offcanvas-show-button">
+            <Button onClick={handleClickToggle} variant={"light"} className="sidebar-toggle">
+                <GoTriangleLeft/>
             </Button>
-        </Offcanvas>*/}
+        </Offcanvas>}
     </React.Fragment>
 }
 

@@ -157,6 +157,17 @@ input.failure-chain-checkbox {
 }
 
 
+/** custom offcanvas toggle button */
+.offcanvas-show-button {
+    height: 60px !important;
+    width: 50px !important;
+    top: 50% !important;
+    border-radius: 6px !important;
+}
+
+.sidebar-toggle {
+    height: 60px !important;
+}
 
 
 

@@ -73,6 +73,7 @@ export const NO_OWNER_INFO="No contact details available ..."
 // Accordian titles
 export const OWNER_ACCORDIAN_TITLE = "Contact Info"
 export const ASSET_DEPENDENCY_ACCORDIAN_TITLE = "Links Info"
+export const HIDE_OFFCANVAS_TITLE="Click to go back"
 
 // Dropdown
 export const HAZARD_DROPDOWN_TITLE="Hazard Events"

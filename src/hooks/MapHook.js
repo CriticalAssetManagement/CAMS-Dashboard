@@ -36,6 +36,8 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
 
     let filteredByAssetResults = QueryHook(woqlClient, filterAssetByEventOrIDQuery, setLoading, setSuccessMsg, setErrorMsg)
 
+    const [vectorLayerGroup, setVectorLayerGroup] = useState(false)
+
     //console.log("filterAssetById", filterAssetById, filteredByAssetResults)
     //console.log("onMarkerClick", onMarkerClick)
     //console.log("**** failureChainResults", queryResults, failureChainResults)
@@ -167,6 +169,7 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
                 })
             }
 
+
             locationResults.map(res => {
                 linkArray=[]
                 if(res["Asset"] === doc) {
@@ -194,7 +197,9 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
         setFilterAssetByEvent,
         setFailureChain,
         filteredAssets,
-        displayFailureChains
+        displayFailureChains,
+        setVectorLayerGroup,
+        vectorLayerGroup
     }
 }
 

@@ -15,7 +15,9 @@ import {MapToolBar} from "../components/MapToolBar"
 import {SearchBar} from "../components/SearchBar"
 import {DisplayMarkerInfo} from "../components/DisplayMarkerInfo"
 import "leaflet-arrowheads"
+//import 'leaflet/dist/leaflet.css';
 import {antPath} from 'leaflet-ant-path'
+import {CRITICAL_LINKS, NON_CRITICAL_LINKS, NON_CRITICAL_COLOR, CRITICAL_COLOR} from "../components/constants"
 import {LATITUDE, LONGITUDE, DASH_LINES_OPTIONS, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH}  from "../components/Maps/constants"
 
 export const HomePage = () => {
@@ -24,9 +26,13 @@ export const HomePage = () => {
     const [resetMap, setResetMap] = useState(false)
     const [refresh, setRefresh]=useState(false)
 
+    console.log("showAssets",showAssets)
+
     //map constants
     const [mapComponent, setMapComponent] = useState(false)
     const [layerGroup, setLayerGroup] = useState(false)
+
+
     const mapRef = useRef(MAP_ID)
 
     useEffect(() => {
@@ -36,13 +42,15 @@ export const HomePage = () => {
 
     const map = () => {
 		const map = L.map(mapRef.current , MAP_OPTIONS)
+        //map.invalidateSize()
 
         setMapComponent(map)
+
 		const tileLayer = new L.TileLayer(
 			"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 			{
 				attribution:
-				'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 			}
 		)
 		tileLayer.addTo(map)
@@ -78,13 +86,15 @@ export const HomePage = () => {
     function clearMap() {
         if(!layerGroup) return
         layerGroup.clearLayers()
+        mapComponent.removeLayer(layerGroup)
+        //mapComponent.removeLayer(EPSLayer); dont use strings in the function
         for(var i in mapComponent._layers) {
             if(mapComponent._layers[i]._path !== undefined) {
                 try {
-                    mapComponent.removeLayer(mapComponent._layers[i]);
+                    mapComponent.removeLayer(mapComponent._layers[i])
                 }
                 catch(e) {
-                    console.log("problem with " + e + mapComponent._layers[i]);
+                    console.log("problem with " + e + mapComponent._layers[i])
                 }
             }
         }
@@ -142,20 +152,47 @@ export const HomePage = () => {
         }
 
         // get vector and add arrows
-		function getVector (vector, failureChainJson) { // working
+		function getVector (vector, failureChainJson) {
 			let layerJson = {}
 
             clearMap()
-			vector.map(vc => {
-				var things = L.polyline(vc.data , { color: vc.color })
+
+            let vectorControl = {
+                [CRITICAL_LINKS]: [],
+                [NON_CRITICAL_LINKS]: []
+            }
+
+            vector.map(vc => {
+				if(vc.title === CRITICAL_LINKS) {
+                    vectorControl[CRITICAL_LINKS].push(vc.data)
+                }
+                else if (vc.title === NON_CRITICAL_LINKS) {
+                    vectorControl[NON_CRITICAL_LINKS].push(vc.data)
+                }
+			})
+
+            //layer control for critical links
+            if(vectorControl[CRITICAL_LINKS].length) {
+                var things = L.polyline(vectorControl[CRITICAL_LINKS] , { color: CRITICAL_COLOR})
 					.arrowheads(ARROW_OPTIONS)
 					.bindPopup(
 						`<code>var simpleVector0: L.polyline(coords).arrowheads()</code>`,
 						{ maxWidth: 2000 }
 					)
 
-				layerJson[vc.title] = things.addTo(mapComponent)
-			})
+				layerJson[CRITICAL_LINKS] = things.addTo(mapComponent)
+            }
+            //layer control for non critical links
+            if (vectorControl[NON_CRITICAL_LINKS].length) {
+                var things = L.polyline(vectorControl[NON_CRITICAL_LINKS] , { color: NON_CRITICAL_COLOR})
+					.arrowheads(ARROW_OPTIONS)
+					.bindPopup(
+						`<code>var simpleVector0: L.polyline(coords).arrowheads()</code>`,
+						{ maxWidth: 2000 }
+					)
+
+				layerJson[NON_CRITICAL_LINKS] = things.addTo(mapComponent)
+            }
 
             // display Failure Chains
             if(displayFailureChains && Array.isArray(displayFailureChains )) {
@@ -179,14 +216,15 @@ export const HomePage = () => {
                 })
             }
 
+
 			return layerJson
 		}
 
-		L.control
+		var layerscontrol = L.control
 			.layers(null, getVector(vectorJson, failureChainJson),  {position: 'bottomleft', collapsed: false})
 			.addTo(mapComponent)
 
-
+        setVectorLayerGroup(layerscontrol)
 
     } //changeMap()
 
@@ -208,10 +246,12 @@ export const HomePage = () => {
         filteredAssets,
         setFilterAssetByEvent,
         setFailureChain,
-        displayFailureChains
+        displayFailureChains,
+        setVectorLayerGroup,
+        vectorLayerGroup
     } = MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg)
 
-    console.log("onMarkerClick", onMarkerClick)
+    console.log("displayFailureChains", displayFailureChains)
 
     let queryResults = QueryHook(woqlClient, query, setLoading, setSuccessMsg, setErrorMsg)
 
@@ -251,7 +291,7 @@ export const HomePage = () => {
             //console.log("showAssets",showAssets)
             var mg = L.layerGroup()
             mapComponent.addLayer(mg)
-            loadMarkers (showAssets, mg)
+            loadMarkers (showAssets, mg, mapComponent)
         }
     }, [resetMap])
 

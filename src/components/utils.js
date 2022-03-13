@@ -144,7 +144,10 @@ export function extractNewAssetLocations(results) {
     let docs = [], json = {}
     if(!Array.isArray(results)) return docs
 
+    console.log("results",results)
+
     results.map(item => {
+
         if(json.hasOwnProperty(item[VAR_LINKED_ASSET])) { // if asset exists
             if(item[VAR_INDEX]["@value"] === 0) json[item[VAR_LINKED_ASSET]][LAT] = item[VAR_VALUE]["@value"]
             if(item[VAR_INDEX]["@value"] === 1) json[item[VAR_LINKED_ASSET]][LNG] = item[VAR_VALUE]["@value"]
@@ -156,9 +159,6 @@ export function extractNewAssetLocations(results) {
             if(item[VAR_INDEX]["@value"] === 0) json[item[VAR_LINKED_ASSET]][LAT] = item[VAR_VALUE]["@value"]
             if(item[VAR_INDEX]["@value"] === 1) json[item[VAR_LINKED_ASSET]][LNG] = item[VAR_VALUE]["@value"]
             if(item.hasOwnProperty(VAR_NAME)) json[item[VAR_LINKED_ASSET]][VAR_NAME] = item[VAR_NAME]["@value"]
-            if(item.hasOwnProperty(VAR_CRITICAL)) {
-                json[item[VAR_LINKED_ASSET]]["critical"] = item[VAR_CRITICAL]["@value"].toString()
-            }
             if(item.hasOwnProperty(VAR_PATH)) {
                 json[item[VAR_LINKED_ASSET]]["path"] = item[VAR_PATH]
             }
