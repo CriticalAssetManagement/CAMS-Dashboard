@@ -169,6 +169,18 @@ input.failure-chain-checkbox {
     height: 60px !important;
 }
 
+.map-container{
+    column-count: 1;
+}
+
+.leaflet-container{
+    height: 1045px !important;
+    width: 100%;
+    margin: 50 auto;
+}
+
+
+
 
 
 

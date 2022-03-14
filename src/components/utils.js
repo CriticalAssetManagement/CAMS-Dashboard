@@ -144,9 +144,14 @@ export function extractNewAssetLocations(results) {
     let docs = [], json = {}
     if(!Array.isArray(results)) return docs
 
-    console.log("results",results)
-
     results.map(item => {
+
+        if(item.hasOwnProperty(VAR_CRITICAL)) { // skip non ciritical values for failure chain
+            console.log('item[VAR_CRITICAL]["@value"]', item[VAR_CRITICAL]["@value"])
+            if(item[VAR_CRITICAL]["@value"] === false) {
+                return
+            }
+        }
 
         if(json.hasOwnProperty(item[VAR_LINKED_ASSET])) { // if asset exists
             if(item[VAR_INDEX]["@value"] === 0) json[item[VAR_LINKED_ASSET]][LAT] = item[VAR_VALUE]["@value"]
@@ -170,7 +175,7 @@ export function extractNewAssetLocations(results) {
     for(var things in json) {
         docs.push(json[things])
     }
-    //console.log("docs", docs)
+    console.log("docs", docs)
     return docs
 }
 

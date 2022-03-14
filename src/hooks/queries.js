@@ -117,7 +117,9 @@ export const getAssetFailureChain = (asset) => {
         WOQL.path(documentID, "(<depends_on,dependent>)*", "v:Asset")
             .triple("v:Relation", "@schema:depends_on", "v:Asset")
             .triple("v:Relation", "@schema:dependent", "v:LinkedAsset")
+            .triple("v:Relation", "@schema:critical", "v:Critical")
     )
+
     .triple("v:LinkedAsset", "@schema:name", "v:Name")
     .triple("v:Asset", "@schema:description", "v:Description")
     .triple("v:LinkedAsset", "@schema:location", "v:Location")

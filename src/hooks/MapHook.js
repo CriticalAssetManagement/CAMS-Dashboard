@@ -40,7 +40,7 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
 
     //console.log("filterAssetById", filterAssetById, filteredByAssetResults)
     //console.log("onMarkerClick", onMarkerClick)
-    //console.log("**** failureChainResults", queryResults, failureChainResults)
+
 
     // on select of Asset
     useEffect(() => { // get dependent on assets

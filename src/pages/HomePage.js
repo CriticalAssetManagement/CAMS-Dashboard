@@ -26,8 +26,6 @@ export const HomePage = () => {
     const [resetMap, setResetMap] = useState(false)
     const [refresh, setRefresh]=useState(false)
 
-    console.log("showAssets",showAssets)
-
     //map constants
     const [mapComponent, setMapComponent] = useState(false)
     const [layerGroup, setLayerGroup] = useState(false)
@@ -42,17 +40,14 @@ export const HomePage = () => {
 
     const map = () => {
 		const map = L.map(mapRef.current , MAP_OPTIONS)
-        //map.invalidateSize()
+        map.invalidateSize()
 
         setMapComponent(map)
+        const tileLayer = new  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        })
 
-		const tileLayer = new L.TileLayer(
-			"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-			{
-				attribution:
-				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-			}
-		)
 		tileLayer.addTo(map)
         // layer group
         var mg = L.layerGroup()
@@ -103,7 +98,7 @@ export const HomePage = () => {
     function changeMap () {
 
         let vectorJson = [], failureChainJson = []
-
+        clearMap()
         if(polyLine && Array.isArray(polyLine)) {
             // Draw markers
 			polyLine.map(pl => {
@@ -196,26 +191,29 @@ export const HomePage = () => {
 
             // display Failure Chains
             if(displayFailureChains && Array.isArray(displayFailureChains )) {
+                let gatherLinkedChains=[]
                 displayFailureChains.map(linkChains => {
-                    if(Array.isArray(linkChains)){
-                            var things = L.polyline(linkChains, {
-                                color: "maroon",
-                                dashArray: '10, 10'
-                            })
-                            .arrowheads(ARROW_OPTIONS)
-                            .bindPopup(
-                                `<code>var simpleVector0: L.polyline(coords).arrowheads()</code>`,
-                                { maxWidth: 2000 }
-                            )
-                        layerJson["Failure Nodes"] = things.addTo(mapComponent)
-
-                        // add dashed lines to map to show indirect links
-                        var  antPolyline = L.polyline.antPath(linkChains, DASH_LINES_OPTIONS)
-                        antPolyline.addTo(mapComponent)
-                    }
+                    if(Array.isArray(linkChains)) gatherLinkedChains.push(linkChains)
                 })
-            }
 
+                if (Array.isArray(gatherLinkedChains) && gatherLinkedChains.length) {
+                    var things = L.polyline(gatherLinkedChains, {
+                        color: "maroon",
+                        dashArray: '10, 10'
+                    })
+                    .arrowheads(ARROW_OPTIONS)
+                    .bindPopup(
+                        `<code>var simpleVector0: L.polyline(coords).arrowheads()</code>`,
+                        { maxWidth: 2000 }
+                    )
+                    layerJson["Failure Nodes"] = things.addTo(mapComponent)
+
+                    // add dashed lines to map to show indirect links
+                    var  antPolyline = L.polyline.antPath(gatherLinkedChains, DASH_LINES_OPTIONS)
+                    antPolyline.addTo(mapComponent)
+                }
+
+            }
 
 			return layerJson
 		}
@@ -252,6 +250,8 @@ export const HomePage = () => {
     } = MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg)
 
     console.log("displayFailureChains", displayFailureChains)
+    console.log("polyLine", polyLine)
+    console.log("showAssets", showAssets)
 
     let queryResults = QueryHook(woqlClient, query, setLoading, setSuccessMsg, setErrorMsg)
 
@@ -324,7 +324,10 @@ export const HomePage = () => {
 
             {onMarkerClick.refresh && <DisplayMarkerInfo dependencies={dependencies} info={onMarkerClick}/>}
 
-            <div id={mapRef.current} style={{ height: "100vh" }}></div>
+            <div className="map-container">
+                <div id={mapRef.current} className="leaflet-container"></div>
+            </div>
+
 
             {loading && <ProgressBar animated now={100} variant="info"/>}
 

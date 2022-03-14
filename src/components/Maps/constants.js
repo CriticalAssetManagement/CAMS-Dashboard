@@ -1,6 +1,5 @@
 // map icon component
 import L from "leaflet"
-import 'leaflet/dist/leaflet.css'
 
 
 // map icons
