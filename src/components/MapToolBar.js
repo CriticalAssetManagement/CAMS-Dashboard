@@ -9,7 +9,7 @@ import {WOQLClientObj} from '../init-woql-client'
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes'
 import {SearchBar} from "./SearchBar"
 
-export const MapToolBar = ({setResetMap, setFilterAssetByEvent, setFailureChain, setFilterAssetById}) => {
+export const MapToolBar = ({setResetMap, onMarkerClick, setFilterAssetByEvent, setFailureChain, setFilterAssetById}) => {
 
     const {
         prefix,
@@ -62,18 +62,20 @@ export const MapToolBar = ({setResetMap, setFilterAssetByEvent, setFailureChain,
                     </div>
                     }
                 </Col>
-                <Col md={2}>
-                    <Button className="failure-chain-button" variant="outline-success">
-                        <input className="text-success failure-chain-checkbox"
-                            type="checkbox"
-                            id="failure_chain"
-                            name="failure_chain"
-                            onChange={handleChecked}
-                            value={false}/>
-                        <label className="text-success">{FAILURE_CHAIN_TITLE}</label>
-                    </Button>
-                </Col>
-
+               {
+                onMarkerClick && onMarkerClick.hasOwnProperty("id") &&
+                    <Col md={2}>
+                        <Button className="failure-chain-button" variant="outline-success">
+                            <input className="text-success failure-chain-checkbox"
+                                type="checkbox"
+                                id="failure_chain"
+                                name="failure_chain"
+                                onChange={handleChecked}
+                                value={false}/>
+                            <label className="text-success">{FAILURE_CHAIN_TITLE}</label>
+                        </Button>
+                    </Col>
+                }
                 <Col md={2}>
                     <Button variant="outline-success" onClick={handleShowAll} title={SHOW_ALL_ASSETS_TITLE}>
                         {SHOW_ALL_ASSETS}

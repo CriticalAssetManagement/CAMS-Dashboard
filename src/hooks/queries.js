@@ -60,8 +60,8 @@ export const getAssetsByEventsOrIDQuery = (events, asset) => {
 
     if(Array.isArray(events) && events.length) {
         events.map(event => {
-            let eventName = encodeURI(event.value.trim())
-            let hazard = `@schema:Hazard/${eventName}`
+            //let eventName = encodeURI(event.value.trim())
+            let hazard = `@schema:Hazard/${event.value}`
 
             let q = WOQL.triple("v:Asset", "@schema:applicable_hazards", "v:Hazard")
                 .triple("v:Hazard", "@schema:hazard", hazard)
@@ -76,6 +76,8 @@ export const getAssetsByEventsOrIDQuery = (events, asset) => {
             )
         )
     }
+
+
 
     // filter by both ID and Event
     if(asset && Array.isArray(events) && events.length) {

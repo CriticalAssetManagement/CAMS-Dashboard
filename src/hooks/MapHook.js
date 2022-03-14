@@ -191,6 +191,7 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
         polyLine,
         dependencies,
         onMarkerClick,
+        setOnMarkerClick,
         setPolyLine,
         filterAssetById,
         setFilterAssetById,

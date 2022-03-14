@@ -52,8 +52,6 @@ export const HomePage = () => {
         // layer group
         var mg = L.layerGroup()
         loadMarkers (showAssets, mg, map)
-        map.addLayer(mg)
-        setLayerGroup(mg)
 
 		window.map = map
 
@@ -89,14 +87,17 @@ export const HomePage = () => {
                 marker.openPopup()
             })
         })
+        map.addLayer(layerGroup)
+        setLayerGroup(layerGroup)
+
     }
 
     function clearMap() {
         if(!layerGroup) return
         layerGroup.clearLayers()
-        mapComponent.removeLayer(layerGroup)
-        //mapComponent.removeLayer(EPSLayer); dont use strings in the function
+        //mapComponent.removeLayer(layerGroup)
         for(var i in mapComponent._layers) {
+
             if(mapComponent._layers[i]._path !== undefined) {
                 try {
                     mapComponent.removeLayer(mapComponent._layers[i])
@@ -214,7 +215,8 @@ export const HomePage = () => {
                     if(Array.isArray(linkChains)) gatherLinkedChains.push(linkChains)
                 })
 
-                if (Array.isArray(gatherLinkedChains) && gatherLinkedChains.length) {
+                //gatherLinkedChains.length === 1 means its the last node in chain - so we dont display
+                if (Array.isArray(gatherLinkedChains) && gatherLinkedChains.length > 1) {
                     var things = L.polyline(gatherLinkedChains, {
                         color: "maroon",
                         dashArray: '10, 10'
@@ -307,8 +309,9 @@ export const HomePage = () => {
     useEffect(() => {
         if(mapComponent) {
             //console.log("showAssets",showAssets)
+            setOnMarkerClick(false)
+            clearMap()
             var mg = L.layerGroup()
-            mapComponent.addLayer(mg)
             loadMarkers (showAssets, mg, mapComponent)
         }
     }, [resetMap])
@@ -321,7 +324,8 @@ export const HomePage = () => {
         if(filteredAssets.length) {
             setRefresh(Date.now())
             setPolyLine(false)
-            loadMarkers (filteredAssets, mapComponent)
+            var mg = L.layerGroup()
+            loadMarkers (filteredAssets, mg, mapComponent)
         }
     }, [filteredAssets])
 
@@ -334,6 +338,7 @@ export const HomePage = () => {
         <Layout/>
 
         <MapToolBar setResetMap={setResetMap}
+            onMarkerClick={onMarkerClick}
             setFilterAssetByEvent={setFilterAssetByEvent}
             setFailureChain={setFailureChain}
             setFilterAssetById={setFilterAssetById}/>

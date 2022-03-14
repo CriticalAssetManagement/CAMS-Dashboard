@@ -184,7 +184,7 @@ input.failure-chain-checkbox {
     color: #212529;
     font-size: 12px;
     line-height: 24px;
-    border-radius: 0px;
+    border-radius: 4px;
 }
 
 .map-leaflet-popup .leaflet-popup-tip {
