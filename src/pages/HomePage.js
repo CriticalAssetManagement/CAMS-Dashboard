@@ -18,7 +18,7 @@ import "leaflet-arrowheads"
 //import 'leaflet/dist/leaflet.css';
 import {antPath} from 'leaflet-ant-path'
 import {CRITICAL_LINKS, NON_CRITICAL_LINKS, NON_CRITICAL_COLOR, CRITICAL_COLOR} from "../components/constants"
-import {LATITUDE, LONGITUDE, DASH_LINES_OPTIONS, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH}  from "../components/Maps/constants"
+import {LATITUDE, LONGITUDE, DASH_LINES_OPTIONS, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH, POPUP_OPTIONS}  from "../components/Maps/constants"
 
 export const HomePage = () => {
     const [query, setQuery] = useState(false)
@@ -59,15 +59,24 @@ export const HomePage = () => {
 
 	}
 
+    function getPopContent (coord){
+        return `<div>
+            <div> name:  ${coord.name} </div>
+            <div> lat:   ${coord.lat} </div>
+            <div> lng:   ${coord.lng}</div>
+        </div>`
+    }
+
     function loadMarkers (assets, layerGroup, map) {
         if(!assets) return
         clearMap()
         assets.map(asset => {
             // get marker lat lng
-            let coord = {lat: asset.lat, lng: asset.lng}
+            let coord = {name:asset[VAR_NAME] ,lat: asset.lat, lng: asset.lng}
 
-            L.marker(coord , MARKER_OPTIONS)
-                .bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
+            let marker = L.marker(coord , MARKER_OPTIONS)
+                //.bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
+                .bindPopup(getPopContent(coord), POPUP_OPTIONS)
                 .on('click', function(e) {
                     let cData = asset //coord
                     cData[REFRESH] = Date.now()
@@ -75,6 +84,10 @@ export const HomePage = () => {
                     if(setOnMarkerClick) setOnMarkerClick(cData)
                 })
                 .addTo(layerGroup)
+
+            marker.on('mouseover',function(ev) { // on hover
+                marker.openPopup()
+            })
         })
     }
 
@@ -109,13 +122,17 @@ export const HomePage = () => {
 						// get marker lat lng
 						let coord = {name: la[VAR_NAME], lat: la.lat, lng: la.lng}
 						let marker = L.marker(coord , MARKER_OPTIONS)
-						    .bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
+						    //.bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
+                            .bindPopup(getPopContent(coord), POPUP_OPTIONS)
 						    .on('click', function(e) {
                                 let cData = la //coord
                                 cData[REFRESH] = Date.now()
                                 mapComponent.setView(e.latlng, 13) // zoom in on click
                                 if(setOnMarkerClick) setOnMarkerClick(cData)
                             })
+                        marker.on('mouseover',function(ev) { // on hover
+                            marker.openPopup()
+                        })
 						marker.addTo(mapComponent)
 					})
 				})
@@ -139,7 +156,8 @@ export const HomePage = () => {
                     linkChains.map(link => {
                         let coord = { name:link[VAR_NAME], lat: link.lat, lng: link.lng }
                         let marker = L.marker(coord , MARKER_OPTIONS)
-                            .bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
+                            //.bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
+                            .bindPopup(getPopContent(coord), POPUP_OPTIONS)
 			            marker.addTo(mapComponent)
                     })
                 }
@@ -249,9 +267,9 @@ export const HomePage = () => {
         vectorLayerGroup
     } = MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg)
 
-    console.log("displayFailureChains", displayFailureChains)
-    console.log("polyLine", polyLine)
-    console.log("showAssets", showAssets)
+    //console.log("displayFailureChains", displayFailureChains)
+    //console.log("polyLine", polyLine)
+    //console.log("showAssets", showAssets)
 
     let queryResults = QueryHook(woqlClient, query, setLoading, setSuccessMsg, setErrorMsg)
 

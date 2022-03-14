@@ -62,7 +62,11 @@ export const getAssetsByEventsOrIDQuery = (events, asset) => {
         events.map(event => {
             let eventName = encodeURI(event.value.trim())
             let hazard = `@schema:Hazard/${eventName}`
-            let q = WOQL.triple("v:Asset", "@schema:applicable_hazards", hazard)
+
+            let q = WOQL.triple("v:Asset", "@schema:applicable_hazards", "v:Hazard")
+                .triple("v:Hazard", "@schema:hazard", hazard)
+
+            //let q = WOQL.triple("v:Asset", "@schema:applicable_hazards", hazard)
             qHazards.push(q)
         })
 

@@ -39,7 +39,7 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
     const [vectorLayerGroup, setVectorLayerGroup] = useState(false)
 
     //console.log("filterAssetById", filterAssetById, filteredByAssetResults)
-    //console.log("onMarkerClick", onMarkerClick)
+    console.log("filteredByAssetResults", filteredByAssetResults)
 
 
     // on select of Asset

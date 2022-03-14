@@ -57,3 +57,9 @@ export const DASH_LINES_OPTIONS = {
 	"reverse": false,
 	"hardwareAccelerated": true
   }
+
+export const POPUP_OPTIONS = {
+	'maxWidth': '500',
+	'className' : 'map-leaflet-popup'
+}
+
