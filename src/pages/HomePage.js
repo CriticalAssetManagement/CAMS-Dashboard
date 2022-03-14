@@ -28,7 +28,7 @@ export const HomePage = () => {
 
     //map constants
     const [mapComponent, setMapComponent] = useState(false)
-    const [layerGroup, setLayerGroup] = useState(false)
+
 
 
     const mapRef = useRef(MAP_ID)
@@ -89,7 +89,6 @@ export const HomePage = () => {
         })
         map.addLayer(layerGroup)
         setLayerGroup(layerGroup)
-
     }
 
     function clearMap() {
@@ -113,6 +112,7 @@ export const HomePage = () => {
 
         let vectorJson = [], failureChainJson = []
         clearMap()
+        var mg = L.layerGroup()
         if(polyLine && Array.isArray(polyLine)) {
             // Draw markers
 			polyLine.map(pl => {
@@ -134,10 +134,15 @@ export const HomePage = () => {
                         marker.on('mouseover',function(ev) { // on hover
                             marker.openPopup()
                         })
-						marker.addTo(mapComponent)
+                        marker.addTo(mg)
+						//marker.addTo(mapComponent)
 					})
 				})
 			})
+
+            // add all gathred markers to layer
+            mapComponent.addLayer(mg)
+            setLayerGroup(mg)
 
 			// extracting only lat lng
 			polyLine.map(pl => {
@@ -159,6 +164,9 @@ export const HomePage = () => {
                         let marker = L.marker(coord , MARKER_OPTIONS)
                             //.bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
                             .bindPopup(getPopContent(coord), POPUP_OPTIONS)
+                        marker.on('mouseover',function(ev) { // on hover
+                            marker.openPopup()
+                        })
 			            marker.addTo(mapComponent)
                     })
                 }
@@ -266,11 +274,13 @@ export const HomePage = () => {
         setFailureChain,
         displayFailureChains,
         setVectorLayerGroup,
-        vectorLayerGroup
+        vectorLayerGroup,
+        layerGroup,
+        setLayerGroup
     } = MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg)
 
     //console.log("displayFailureChains", displayFailureChains)
-    //console.log("polyLine", polyLine)
+    console.log("polyLine", polyLine)
     //console.log("showAssets", showAssets)
 
     let queryResults = QueryHook(woqlClient, query, setLoading, setSuccessMsg, setErrorMsg)
@@ -324,6 +334,7 @@ export const HomePage = () => {
         if(filteredAssets.length) {
             setRefresh(Date.now())
             setPolyLine(false)
+            clearMap()
             var mg = L.layerGroup()
             loadMarkers (filteredAssets, mg, mapComponent)
         }

@@ -1,13 +1,16 @@
 import React, {useState, useEffect} from "react"
 import {Card, Col, Row, Button} from "react-bootstrap"
 import Dropdown from 'react-bootstrap/Dropdown'
-import {CRITICAL_LINKS_TITLE, CRITICAL_LINKS, SEARCH_ASSET_Label, SHOW_ALL_ASSETS_TITLE, SHOW_ALL_ASSETS, SEARCH_ASSET, SEARCH_ASSET_PLACEHOLDER, FAILURE_CHAIN_TITLE, HAZARD_TYPE, HAZARD_DROPDOWN_TITLE} from "./constants"
+import {CRITICAL_LINKS_TITLE, CRITICAL_LINKS, SHOW_ALL_FAILURE_CHAIN_TITLE, SHOW_ALL_ASSETS_TITLE, SHOW_ALL_ASSETS, SEARCH_ASSET, SEARCH_ASSET_PLACEHOLDER, FAILURE_CHAIN_TITLE, HAZARD_TYPE, HAZARD_DROPDOWN_TITLE} from "./constants"
 import Select from 'react-select'
 import {getAssetSelectOptions} from "./utils"
 import {DocumentDetail} from "./DocumentDetail"
 import {WOQLClientObj} from '../init-woql-client'
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes'
 import {SearchBar} from "./SearchBar"
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import {GradedButtons} from "./GradedButtons"
 
 export const MapToolBar = ({setResetMap, onMarkerClick, setFilterAssetByEvent, setFailureChain, setFilterAssetById}) => {
 
@@ -17,15 +20,29 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setFilterAssetByEvent, s
 	} = WOQLClientObj()
 
     const [eventList, setEventList] = useState(false)
-
+    const [gradedEvents, setGradedEvents]= useState(false)
+    const [currentGrade, setCurrentGrade]= useState(false)
+    const [currentEvent, setCurrentEvent]= useState(false)
 
     function handleEvents(e) {
-        if(setFilterAssetByEvent) setFilterAssetByEvent(e)
+        // show grades when event selected
+        setGradedEvents(true)
+        setCurrentEvent(e.value)
+        if(setFilterAssetByEvent) {
+            setFilterAssetByEvent({eventName: e.value})
+        }
     }
 
     function handleShowAll() {
+        // clear filters and show all available assets
         if(setResetMap) setResetMap(Date.now())
     }
+
+    useEffect(() => {
+        if(currentGrade && currentEvent && setFilterAssetByEvent) {
+            setFilterAssetByEvent({eventName: currentEvent, grade: currentGrade})
+        }
+    }, [currentGrade])
 
 
     useEffect(() => {
@@ -41,8 +58,11 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setFilterAssetByEvent, s
     }, [frames])
 
     function handleChecked (e) {
-        if(setFailureChain) setFailureChain(e.target.checked)
+        //setFailureChain(e.target.checked)
+        if(setFailureChain) setFailureChain(true)
     }
+
+    console.log("currentGrade", currentGrade)
 
 
     return <Card>
@@ -52,32 +72,47 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setFilterAssetByEvent, s
                 <Col md={3}>
                     <SearchBar placeholder={SEARCH_ASSET_PLACEHOLDER} setFilterAssetById={setFilterAssetById}/>
                 </Col>
-                <Col md={1}>
-                    { eventList && <div className="hazard-select-button">
-                        <ReactMultiSelectCheckboxes
-                            options={eventList}
-                            placeholderButtonLabel={HAZARD_DROPDOWN_TITLE}
-                            onChange={handleEvents}
-                        />
-                    </div>
+
+
+
+
+                {
+                    eventList &&
+                        <Col md={2}>
+                            <div className="hazard-select-button">
+                                <Select options={eventList}
+                                    placeholder={HAZARD_DROPDOWN_TITLE}
+                                    isClearable
+                                    onChange={handleEvents}/>
+                                {/*<ReactMultiSelectCheckboxes
+                                    options={eventList}
+                                    placeholderButtonLabel={HAZARD_DROPDOWN_TITLE}
+                                    onChange={handleEvents}
+                                /> */}
+                            </div>
+                        </Col>
                     }
-                </Col>
-               {
+
+                {
+                    gradedEvents && <Col md={3}>
+                        <ButtonToolbar aria-label="Toolbar with button groups" >
+                            <ButtonGroup className="me-2" aria-label="First group">
+                                <GradedButtons setCurrentGrade={setCurrentGrade}/>
+                            </ButtonGroup>
+                        </ButtonToolbar>
+                    </Col>
+                }
+
+                {
                 onMarkerClick && onMarkerClick.hasOwnProperty("id") &&
-                    <Col md={2}>
-                        <Button className="failure-chain-button" variant="outline-success">
-                            <input className="text-success failure-chain-checkbox"
-                                type="checkbox"
-                                id="failure_chain"
-                                name="failure_chain"
-                                onChange={handleChecked}
-                                value={false}/>
-                            <label className="text-success">{FAILURE_CHAIN_TITLE}</label>
+                    <Col md={1}>
+                        <Button variant="outline-secondary" onClick={handleChecked} title={SHOW_ALL_FAILURE_CHAIN_TITLE}>
+                            {FAILURE_CHAIN_TITLE}
                         </Button>
                     </Col>
                 }
                 <Col md={2}>
-                    <Button variant="outline-success" onClick={handleShowAll} title={SHOW_ALL_ASSETS_TITLE}>
+                    <Button variant="outline-secondary" onClick={handleShowAll} title={SHOW_ALL_ASSETS_TITLE}>
                         {SHOW_ALL_ASSETS}
                     </Button>
                 </Col>

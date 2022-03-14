@@ -53,7 +53,81 @@ export const getOwnerDetailsQuery = (asset) => {
 }
 
 // query to get assets filtered by hazard events
-export const getAssetsByEventsOrIDQuery = (events, asset) => {
+export const getAssetsByEventsOrIDQuery = (event, asset) => {
+    let WOQL= TerminusDBClient.WOQL
+    let documentID=false, eventQuery=false
+    if(asset) documentID=asset
+
+    if(event && Object.keys(event).length && event.hasOwnProperty("eventName")) {
+        let eventName = encodeURI(event.eventName.trim())
+        let hazard = `@schema:Hazard/${eventName}`
+        eventQuery = WOQL.triple("v:Asset", "@schema:applicable_hazards", "v:Hazard")
+            .triple("v:Hazard", "@schema:hazard", hazard)
+
+        if(event.hasOwnProperty("grade"))  // get grade match
+            eventQuery.triple("v:Hazard", "@schema:Grade", Number(event.grade))
+    }
+
+    // filter by both ID and Event
+    if(asset && eventQuery) {
+        return eventQuery.triple("v:Asset", "rdf:type","@schema:Asset").eq("v:Asset", documentID)
+            .triple("v:Asset", "rdf:type","@schema:Asset")
+            .triple("v:Asset", "@schema:name", "v:Name")
+            .triple("v:Asset", "@schema:description", "v:Description")
+            .triple("v:Asset", "@schema:location", "v:Location")
+            .triple("v:Location", "@schema:geometry_location", "v:Point")
+            .triple("v:Point", "@schema:coordinates", "v:Coordinates")
+            .triple("v:Coordinates", "sys:value", "v:Value")
+            .triple("v:Coordinates", "sys:index", "v:Index")
+    }
+    else if (asset && !eventQuery) { // filter by ID alone
+        return WOQL.triple("v:Asset", "rdf:type","@schema:Asset").eq("v:Asset", documentID)
+            .triple("v:Asset", "rdf:type","@schema:Asset")
+            .triple("v:Asset", "@schema:name", "v:Name")
+            .triple("v:Asset", "@schema:description", "v:Description")
+            .triple("v:Asset", "@schema:location", "v:Location")
+            .triple("v:Location", "@schema:geometry_location", "v:Point")
+            .triple("v:Point", "@schema:coordinates", "v:Coordinates")
+            .triple("v:Coordinates", "sys:value", "v:Value")
+            .triple("v:Coordinates", "sys:index", "v:Index")
+    }
+    else if (!asset && eventQuery) { // filter by event alone
+        return eventQuery.triple("v:Asset", "rdf:type","@schema:Asset")
+            .triple("v:Asset", "@schema:name", "v:Name")
+            .triple("v:Asset", "@schema:description", "v:Description")
+            .triple("v:Asset", "@schema:location", "v:Location")
+            .triple("v:Location", "@schema:geometry_location", "v:Point")
+            .triple("v:Point", "@schema:coordinates", "v:Coordinates")
+            .triple("v:Coordinates", "sys:value", "v:Value")
+            .triple("v:Coordinates", "sys:index", "v:Index")
+    }
+    return null
+}
+
+export const getAssetFailureChain = (asset) => {
+    let WOQL=TerminusDBClient.WOQL
+    let documentID=asset
+
+    return WOQL.and (
+        WOQL.path(documentID, "(<depends_on,dependent>)*", "v:Asset")
+            .triple("v:Relation", "@schema:depends_on", "v:Asset")
+            .triple("v:Relation", "@schema:dependent", "v:LinkedAsset")
+            .triple("v:Relation", "@schema:critical", "v:Critical")
+    )
+
+    .triple("v:LinkedAsset", "@schema:name", "v:Name")
+    .opt(WOQL.triple("v:Asset", "@schema:description", "v:Description"))
+    .triple("v:LinkedAsset", "@schema:location", "v:Location")
+    .triple("v:Location", "@schema:geometry_location", "v:Point")
+    .triple("v:Point", "@schema:coordinates", "v:Coordinates")
+    .triple("v:Coordinates", "sys:value", "v:Value")
+    .triple("v:Coordinates", "sys:index", "v:Index")
+}
+
+
+
+// query to get assets filtered by hazard events - ARRAY OF EVENTS
+/*export const getAssetsByEventsOrIDQuery = (events, asset) => {
     let WOQL= TerminusDBClient.WOQL
     let qHazards = [], documentID=false, eventQuery
     if(asset) documentID=asset
@@ -65,7 +139,7 @@ export const getAssetsByEventsOrIDQuery = (events, asset) => {
 
             let q = WOQL.triple("v:Asset", "@schema:applicable_hazards", "v:Hazard")
                 .triple("v:Hazard", "@schema:hazard", hazard)
-
+                //.triple("v:Hazard", "@schema:Grade", 2)
             //let q = WOQL.triple("v:Asset", "@schema:applicable_hazards", hazard)
             qHazards.push(q)
         })
@@ -113,27 +187,7 @@ export const getAssetsByEventsOrIDQuery = (events, asset) => {
             .triple("v:Coordinates", "sys:index", "v:Index")
     }
     return null
-}
-
-export const getAssetFailureChain = (asset) => {
-    let WOQL=TerminusDBClient.WOQL
-    let documentID=asset
-
-    return WOQL.and (
-        WOQL.path(documentID, "(<depends_on,dependent>)*", "v:Asset")
-            .triple("v:Relation", "@schema:depends_on", "v:Asset")
-            .triple("v:Relation", "@schema:dependent", "v:LinkedAsset")
-            .triple("v:Relation", "@schema:critical", "v:Critical")
-    )
-
-    .triple("v:LinkedAsset", "@schema:name", "v:Name")
-    .triple("v:Asset", "@schema:description", "v:Description")
-    .triple("v:LinkedAsset", "@schema:location", "v:Location")
-    .triple("v:Location", "@schema:geometry_location", "v:Point")
-    .triple("v:Point", "@schema:coordinates", "v:Coordinates")
-    .triple("v:Coordinates", "sys:value", "v:Value")
-    .triple("v:Coordinates", "sys:index", "v:Index")
-}
+} */
 
 // query to get complete path
     /*return WOQL.path(documentID, "(<depends_on,dependent>)+", "v:Asset", "v:Path")

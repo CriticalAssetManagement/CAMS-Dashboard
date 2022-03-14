@@ -56,7 +56,7 @@ export const SEARCH_ASSET_Label= "Filter by Asset ID"
 export const SHOW_ASSET_DETAIL="View Details"
 export const SHOW_ALL_ASSETS="Clear Filters"
 export const SHOW_ALL_ASSETS_TITLE="Clear filters and Show All Available Assets"
-
+export const SHOW_ALL_FAILURE_CHAIN_TITLE="Show failure chain"
 
 // details constants for Asset details
 export const ASSET_IDENTIFIER="asset_identifier"
@@ -81,3 +81,13 @@ export const FAILURE_CHAIN_TITLE="Failure Chain"
 
 //types
 export const HAZARD_TYPE = "Hazard"
+
+// graded events color
+export const BG_AMBER="#ffbf00"
+export const BG_GOLD="#f9a602"
+export const BG_FIRE="#fda50f"
+export const BG_DIJON="#c49102"
+export const BG_RED="#d30000"
+export const BG_CHILI="#c21807"
+export const BG_BURGUNDY="#8d021f"
+export const BG_SANGRIA="#5e1914"

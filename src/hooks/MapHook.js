@@ -8,7 +8,6 @@ import { arrayOf } from 'prop-types'
 
 export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
 
-    const [documentID, setDocumentID] = useState(false)
 
     // link constants
     const [polyLine, setPolyLine] = useState([])
@@ -37,17 +36,10 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
     let filteredByAssetResults = QueryHook(woqlClient, filterAssetByEventOrIDQuery, setLoading, setSuccessMsg, setErrorMsg)
 
     const [vectorLayerGroup, setVectorLayerGroup] = useState(false)
+    const [layerGroup, setLayerGroup] = useState(false)
 
-    //console.log("filterAssetById", filterAssetById, filteredByAssetResults)
-    console.log("filteredByAssetResults", filteredByAssetResults)
+    //console.log("filteredByAssetResults", filteredByAssetResults)
 
-
-    // on select of Asset
-    useEffect(() => { // get dependent on assets
-        if(!documentID) return
-        let q = getAssetDependentOnQuery(documentID)
-        setQuery(q)
-    }, [documentID])
 
     // on click of Asset
     useEffect(() => {
@@ -57,7 +49,9 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
             setPolyLine(false)
             setDependencies(false)
             setLoading(true)
-            setDocumentID(onMarkerClick.id)
+            let documentID = onMarkerClick.id
+            let q = getAssetDependentOnQuery(documentID)
+            setQuery(q)
         }
     }, [onMarkerClick])
 
@@ -200,7 +194,9 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
         filteredAssets,
         displayFailureChains,
         setVectorLayerGroup,
-        vectorLayerGroup
+        vectorLayerGroup,
+        layerGroup,
+        setLayerGroup
     }
 }
 

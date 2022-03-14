@@ -101,6 +101,12 @@ button.tdb__toolbar__base__button {
     width: 500px !important;
 }
 
+.contact-off-canvas {
+    right: 500px !important;
+    height: 500px !important;
+    top: 50% !important;
+}
+
 /** css to change look and feel  **/
 form.rjsf > div > fieldset {
     width: 100% !important;
@@ -127,7 +133,7 @@ form.rjsf > div > fieldset > div.form-group > div.checkbox > label > span {
 }*/
 
 .search-bar{
-    border: 1px solid #2fb380;
+    border: 1px solid #ccc;
     border-radius: 4px;
 }
 
@@ -135,17 +141,10 @@ form.rjsf > div > fieldset > div.form-group > div.checkbox > label > span {
     color: #fff !important;
 }
 
-div.hazard-select-button > div > button {
-    border: 1px solid #2fb380 !important;
-    color: #2fb380  !important;
-    border-radius: 4px  !important;
-    width: 200px  !important;
+.hazard-select-button  {
+    width: 300px;
 }
 
-button.failure-chain-button:hover {
-    background-color: transparent !important;
-    cursor: auto;
-}
 
 input.failure-chain-checkbox {
     cursor: pointer;
@@ -192,6 +191,8 @@ input.failure-chain-checkbox {
     border: none;
     box-shadow: none;
 }
+
+
 
 
 
