@@ -29,8 +29,6 @@ export const HomePage = () => {
     //map constants
     const [mapComponent, setMapComponent] = useState(false)
 
-
-
     const mapRef = useRef(MAP_ID)
 
     useEffect(() => {
@@ -94,6 +92,7 @@ export const HomePage = () => {
     function clearMap() {
         if(!layerGroup) return
         layerGroup.clearLayers()
+        if(vectorLayerGroup) mapComponent.removeControl(vectorLayerGroup)
         //mapComponent.removeLayer(layerGroup)
         for(var i in mapComponent._layers) {
 
@@ -140,10 +139,6 @@ export const HomePage = () => {
 				})
 			})
 
-            // add all gathred markers to layer
-            mapComponent.addLayer(mg)
-            setLayerGroup(mg)
-
 			// extracting only lat lng
 			polyLine.map(pl => {
 				let vectorCoords = []
@@ -167,7 +162,8 @@ export const HomePage = () => {
                         marker.on('mouseover',function(ev) { // on hover
                             marker.openPopup()
                         })
-			            marker.addTo(mapComponent)
+                        marker.addTo(mg)
+			            //marker.addTo(mapComponent)
                     })
                 }
             })
@@ -202,7 +198,8 @@ export const HomePage = () => {
 						{ maxWidth: 2000 }
 					)
 
-				layerJson[CRITICAL_LINKS] = things.addTo(mapComponent)
+				//layerJson[CRITICAL_LINKS] = things.addTo(mapComponent)
+                layerJson[CRITICAL_LINKS] = things.addTo(mg)
             }
             //layer control for non critical links
             if (vectorControl[NON_CRITICAL_LINKS].length) {
@@ -213,7 +210,8 @@ export const HomePage = () => {
 						{ maxWidth: 2000 }
 					)
 
-				layerJson[NON_CRITICAL_LINKS] = things.addTo(mapComponent)
+				//layerJson[NON_CRITICAL_LINKS] = things.addTo(mapComponent)
+                layerJson[NON_CRITICAL_LINKS] = things.addTo(mg)
             }
 
             // display Failure Chains
@@ -234,11 +232,13 @@ export const HomePage = () => {
                         `<code>var simpleVector0: L.polyline(coords).arrowheads()</code>`,
                         { maxWidth: 2000 }
                     )
-                    layerJson["Failure Nodes"] = things.addTo(mapComponent)
+                    //layerJson["Failure Nodes"] = things.addTo(mapComponent)
+                    layerJson["Failure Nodes"] = things.addTo(mg)
 
                     // add dashed lines to map to show indirect links
                     var  antPolyline = L.polyline.antPath(gatherLinkedChains, DASH_LINES_OPTIONS)
-                    antPolyline.addTo(mapComponent)
+                    //antPolyline.addTo(mapComponent)
+                    antPolyline.addTo(mg)
                 }
 
             }
@@ -246,11 +246,19 @@ export const HomePage = () => {
 			return layerJson
 		}
 
-		var layerscontrol = L.control
+		/*var layerscontrol = L.control
+			.layers(null, getVector(vectorJson, failureChainJson),  {position: 'bottomleft', collapsed: false})
+			.addTo(mapComponent) */
+
+        var layersControl = L.control
 			.layers(null, getVector(vectorJson, failureChainJson),  {position: 'bottomleft', collapsed: false})
 			.addTo(mapComponent)
 
-        setVectorLayerGroup(layerscontrol)
+        // add all gathered failure chains to layer
+        mapComponent.addLayer(mg)
+        setLayerGroup(mg)
+
+        setVectorLayerGroup(layersControl)
 
     } //changeMap()
 
