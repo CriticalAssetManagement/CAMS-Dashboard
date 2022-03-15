@@ -36,7 +36,7 @@ export const Menu = () => {
 		setPage
 	} = WOQLClientObj()
 
-    return <Navbar expand="lg" className={`p-3 navbar navbar-transparent bg-${"light"}`}>
+    return <Navbar fixed="top" expand="lg" className={`px-3 navbar navbar-transparent bg-${"light"} nav-container`}>
         <Navbar.Brand href="https://climateresilient.world/"
             title="Visit GitHub repository for more info"
             target="_blank">

@@ -117,9 +117,9 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setDisplayFailureChains,
 
     return <Card>
         <Card.Body className="d-flex">
-            <Row className="w-100">
+            <Row className="flex-row flex-wrap">
 
-                <Col md={3}>
+                <Col>
                     <SearchBar placeholder={SEARCH_ASSET_PLACEHOLDER} setFilterAssetById={setFilterAssetById}/>
                 </Col>
 
@@ -127,7 +127,7 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setDisplayFailureChains,
 
                 {
                     eventList &&
-                        <Col md={2}>
+                        <Col>
                             <div className="hazard-select-button">
                                 <Select options={eventList}
                                     placeholder={HAZARD_DROPDOWN_TITLE}
@@ -143,7 +143,7 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setDisplayFailureChains,
                     }
 
                 {
-                    maxScale && <Col md={3}>
+                    maxScale && <Col>
                         <ButtonToolbar aria-label="Toolbar with button groups" >
                             <ButtonGroup className="me-2" aria-label="First group">
                                 <GradedButtons setCurrentGrade={setCurrentGrade} max={maxScale}/>
@@ -154,13 +154,13 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setDisplayFailureChains,
 
                 {
                 onMarkerClick && onMarkerClick.hasOwnProperty("id") &&
-                    <Col md={1}>
+                    <Col>
                         <Button variant="outline-secondary" onClick={handleClicked} title={SHOW_ALL_FAILURE_CHAIN_TITLE}>
                             {FAILURE_CHAIN_TITLE}
                         </Button>
                     </Col>
                 }
-                <Col md={2}>
+                <Col>
                     <Button variant="outline-secondary" onClick={handleShowAll} title={SHOW_ALL_ASSETS_TITLE}>
                         {SHOW_ALL_ASSETS}
                     </Button>

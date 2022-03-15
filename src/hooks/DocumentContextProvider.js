@@ -4,7 +4,7 @@ export const DocumentContextObj = () => useContext(DocumentContext)
 import {handleDocumentSelect} from "../components/utils"
 import {WOQLClientObj} from '../init-woql-client'
 import {Button, Row} from "react-bootstrap"
-import {VARIANT} from '../components/constants'
+import {SUCCESS_VARIANT} from '../components/constants'
 
 export const DocumentContextProvider = ({children, params}) => {
 
@@ -61,7 +61,7 @@ export const DocumentContextProvider = ({children, params}) => {
             setTabKey(params.editTab)
         }
         return <Button className="btn-sm mr-1"
-            variant={VARIANT}
+            variant={SUCCESS_VARIANT}
             title={`Edit ${document}`}
             onClick={(e) => handleEdit(document)}>
             Edit
@@ -95,6 +95,11 @@ export const DocumentContextProvider = ({children, params}) => {
         if(!data.hasOwnProperty("@type")) data["@type"] = params.type
         clearMessages()
         setExtractedUpdate(data)
+    }
+
+    // function to handle traverse
+    function handleTraverse(clicked) {
+        console.log("clicked", clicked)
     }
 
     // function to handle select search
@@ -131,6 +136,7 @@ export const DocumentContextProvider = ({children, params}) => {
                 extracted,
                 setExtracted,
                 handleSelect,
+                handleTraverse,
                 getDeleteButton,
                 deleteDocument,
                 setDeleteDocument,

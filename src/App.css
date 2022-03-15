@@ -3,6 +3,19 @@ body {
 
 }
 
+/**nav bar and content spacing */
+.content-container {
+    margin-top: 110px !important;
+}
+
+.nav-container{
+    padding-bottom: 0 !important;
+}
+
+.search-asset-input{
+    width: 450px  !important;
+}
+
 table > thead > tr:first-child {
     display: none;
 }
@@ -197,6 +210,8 @@ input.failure-chain-checkbox {
 .empty-result-toast {
     z-index: 300 !important;
 }
+
+
 
 
 

@@ -11,7 +11,7 @@ export const SearchBar = ({placeholder, setFilterAssetById}) => {
 
     return <React.Fragment>
         <div className="search-bar d-flex">
-            <Form.Control type="text" placeholder={placeholder} className="form-control border-0" onBlur={handleInput}/>
+            <Form.Control type="text" placeholder={placeholder} className="form-control border-0 search-asset-input" onBlur={handleInput}/>
             <Button variant="outline-success" className="col-md-1 btn-sm border-0">
                 <BsSearch className=" m-2 search-button text-muted fw-bold"/>
             </Button>

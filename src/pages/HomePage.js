@@ -284,8 +284,8 @@ export const HomePage = () => {
         setEmptyMessage
     } = MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg)
 
-    console.log("displayFailureChains", displayFailureChains)
-    console.log("polyLine", polyLine)
+    //console.log("displayFailureChains", displayFailureChains)
+    //console.log("polyLine", polyLine)
     //console.log("showAssets", showAssets)
 
     let queryResults = QueryHook(woqlClient, query, setLoading, setSuccessMsg, setErrorMsg)
@@ -353,37 +353,40 @@ export const HomePage = () => {
     return <React.Fragment>
         <Layout/>
 
-        <MapToolBar setResetMap={setResetMap}
-            setDisplayFailureChains={setDisplayFailureChains}
-            onMarkerClick={onMarkerClick}
-            setFilterAssetByEvent={setFilterAssetByEvent}
-            setFailureChain={setFailureChain}
-            setFilterAssetById={setFilterAssetById}/>
+        <div className="content-container">
+            <MapToolBar setResetMap={setResetMap}
+                setDisplayFailureChains={setDisplayFailureChains}
+                onMarkerClick={onMarkerClick}
+                setFilterAssetByEvent={setFilterAssetByEvent}
+                setFailureChain={setFailureChain}
+                setFilterAssetById={setFilterAssetById}/>
 
-        {
-            emptyMessage &&
-            <ToastContainer className="p-3 empty-result-toast" position={"middle-start"}>
-                <Toast  onClose={(e) => setEmptyMessage(false)}>
-                    <Toast.Header>
-                        <strong className="me-auto">{`Clicked on ${onMarkerClick.id}`}</strong>
-                    </Toast.Header>
-                    <Toast.Body>{emptyMessage}</Toast.Body>
-                </Toast>
-            </ToastContainer>
-        }
+            {
+                emptyMessage &&
+                <ToastContainer className="p-3 empty-result-toast" position={"middle-start"}>
+                    <Toast  onClose={(e) => setEmptyMessage(false)}>
+                        <Toast.Header>
+                            <strong className="me-auto">{`Clicked on ${onMarkerClick.id}`}</strong>
+                        </Toast.Header>
+                        <Toast.Body>{emptyMessage}</Toast.Body>
+                    </Toast>
+                </ToastContainer>
+            }
 
-        {showAssets && <React.Fragment>
+            {showAssets && <React.Fragment>
 
-            {onMarkerClick.refresh && <DisplayMarkerInfo dependencies={dependencies} info={onMarkerClick}/>}
+                {onMarkerClick.refresh && <DisplayMarkerInfo dependencies={dependencies} info={onMarkerClick}/>}
 
-            <div className="map-container">
-                <div id={mapRef.current} className="leaflet-container"></div>
-            </div>
+                <div className="map-container">
+                    <div id={mapRef.current} className="leaflet-container"></div>
+                </div>
 
 
-            {loading && <ProgressBar animated now={100} variant="info"/>}
+                {loading && <ProgressBar animated now={100} variant="info"/>}
 
-        </React.Fragment>}
+            </React.Fragment>}
+        </div>
+
     </React.Fragment>
 }
 

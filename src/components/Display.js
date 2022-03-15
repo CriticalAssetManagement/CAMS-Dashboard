@@ -14,7 +14,7 @@ export const DisplayDocuments = ({results, css, config, title}) => {
     </div>
 }
 
-export const ViewDocument = ({frames, type, getDocumentToolBar, FieldTemplate, uiFrame, handleSelect, showDocument}) => {
+export const ViewDocument = ({frames, type, getDocumentToolBar, onTraverse, FieldTemplate, uiFrame, handleSelect, showDocument}) => {
     return <Card className="text-break p-4">
         <Row>
             {getDocumentToolBar && getDocumentToolBar(showDocument)}
@@ -27,6 +27,7 @@ export const ViewDocument = ({frames, type, getDocumentToolBar, FieldTemplate, u
                 mode={VIEW_MODE}
                 hideSubmit={true}
                 onSelect={handleSelect}
+                onTraverse={onTraverse}
                 formData={showDocument}
             />
         </Row>
