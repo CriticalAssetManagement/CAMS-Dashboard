@@ -82,7 +82,7 @@ export const PolyLineLeafletMap = ({polyLine, onMarkerClick}) => {
 
 
 		L.control
-			.layers(null, getVector(vectorJson),  {position: 'bottomleft'})
+			.layers(null, getVector(vectorJson),  {position: 'topleft'})
 			.addTo(map)
 
 	}

@@ -68,7 +68,8 @@ export const getAssetsByEventsOrIDQuery = (event, asset) => {
 
         if(event.hasOwnProperty("grade")){ // get grade match
             eventQuery.triple("v:Hazard", "@schema:Grade", "v:Grade")
-                .less("v:Grade",  Number(event.grade))
+                .not(WOQL.greater("v:Grade", Number(event.grade)))
+                //.less("v:Grade",  Number(event.grade))
             //eventQuery.triple("v:Hazard", "@schema:Grade", Number(event.grade))
         }
     }

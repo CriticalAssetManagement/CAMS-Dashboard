@@ -193,6 +193,10 @@ input.failure-chain-checkbox {
 }
 
 
+.empty-result-toast {
+    z-index: 300 !important;
+}
+
 
 
 

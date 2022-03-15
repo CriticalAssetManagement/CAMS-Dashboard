@@ -70,6 +70,7 @@ export const LAST_MODIFIED="last_modified"
 export const EMPTY_PLACEHOLDER="No documents to display ..."
 export const EMPTY_DESCRIPTION="No description provided ..."
 export const NO_OWNER_INFO="No contact details available ..."
+export const NO_DATA_AVAILABLE= "No Asset links to display ..."
 
 // Accordian titles
 export const OWNER_ACCORDIAN_TITLE = "Contact Info"

@@ -14,7 +14,7 @@ import {GradedButtons} from "./GradedButtons"
 import {getEventScaleQuery} from "../hooks/queries"
 import {QueryHook} from "../hooks/QueryHook"
 
-export const MapToolBar = ({setResetMap, onMarkerClick, setFilterAssetByEvent, setFailureChain, setFilterAssetById}) => {
+export const MapToolBar = ({setResetMap, onMarkerClick, setDisplayFailureChains, setFilterAssetByEvent, setFailureChain, setFilterAssetById}) => {
 
     // constants to gather events and grades
     const [eventList, setEventList] = useState(false)
@@ -71,9 +71,16 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setFilterAssetByEvent, s
     function handleShowAll() {
         // clear filters and show all available assets
         if(setResetMap) setResetMap(Date.now())
-        // hide grades
+        if(setDisplayFailureChains) {
+            // clear failure chains
+            setDisplayFailureChains([])
+            setFailureChain(false)
+        }
+        // clear grades
         setGradedEvents(false)
+        // clear grade scales
         setMaxScale(false)
+        // clear react select value
         setValue(null)
     }
 
@@ -97,7 +104,7 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setFilterAssetByEvent, s
         }
     }, [frames])
 
-    function handleChecked (e) {
+    function handleClicked (e) {
         //setFailureChain(e.target.checked)
         if(setFailureChain) setFailureChain(true)
         // clear filter by events or ID
@@ -148,7 +155,7 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setFilterAssetByEvent, s
                 {
                 onMarkerClick && onMarkerClick.hasOwnProperty("id") &&
                     <Col md={1}>
-                        <Button variant="outline-secondary" onClick={handleChecked} title={SHOW_ALL_FAILURE_CHAIN_TITLE}>
+                        <Button variant="outline-secondary" onClick={handleClicked} title={SHOW_ALL_FAILURE_CHAIN_TITLE}>
                             {FAILURE_CHAIN_TITLE}
                         </Button>
                     </Col>

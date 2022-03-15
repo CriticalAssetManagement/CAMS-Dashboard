@@ -65,7 +65,7 @@ export const Menu = () => {
                     >
                         <MenuIcon icon={<RiUserSmileLine/>} title={USER_FORM}/>
                 </Nav.Link>
-                <Nav.Link
+                {/*<Nav.Link // hide for now
                     as={RouterNavLink}
                     title={AREA_FORM}
                     to={AREA_FORM_PAGE}
@@ -74,7 +74,7 @@ export const Menu = () => {
                     onClick={(e) => setPage(AREA_FORM_PAGE)}
                     >
                         <MenuIcon icon={<FiMap/>} title={AREA_FORM}/>
-                </Nav.Link>
+                </Nav.Link> */}
                 <Nav.Link
                     as={RouterNavLink}
                     title={ASSET_FORM}
@@ -95,7 +95,7 @@ export const Menu = () => {
                     >
                             <MenuIcon icon={<FiLink/>} title={ASSETS_LINK}/>
                 </Nav.Link>
-                <Nav.Link
+                {/*<Nav.Link // hide for now
                     as={RouterNavLink}
                     title={REPORTS}
                     to={REPORTS_PAGE}
@@ -104,7 +104,7 @@ export const Menu = () => {
                     onClick={(e) => setPage(REPORTS_PAGE)}
                     >
                             <MenuIcon icon={<BiBookReader/>} title={REPORTS}/>
-                </Nav.Link>
+                </Nav.Link> */}
             </Nav>
         </Navbar.Collapse>
   </Navbar>

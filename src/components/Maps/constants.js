@@ -51,8 +51,8 @@ export const DASH_LINES_OPTIONS = {
 	  20
 	],
 	"weight": 5,
-	"color": "#842029",
-	"pulseColor": "#FFFFFF",
+	"color": "#ffff",
+	"pulseColor": "#800000",
 	"paused": false,
 	"reverse": false,
 	"hardwareAccelerated": true

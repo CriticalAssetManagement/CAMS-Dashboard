@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect, useContext} from "react"
 import {Layout} from "../components/Layout"
-import {ProgressBar, Button, Row} from "react-bootstrap"
+import {ProgressBar, Button, Row, Toast, ToastContainer} from "react-bootstrap"
 import {VAR_NAME} from "../components/constants"
 import {WOQLClientObj} from '../init-woql-client'
 import {QueryHook} from "../hooks/QueryHook"
@@ -76,7 +76,7 @@ export const HomePage = () => {
                 .on('click', function(e) {
                     let cData = asset //coord
                     cData[REFRESH] = Date.now()
-                    map.setView(e.latlng, 13)
+                    //map.setView(e.latlng, 13)
                     if(setOnMarkerClick) setOnMarkerClick(cData)
                 })
                 .addTo(layerGroup)
@@ -128,7 +128,7 @@ export const HomePage = () => {
 						    .on('click', function(e) {
                                 let cData = la //coord
                                 cData[REFRESH] = Date.now()
-                                mapComponent.setView(e.latlng, 13) // zoom in on click
+                                //mapComponent.setView(e.latlng, 13) // zoom in on click
                                 if(setOnMarkerClick) setOnMarkerClick(cData)
                             })
                         marker.on('mouseover',function(ev) { // on hover
@@ -159,6 +159,12 @@ export const HomePage = () => {
                         let marker = L.marker(coord , MARKER_OPTIONS)
                             //.bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
                             .bindPopup(getPopContent(coord), POPUP_OPTIONS)
+                            .on('click', function(e) {
+                                let cData = link //coord
+                                cData[REFRESH] = Date.now()
+                                //map.setView(e.latlng, 13)
+                                if(setOnMarkerClick) setOnMarkerClick(cData)
+                            })
                         marker.on('mouseover',function(ev) { // on hover
                             marker.openPopup()
                         })
@@ -213,6 +219,8 @@ export const HomePage = () => {
                 layerJson[NON_CRITICAL_LINKS] = things.addTo(mg)
             }
 
+            console.log("displayFailureChains",displayFailureChains)
+
             // display Failure Chains
             if(displayFailureChains && Array.isArray(displayFailureChains )) {
                 let gatherLinkedChains=[]
@@ -221,22 +229,11 @@ export const HomePage = () => {
                 })
 
                 //gatherLinkedChains.length === 1 means its the last node in chain - so we dont display
-                if (Array.isArray(gatherLinkedChains) && gatherLinkedChains.length > 1) {
-                    var things = L.polyline(gatherLinkedChains, {
-                        color: "maroon",
-                        dashArray: '10, 10'
-                    })
-                    .arrowheads(ARROW_OPTIONS)
-                    .bindPopup(
-                        `<code>var simpleVector0: L.polyline(coords).arrowheads()</code>`,
-                        { maxWidth: 2000 }
-                    )
-                    //layerJson["Failure Nodes"] = things.addTo(mapComponent)
-                    layerJson["Failure Nodes"] = things.addTo(mg)
-
+                // /commenting for now && gatherLinkedChains.length > 1
+                if (Array.isArray(gatherLinkedChains) ) {
                     // add dashed lines to map to show indirect links
                     var  antPolyline = L.polyline.antPath(gatherLinkedChains, DASH_LINES_OPTIONS)
-                    antPolyline.addTo(mg)
+                    layerJson["Failure Nodes"] = antPolyline.addTo(mg)
                 }
 
             }
@@ -246,8 +243,9 @@ export const HomePage = () => {
 
 
         var layersControl = L.control
-			.layers(null, getVector(vectorJson, failureChainJson),  {position: 'bottomleft', collapsed: false})
+			.layers(null, getVector(vectorJson, failureChainJson),  {position: 'topleft', collapsed: false})
 			.addTo(mapComponent)
+
 
         // add all gathered markers, polylines, failure chains to layer
         mapComponent.addLayer(mg)
@@ -277,13 +275,16 @@ export const HomePage = () => {
         filterAssetByEvent,
         setFailureChain,
         displayFailureChains,
+        setDisplayFailureChains,
         setVectorLayerGroup,
         vectorLayerGroup,
         layerGroup,
-        setLayerGroup
+        setLayerGroup,
+        emptyMessage,
+        setEmptyMessage
     } = MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg)
 
-    //console.log("displayFailureChains", displayFailureChains)
+    console.log("displayFailureChains", displayFailureChains)
     console.log("polyLine", polyLine)
     //console.log("showAssets", showAssets)
 
@@ -353,10 +354,23 @@ export const HomePage = () => {
         <Layout/>
 
         <MapToolBar setResetMap={setResetMap}
+            setDisplayFailureChains={setDisplayFailureChains}
             onMarkerClick={onMarkerClick}
             setFilterAssetByEvent={setFilterAssetByEvent}
             setFailureChain={setFailureChain}
             setFilterAssetById={setFilterAssetById}/>
+
+        {
+            emptyMessage &&
+            <ToastContainer className="p-3 empty-result-toast" position={"middle-start"}>
+                <Toast  onClose={(e) => setEmptyMessage(false)}>
+                    <Toast.Header>
+                        <strong className="me-auto">{`Clicked on ${onMarkerClick.id}`}</strong>
+                    </Toast.Header>
+                    <Toast.Body>{emptyMessage}</Toast.Body>
+                </Toast>
+            </ToastContainer>
+        }
 
         {showAssets && <React.Fragment>
 
@@ -375,5 +389,23 @@ export const HomePage = () => {
 
 
 
+//gatherLinkedChains.length === 1 means its the last node in chain - so we dont display
+                /*if (Array.isArray(gatherLinkedChains) && gatherLinkedChains.length > 1) {
+                    var things = L.polyline(gatherLinkedChains, {
+                        color: "maroon",
+                        dashArray: '10, 10'
+                    })
+                    .arrowheads(ARROW_OPTIONS)
+                    .bindPopup(
+                        `<code>var simpleVector0: L.polyline(coords).arrowheads()</code>`,
+                        { maxWidth: 2000 }
+                    )
+                    //layerJson["Failure Nodes"] = things.addTo(mapComponent)
+                    layerJson["Failure Nodes"] = things.addTo(mg)
 
+                    // add dashed lines to map to show indirect links
+                    var  antPolyline = L.polyline.antPath(gatherLinkedChains, DASH_LINES_OPTIONS)
+                    antPolyline.addTo(mg)
+                    setAntPathLayer(antPolyline)
+                } */
 

@@ -1,13 +1,12 @@
 import {useEffect, useState} from 'react'
 import {QueryHook, executeQuery} from "./QueryHook"
-import {NON_CRITICAL_COLOR, CRITICAL_COLOR, CRITICAL_LINKS, NON_CRITICAL_LINKS, VAR_ASSET, VAR_LINKED_ASSET} from "../components/constants"
+import {NON_CRITICAL_COLOR, CRITICAL_COLOR, CRITICAL_LINKS, NON_CRITICAL_LINKS, NO_DATA_AVAILABLE, VAR_ASSET, VAR_LINKED_ASSET} from "../components/constants"
 import {getAssetFailureChain, getAssetsByEventsOrIDQuery, getAssetDependentOnQuery} from "./queries"
 import {DEPENDENT} from "../pages/constants"
 import {extractLocations, handleDocumentSelect, extractAssetLocations, extractNewAssetLocations} from "../components/utils"
 import { arrayOf } from 'prop-types'
 
 export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
-
 
     // link constants
     const [polyLine, setPolyLine] = useState([])
@@ -35,8 +34,11 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
 
     let filteredByAssetResults = QueryHook(woqlClient, filterAssetByEventOrIDQuery, setLoading, setSuccessMsg, setErrorMsg)
 
+    // map layers and vector constants
     const [vectorLayerGroup, setVectorLayerGroup] = useState(false)
     const [layerGroup, setLayerGroup] = useState(false)
+
+    const [emptyMessage, setEmptyMessage]=useState(false)
 
     //console.log("filteredByAssetResults", filteredByAssetResults)
 
@@ -56,11 +58,14 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
     }, [onMarkerClick])
 
     useEffect(() => { //working
-        if(!Object.keys(queryResults).length) {
+        if(Object.keys(queryResults).length === 0) {
             setLoading(false)
             setPolyLine(false)
+            // display emptu message only when data is not available on marker click
+            if(onMarkerClick.hasOwnProperty("id")) setEmptyMessage(NO_DATA_AVAILABLE)
             return
         }
+        else setEmptyMessage(false)
         let locs = extractAssetLocations(queryResults)
         setDependencies(locs)
 
@@ -196,7 +201,10 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
         setVectorLayerGroup,
         vectorLayerGroup,
         layerGroup,
-        setLayerGroup
+        setLayerGroup,
+        emptyMessage,
+        setEmptyMessage,
+        setDisplayFailureChains
     }
 }
 
