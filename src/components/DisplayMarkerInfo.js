@@ -97,7 +97,6 @@ const DisplayLinks = ({dependencies, info}) => {
 }
 
 
-
 export const DisplayMarkerInfo = ({info, dependencies}) => {
     const [sidebarOpen, setSideBarOpen] = useState(false)
     const [position, setPosition] = useState("end")
@@ -108,7 +107,7 @@ export const DisplayMarkerInfo = ({info, dependencies}) => {
 
     if(!info) return <div/>
 
-    console.log("sidebarOpen", sidebarOpen)
+    //console.log("sidebarOpen", sidebarOpen)
 
     function handleClickToggle() {
         setSideBarOpen(true)

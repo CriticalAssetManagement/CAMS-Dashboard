@@ -17,19 +17,27 @@ export const ContactClickedAsset =({info, ownerResults}) => {
     }, [ownerResults[0].Owner]) // onchange of owner
 
 
-    return <Offcanvas show={open} restoreFocus={true} scroll={true} onHide={handleViewSidebar} backdrop={false} placement={"end"} className="contact-off-canvas">
-        <Offcanvas.Header closeButton>
-            <Offcanvas.Title>{info[VAR_NAME]}</Offcanvas.Title>
-           {/* <Button variant="light"  onClick={handleViewSidebar} title={HIDE_OFFCANVAS_TITLE}>
-                <RiArrowGoBackFill/>
-            </Button>*/}
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-            {info.hasOwnProperty(VAR_DESCRIPTION) && info[VAR_DESCRIPTION].length && info[VAR_DESCRIPTION]}
-            {!info.hasOwnProperty(VAR_DESCRIPTION) && EMPTY_DESCRIPTION }
-            <ClickedMarkerInfo info={info}/>
-            <AccordianSection asset = {info.id}/>
-        </Offcanvas.Body>
+    //className="contact-off-canvas"
+
+    return <Offcanvas show={open}
+            restoreFocus={true}
+            scroll={true}
+            onHide={handleViewSidebar}
+            backdrop={false}
+            placement={"end"}
+        >
+            <Offcanvas.Header closeButton>
+                <Offcanvas.Title>{info[VAR_NAME]}</Offcanvas.Title>
+            {/* <Button variant="light"  onClick={handleViewSidebar} title={HIDE_OFFCANVAS_TITLE}>
+                    <RiArrowGoBackFill/>
+                </Button>*/}
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+                {info.hasOwnProperty(VAR_DESCRIPTION) && info[VAR_DESCRIPTION].length && info[VAR_DESCRIPTION]}
+                {!info.hasOwnProperty(VAR_DESCRIPTION) && EMPTY_DESCRIPTION }
+                <ClickedMarkerInfo info={info}/>
+                <AccordianSection asset = {info.id}/>
+            </Offcanvas.Body>
     </Offcanvas>
 
 

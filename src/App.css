@@ -102,9 +102,10 @@ button.tdb__toolbar__base__button {
 }
 
 .contact-off-canvas {
-    right: 500px !important;
+    /*right: 500px !important;
     height: 500px !important;
-    top: 50% !important;
+    top: 50% !important; */
+    width: 200px;
 }
 
 /** css to change look and feel  **/
