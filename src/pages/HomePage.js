@@ -92,6 +92,7 @@ export const HomePage = () => {
     function clearMap() {
         if(!layerGroup) return
         layerGroup.clearLayers()
+        // if vector layer component available
         if(vectorLayerGroup) mapComponent.removeControl(vectorLayerGroup)
         //mapComponent.removeLayer(layerGroup)
         for(var i in mapComponent._layers) {
@@ -134,7 +135,6 @@ export const HomePage = () => {
                             marker.openPopup()
                         })
                         marker.addTo(mg)
-						//marker.addTo(mapComponent)
 					})
 				})
 			})
@@ -163,7 +163,6 @@ export const HomePage = () => {
                             marker.openPopup()
                         })
                         marker.addTo(mg)
-			            //marker.addTo(mapComponent)
                     })
                 }
             })
@@ -237,7 +236,6 @@ export const HomePage = () => {
 
                     // add dashed lines to map to show indirect links
                     var  antPolyline = L.polyline.antPath(gatherLinkedChains, DASH_LINES_OPTIONS)
-                    //antPolyline.addTo(mapComponent)
                     antPolyline.addTo(mg)
                 }
 
@@ -246,15 +244,12 @@ export const HomePage = () => {
 			return layerJson
 		}
 
-		/*var layerscontrol = L.control
-			.layers(null, getVector(vectorJson, failureChainJson),  {position: 'bottomleft', collapsed: false})
-			.addTo(mapComponent) */
 
         var layersControl = L.control
 			.layers(null, getVector(vectorJson, failureChainJson),  {position: 'bottomleft', collapsed: false})
 			.addTo(mapComponent)
 
-        // add all gathered failure chains to layer
+        // add all gathered markers, polylines, failure chains to layer
         mapComponent.addLayer(mg)
         setLayerGroup(mg)
 
@@ -279,6 +274,7 @@ export const HomePage = () => {
         setFilterAssetById,
         filteredAssets,
         setFilterAssetByEvent,
+        filterAssetByEvent,
         setFailureChain,
         displayFailureChains,
         setVectorLayerGroup,

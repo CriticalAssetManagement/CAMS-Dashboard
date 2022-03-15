@@ -29,6 +29,7 @@ export const VAR_ASSET_IDENTIFIER="AssetIdentifier"
 export const VAR_DESIGN_STANDARDS="DesignStandards"
 export const VAR_LAST_MAINTAINED="LastMaintained"
 export const VAR_DESCRIPTION="Description"
+export const VAR_MAX="Max"
 
 export const CRITICAL_COLOR="#bf0a30"//"#dc3545"
 export const NON_CRITICAL_COLOR="#198754"
@@ -76,7 +77,7 @@ export const ASSET_DEPENDENCY_ACCORDIAN_TITLE = "Links Info"
 export const HIDE_OFFCANVAS_TITLE="Click to go back"
 
 // Dropdown
-export const HAZARD_DROPDOWN_TITLE="Hazard Events"
+export const HAZARD_DROPDOWN_TITLE="Filter by Events"
 export const FAILURE_CHAIN_TITLE="Failure Chain"
 
 //types

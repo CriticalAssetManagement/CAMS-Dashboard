@@ -58,14 +58,19 @@ export const getAssetsByEventsOrIDQuery = (event, asset) => {
     let documentID=false, eventQuery=false
     if(asset) documentID=asset
 
+    console.log("event", event)
+
     if(event && Object.keys(event).length && event.hasOwnProperty("eventName")) {
         let eventName = encodeURI(event.eventName.trim())
         let hazard = `@schema:Hazard/${eventName}`
         eventQuery = WOQL.triple("v:Asset", "@schema:applicable_hazards", "v:Hazard")
             .triple("v:Hazard", "@schema:hazard", hazard)
 
-        if(event.hasOwnProperty("grade"))  // get grade match
-            eventQuery.triple("v:Hazard", "@schema:Grade", Number(event.grade))
+        if(event.hasOwnProperty("grade")){ // get grade match
+            eventQuery.triple("v:Hazard", "@schema:Grade", "v:Grade")
+                .less("v:Grade",  Number(event.grade))
+            //eventQuery.triple("v:Hazard", "@schema:Grade", Number(event.grade))
+        }
     }
 
     // filter by both ID and Event
@@ -103,6 +108,46 @@ export const getAssetsByEventsOrIDQuery = (event, asset) => {
     }
     return null
 }
+
+// get min and max of hazrad events
+export const getEventScaleQuery = (event) => {
+    if(!event) return null
+    let WOQL= TerminusDBClient.WOQL
+    if(event) {
+        let eventName = encodeURI(event.trim())
+        let hazard = `@schema:Hazard/${eventName}`
+        return WOQL.triple("v:Scale", "rdf:type", "@schema:HazardScale")
+            .triple("v:Scale", "@schema:hazard", hazard)
+            .triple("v:Scale", "@schema:max", "v:Max")
+		    .triple("v:Scale", "@schema:min", "v:Min")
+    }
+}
+
+
+
+
+
+/*
+let eventName="Drought", clickedGrade = 5
+let hazard = `@schema:Hazard/${eventName}`
+       triple("v:Asset", "@schema:applicable_hazards", "v:AssetHazard")
+		.triple("v:AssetHazard", "@schema:hazard", hazard)
+		.triple("v:AssetHazard", "@schema:Grade", "v:Grade")
+		.less ("v:Grade", clickedGrade) */
+
+
+
+/*let eventName="Drought", clickedGrade = 4
+let hazard = `@schema:Hazard/${eventName}`
+       triple("v:Asset", "@schema:applicable_hazards", "v:AssetHazard")
+		.triple("v:AssetHazard", "@schema:hazard", hazard)
+		.triple("v:Scale", "rdf:type", "@schema:HazardScale")//.triple("v:Scale", "v:A", "v:B")
+         .triple("v:Scale", "@schema:hazard", hazard)
+		.triple("v:Scale", "@schema:max", "v:Max")
+		.triple("v:Scale", "@schema:min", "v:Min")
+           //.triple("v:Hazard", "@schema:hazard", hazard)
+			//.triple("v:Hazard", "@schema:Grade", "v:Grades") */
+
 
 export const getAssetFailureChain = (asset) => {
     let WOQL=TerminusDBClient.WOQL
