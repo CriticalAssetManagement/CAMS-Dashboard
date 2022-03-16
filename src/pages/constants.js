@@ -4,6 +4,7 @@ export const VIEW_MODE = "View"
 
 
 export const USER_TYPE = "Person"
+export const OWNER_TYPE = "Owner"
 export const AREA_TYPE = "Area"
 export const ASSET_TYPE = "Asset"
 export const LINK_TYPE = "DependencyRelation"
@@ -16,6 +17,7 @@ export const DEPENDENCY_RELATION_TYPE_TITLE = "Dependency Relation"
 // control css to support mobile version
 export const HOME_PAGE_TABLE_CSS="homePageTableCss"
 export const USER_PAGE_TABLE_CSS="userPageTableCss"
+export const OWNER_PAGE_TABLE_CSS="homePageTableCss"
 export const AREA_PAGE_TABLE_CSS="areaPageTableCss"
 
 //user form Tab
@@ -24,6 +26,11 @@ export const VIEW_USER_LIST = "User List"
 export const VIEW_CLICKED_USER = "View User"
 export const EDIT_CLICKED_USER = "Edit User"
 
+//owner form Tab
+export const CREATE_OWNER_TAB = "Load Owner"
+export const VIEW_OWNER_LIST = "Owner List"
+export const VIEW_CLICKED_OWNER = "View Owner"
+export const EDIT_CLICKED_OWNER = "Edit Owner"
 
 //Area form Tab
 export const CREATE_AREA_TAB = "Load Area"

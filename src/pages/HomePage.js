@@ -15,6 +15,9 @@ import {MapToolBar} from "../components/MapToolBar"
 import {SearchBar} from "../components/SearchBar"
 import {DisplayMarkerInfo} from "../components/DisplayMarkerInfo"
 import "leaflet-arrowheads"
+import "leaflet.browser.print/dist/leaflet.browser.print.js"
+//import "leaflet/dist/leaflet.css";
+//import "leaflet.browser.print"
 //import 'leaflet/dist/leaflet.css';
 import {antPath} from 'leaflet-ant-path'
 import {CRITICAL_LINKS, NON_CRITICAL_LINKS, NON_CRITICAL_COLOR, CRITICAL_COLOR} from "../components/constants"
@@ -50,6 +53,36 @@ export const HomePage = () => {
         // layer group
         var mg = L.layerGroup()
         loadMarkers (showAssets, mg, map)
+
+        let options = {
+            position: "topleft",
+            title: "Print Map",
+            printModes: ["Portrait", "Landscape", "Auto"]
+        }
+
+        var customActionToPrint = function(context, mode) {
+            return function() {
+                window.alert("We are printing the MAP. Let's do Custom print here!");
+                context._printMode(mode);
+            }
+        };
+
+        L.control.browserPrint({
+            title: 'Just print me!',
+            documentTitle: 'Map printed using leaflet.browser.print plugin',
+
+            closePopupsOnPrint: false,
+            printModes: ["Portrait", "Landscape", "Auto"],
+            manualMode: false
+        }).addTo(map);
+        //var browserControl = L.control.browserPrint(options).addTo(map)
+        //L.control.browserPrint(options).addTo(map);
+
+        /*L.control.browserPrint({
+            documentTitle:'Verify Me!',
+            closePopupsOnPrint:false
+        }).addTo(map) */
+
 
 		window.map = map
 
@@ -87,6 +120,7 @@ export const HomePage = () => {
         })
         map.addLayer(layerGroup)
         setLayerGroup(layerGroup)
+
     }
 
     function clearMap() {
@@ -251,6 +285,8 @@ export const HomePage = () => {
         mapComponent.addLayer(mg)
         setLayerGroup(mg)
 
+        //L.control.browserPrint().addTo(mapComponent)
+
         setVectorLayerGroup(layersControl)
 
     } //changeMap()
@@ -284,9 +320,9 @@ export const HomePage = () => {
         setEmptyMessage
     } = MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg)
 
-    //console.log("displayFailureChains", displayFailureChains)
-    //console.log("polyLine", polyLine)
-    //console.log("showAssets", showAssets)
+    console.log("displayFailureChains", displayFailureChains)
+    console.log("polyLine", polyLine)
+    console.log("showAssets", showAssets)
 
     let queryResults = QueryHook(woqlClient, query, setLoading, setSuccessMsg, setErrorMsg)
 

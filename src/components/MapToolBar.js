@@ -108,11 +108,12 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setDisplayFailureChains,
         //setFailureChain(e.target.checked)
         if(setFailureChain) setFailureChain(true)
         // clear filter by events or ID
-        if(setFilterAssetByEvent) setFilterAssetByEvent(false)
-        if(setFilterAssetById) setFilterAssetById(false)
+        //if(setFilterAssetByEvent) setFilterAssetByEvent(false)
+        //if(setFilterAssetById) setFilterAssetById(false)
     }
 
     //console.log("value", value)
+
 
 
     return <Card>
@@ -160,11 +161,14 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setDisplayFailureChains,
                         </Button>
                     </Col>
                 }
+
                 <Col>
                     <Button variant="outline-secondary" onClick={handleShowAll} title={SHOW_ALL_ASSETS_TITLE}>
                         {SHOW_ALL_ASSETS}
                     </Button>
                 </Col>
+
+
 
         </Row>
         </Card.Body>

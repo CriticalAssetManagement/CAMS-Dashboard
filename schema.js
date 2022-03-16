@@ -5,40 +5,10 @@
     "@type": "@context"
   },
   {
-    "@id": "GeoPerimeter",
-    "@key": {
-      "@fields": [
-        "perimeter"
-      ],
-      "@type": "Lexical"
-    },
-    "@subdocument": [],
+    "@abstract": [],
+    "@id": "AssetType",
     "@type": "Class",
-    "perimeter": {
-      "@class": "GeoCoordinate",
-      "@type": "List"
-    }
-  },
-  {
-    "@id": "Area",
-    "@type": "Class",
-    "extent": {
-      "@class": "AreaExtent",
-      "@type": "Optional"
-    },
-    "hazard_history": {
-      "@class": "HazardEvent",
-      "@type": "Set"
-    },
-    "hazards": {
-      "@class": "Hazard",
-      "@type": "Set"
-    },
-    "name": "xsd:string",
-    "population": {
-      "@class": "xsd:integer",
-      "@type": "Optional"
-    }
+    "name": "xsd:string"
   },
   {
     "@id": "CRS84",
@@ -47,16 +17,68 @@
     "name": "CRS84_Type"
   },
   {
-    "@id": "LineString_Type",
+    "@id": "CRS84_Type",
     "@type": "Enum",
     "@value": [
-      "LineString"
+      "urn:ogc:def:crs:OGC:1.3:CRS84"
     ]
   },
   {
-    "@id": "SpatialWebIdentifier",
+    "@id": "DependencyRelation",
     "@type": "Class",
-    "id": "xsd:string"
+    "comment": "xsd:string",
+    "critical": "xsd:boolean",
+    "dependent": "Asset",
+    "depends_on": "Asset"
+  },
+  {
+    "@abstract": [],
+    "@id": "Event",
+    "@subdocument": [],
+    "@type": "Class",
+    "date": "xsd:dateTime"
+  },
+  {
+    "@id": "Feature",
+    "@type": "Class",
+    "bbox": {
+      "@class": "xsd:string",
+      "@dimensions": 1,
+      "@type": "Array"
+    },
+    "centerline": {
+      "@class": "Geometry",
+      "@type": "Optional"
+    },
+    "geometry": "Geometry",
+    "id": {
+      "@class": "xsd:string",
+      "@type": "Optional"
+    },
+    "properties": "Properties",
+    "title": {
+      "@class": "xsd:string",
+      "@type": "Optional"
+    },
+    "type": "Feature_Type"
+  },
+  {
+    "@id": "AreaExtent",
+    "@key": {
+      "@type": "ValueHash"
+    },
+    "@subdocument": [],
+    "@type": "Class",
+    "perimeter": {
+      "@class": "xsd:integer",
+      "@type": "Optional"
+    }
+  },
+  {
+    "@id": "name",
+    "@type": "Class",
+    "properties": "Properties",
+    "type": "Name_Type"
   },
   {
     "@id": "Asset",
@@ -100,66 +122,6 @@
     }
   },
   {
-    "@id": "LineString",
-    "@inherits": "Geometry",
-    "@key": {
-      "@type": "Random"
-    },
-    "@subdocument": [],
-    "@type": "Class",
-    "coordinates": {
-      "@class": "xsd:decimal",
-      "@dimensions": 2,
-      "@type": "Array"
-    },
-    "type": "LineString_Type"
-  },
-  {
-    "@id": "AreaExtent",
-    "@key": {
-      "@type": "ValueHash"
-    },
-    "@subdocument": [],
-    "@type": "Class",
-    "perimeter": {
-      "@class": "xsd:integer",
-      "@type": "Optional"
-    }
-  },
-  {
-    "@id": "Polygon_Type",
-    "@type": "Enum",
-    "@value": [
-      "Polygon"
-    ]
-  },
-  {
-    "@abstract": [],
-    "@id": "Properties",
-    "@type": "Class"
-  },
-  {
-    "@abstract": [],
-    "@id": "Source",
-    "@type": "Class"
-  },
-  {
-    "@abstract": [],
-    "@id": "Geometry",
-    "@key": {
-      "@type": "Random"
-    },
-    "@subdocument": [],
-    "@type": "Class"
-  },
-  {
-    "@id": "MultiPolygon_Type",
-    "@type": "Enum",
-    "@value": [
-      "MultiPolygon"
-    ]
-  },
-  {
     "@id": "GradedHazard",
     "@key": {
       "@type": "Random"
@@ -176,11 +138,68 @@
     }
   },
   {
-    "@id": "Name_Type",
+    "@abstract": [],
+    "@id": "Source",
+    "@type": "Class"
+  },
+  {
+    "@id": "SpatialWebIdentifier",
+    "@type": "Class",
+    "id": "xsd:string"
+  },
+  {
+    "@id": "Polygon_Type",
     "@type": "Enum",
     "@value": [
-      "name"
+      "Polygon"
     ]
+  },
+  {
+    "@id": "Area",
+    "@type": "Class",
+    "extent": {
+      "@class": "AreaExtent",
+      "@type": "Optional"
+    },
+    "hazard_history": {
+      "@class": "HazardEvent",
+      "@type": "Set"
+    },
+    "hazards": {
+      "@class": "Hazard",
+      "@type": "Set"
+    },
+    "name": "xsd:string",
+    "population": {
+      "@class": "xsd:integer",
+      "@type": "Optional"
+    }
+  },
+  {
+    "@abstract": [],
+    "@id": "Properties",
+    "@type": "Class"
+  },
+  {
+    "@documentation": {
+      "@comment": "Update history",
+      "@properties": {
+        "comment": "A comment relating to an historic hazard incident.",
+        "date": "The date at which the update occurred."
+      }
+    },
+    "@id": "UpdateEvent",
+    "@inherits": "Event",
+    "@key": {
+      "@fields": [
+        "comment",
+        "date"
+      ],
+      "@type": "Lexical"
+    },
+    "@subdocument": [],
+    "@type": "Class",
+    "comment": "xsd:string"
   },
   {
     "@id": "Person",
@@ -205,12 +224,6 @@
     }
   },
   {
-    "@id": "Owner",
-    "@type": "Class",
-    "contact_person": "Person",
-    "name": "xsd:string"
-  },
-  {
     "@id": "Point_Type",
     "@type": "Enum",
     "@value": [
@@ -218,49 +231,29 @@
     ]
   },
   {
-    "@id": "CRS84_Type",
-    "@type": "Enum",
-    "@value": [
-      "urn:ogc:def:crs:OGC:1.3:CRS84"
-    ]
+    "@id": "HazardScale",
+    "@key": {
+      "@type": "Random"
+    },
+    "@type": "Class",
+    "hazard": "Hazard",
+    "max": "xsd:decimal",
+    "min": "xsd:decimal"
   },
   {
-    "@abstract": [],
-    "@id": "Event",
+    "@id": "Point",
+    "@inherits": "Geometry",
+    "@key": {
+      "@type": "Random"
+    },
     "@subdocument": [],
     "@type": "Class",
-    "date": "xsd:dateTime"
-  },
-  {
-    "@id": "Hazard",
-    "@type": "Enum",
-    "@value": [
-      "Volcanos (incl. lahars, pyroclastic flows, volcanic activity)",
-      "Landslides (incl. post wildfire landslides) and Avalanches",
-      "Hurricanes, Typhoons, or Cyclones",
-      "Tropical/Extra Tropical of other extreme storms",
-      "Coast Storm Surge",
-      "Pluvial and Fluvial Flooding",
-      "\"Sunny Day\" Tidal Flooding",
-      "Tornadoes, Derechos, Micro-Bursts",
-      "Lightning Strikes",
-      "Wildfires",
-      "Drought",
-      "Geologic Sink Holes",
-      "Pest Infestations",
-      "Famine",
-      "High Temperature Event",
-      "Low Temperature Event",
-      "Cyber Attack or Failure",
-      "Other Terrorism",
-      "Industrial Accident (Emissions, Releases, Spills, Ect.)"
-    ]
-  },
-  {
-    "@abstract": [],
-    "@id": "AssetType",
-    "@type": "Class",
-    "name": "xsd:string"
+    "coordinates": {
+      "@class": "xsd:decimal",
+      "@dimensions": 1,
+      "@type": "Array"
+    },
+    "type": "Point_Type"
   },
   {
     "@id": "Location",
@@ -282,31 +275,38 @@
     "street": "xsd:string"
   },
   {
-    "@documentation": {
-      "@comment": "Update history",
-      "@properties": {
-        "comment": "A comment relating to an historic hazard incident.",
-        "date": "The date at which the update occurred."
-      }
-    },
-    "@id": "UpdateEvent",
-    "@inherits": "Event",
-    "@key": {
-      "@fields": [
-        "comment",
-        "date"
-      ],
-      "@type": "Lexical"
-    },
-    "@subdocument": [],
-    "@type": "Class",
-    "comment": "xsd:string"
+    "@id": "LineString_Type",
+    "@type": "Enum",
+    "@value": [
+      "LineString"
+    ]
   },
   {
-    "@id": "name",
+    "@id": "Owner",
     "@type": "Class",
-    "properties": "Properties",
-    "type": "Name_Type"
+    "contact_person": "Person",
+    "name": "xsd:string"
+  },
+  {
+    "@id": "OSiProperties",
+    "@inherits": "Properties",
+    "@type": "Class",
+    "NAMN1": "xsd:string",
+    "OBJECTID": "xsd:integer"
+  },
+  {
+    "@id": "Name_Type",
+    "@type": "Enum",
+    "@value": [
+      "name"
+    ]
+  },
+  {
+    "@id": "MultiPolygon_Type",
+    "@type": "Enum",
+    "@value": [
+      "MultiPolygon"
+    ]
   },
   {
     "@documentation": {
@@ -331,14 +331,30 @@
     "hazard": "Hazard"
   },
   {
-    "@id": "HazardScale",
-    "@key": {
-      "@type": "Random"
-    },
-    "@type": "Class",
-    "hazard": "Hazard",
-    "max": "xsd:decimal",
-    "min": "xsd:decimal"
+    "@id": "Hazard",
+    "@type": "Enum",
+    "@value": [
+      "Volcanos (incl. lahars, pyroclastic flows, volcanic activity)",
+      "Landslides (incl. post wildfire landslides) and Avalanches",
+      "Hurricanes, Typhoons, or Cyclones",
+      "Tropical/Extra Tropical of other extreme storms",
+      "Coast Storm Surge",
+      "Pluvial and Fluvial Flooding",
+      "\"Sunny Day\" Tidal Flooding",
+      "Tornadoes, Derechos, Micro-Bursts",
+      "Lightning Strikes",
+      "Wildfires",
+      "Drought",
+      "Geologic Sink Holes",
+      "Pest Infestations",
+      "Famine",
+      "High Temperature Event",
+      "Low Temperature Event",
+      "Cyber Attack or Failure",
+      "Other Terrorism",
+      "Industrial Accident (Emissions, Releases, Spills, Ect.)",
+      "Earthquakes"
+    ]
   },
   {
     "@id": "GeometryCollection_Type",
@@ -348,58 +364,54 @@
     ]
   },
   {
-    "@id": "Point",
-    "@inherits": "Geometry",
+    "@id": "GeoCoordinate",
+    "@key": {
+      "@fields": [
+        "latitude",
+        "longitude"
+      ],
+      "@type": "Lexical"
+    },
+    "@subdocument": [],
+    "@type": "Class",
+    "latitude": "xsd:decimal",
+    "longitude": "xsd:decimal"
+  },
+  {
+    "@abstract": [],
+    "@id": "FundingSource",
+    "@type": "Class"
+  },
+  {
+    "@id": "Feature_Type",
+    "@type": "Enum",
+    "@value": [
+      "Feature"
+    ]
+  },
+  {
+    "@abstract": [],
+    "@id": "Geometry",
     "@key": {
       "@type": "Random"
     },
     "@subdocument": [],
-    "@type": "Class",
-    "coordinates": {
-      "@class": "xsd:decimal",
-      "@dimensions": 1,
-      "@type": "Array"
-    },
-    "type": "Point_Type"
+    "@type": "Class"
   },
   {
-    "@id": "DependencyRelation",
+    "@id": "GeoPerimeter",
+    "@key": {
+      "@fields": [
+        "perimeter"
+      ],
+      "@type": "Lexical"
+    },
+    "@subdocument": [],
     "@type": "Class",
-    "comment": "xsd:string",
-    "critical": "xsd:boolean",
-    "dependent": "Asset",
-    "depends_on": "Asset"
-  },
-  {
-    "@id": "OSiProperties",
-    "@inherits": "Properties",
-    "@type": "Class",
-    "NAMN1": "xsd:string",
-    "OBJECTID": "xsd:integer"
-  },
-  {
-    "@id": "Feature",
-    "@type": "Class",
-    "bbox": {
-      "@class": "xsd:string",
-      "@dimensions": 1,
-      "@type": "Array"
-    },
-    "centerline": {
-      "@class": "Geometry",
-      "@type": "Optional"
-    },
-    "geometry": "Geometry",
-    "id": {
-      "@class": "xsd:string",
-      "@type": "Optional"
-    },
-    "properties": "Properties",
-    "title": {
-      "@class": "xsd:string",
-      "@type": "Optional"
-    },
-    "type": "Feature_Type"
+    "perimeter": {
+      "@class": "GeoCoordinate",
+      "@type": "List"
+    }
   },
   {
     "@id": "FeatureCollection",
@@ -419,36 +431,10 @@
     "type": "FeatureCollection_Type"
   },
   {
-    "@abstract": [],
-    "@id": "FundingSource",
-    "@type": "Class"
-  },
-  {
-    "@id": "GeoCoordinate",
-    "@key": {
-      "@fields": [
-        "latitude",
-        "longitude"
-      ],
-      "@type": "Lexical"
-    },
-    "@subdocument": [],
-    "@type": "Class",
-    "latitude": "xsd:decimal",
-    "longitude": "xsd:decimal"
-  },
-  {
     "@id": "FeatureCollection_Type",
     "@type": "Enum",
     "@value": [
       "FeatureCollection"
-    ]
-  },
-  {
-    "@id": "Feature_Type",
-    "@type": "Enum",
-    "@value": [
-      "Feature"
     ]
   }
 ]

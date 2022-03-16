@@ -1,6 +1,5 @@
 body {
     background-color: #f8f9fa !important;
-
 }
 
 /**nav bar and content spacing */
@@ -14,6 +13,10 @@ body {
 
 .search-asset-input{
     width: 450px  !important;
+}
+
+.table-word-break {
+    word-break: break-all !important;
 }
 
 table > thead > tr:first-child {
@@ -211,6 +214,17 @@ input.failure-chain-checkbox {
     z-index: 300 !important;
 }
 
+
+select > option {
+    background-color: transparent !important;
+    color: #444 !important;
+}
+
+
+a.leaflet-browser-print{
+    margin-left: 50px !important;
+    height: 50px !important;
+}
 
 
 

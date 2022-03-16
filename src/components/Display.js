@@ -14,8 +14,12 @@ export const DisplayDocuments = ({results, css, config, title}) => {
     </div>
 }
 
+//decodeURI(showDocument["@id"])
 export const ViewDocument = ({frames, type, getDocumentToolBar, onTraverse, FieldTemplate, uiFrame, handleSelect, showDocument}) => {
     return <Card className="text-break p-4">
+        <Card.Header className="text-dark" tilte={`Asset ID - ${showDocument["@id"]}`}>
+            {showDocument["@id"]}
+        </Card.Header>
         <Row>
             {getDocumentToolBar && getDocumentToolBar(showDocument)}
         </Row>
@@ -36,8 +40,10 @@ export const ViewDocument = ({frames, type, getDocumentToolBar, onTraverse, Fiel
 
 
 export const CreateDocument = ({frames, type, handleSelect, handleSubmit}) => {
+
     return <Card className="text-break p-4">
         <Form frames={frames}
+            //uiFrame={uiSchema}
             type={type}
             mode={CREATE_MODE}
             onSubmit={handleSubmit}

@@ -13,7 +13,7 @@ export const GradedButtons = ({setCurrentGrade, max}) => {
     useEffect(() => {
         if(max) {
             let buttonList = []
-            for(var count = 0; count < max; count ++) {
+            for(var count = 1; count < max+1; count ++) { // review this bit - with (max)
                 var color
                 if(count === 0) color=BG_AMBER
                 else if(count === 1) color=BG_FIRE

@@ -26,10 +26,12 @@ const ShowCriticalList = ({documents, setCurrentAsset, ownerResults}) => {
         }
     })
 
-    return <Table documents = {criticalList}
-        title={CRITICAL_LINKS}
-        config={getCriticalAssetConfig(criticalList, onRowClick)}
-    />
+    return <span className="table-word-break">
+        <Table documents = {criticalList}
+            title={CRITICAL_LINKS}
+            config={getCriticalAssetConfig(criticalList, onRowClick)}
+        />
+    </span>
 }
 
 const ShowNonCriticalList = ({documents}) => {
@@ -43,11 +45,12 @@ const ShowNonCriticalList = ({documents}) => {
         }
     })
 
-    return <Table documents = {nonCriticalList}
-        title={NON_CRITICAL_LINKS}
-        config={getCriticalAssetConfig(nonCriticalList)}
-    />
-
+    return <span className="table-word-break">
+        <Table documents = {nonCriticalList}
+            title={NON_CRITICAL_LINKS}
+            config={getCriticalAssetConfig(nonCriticalList)}
+        />
+    </span>
 }
 
 
