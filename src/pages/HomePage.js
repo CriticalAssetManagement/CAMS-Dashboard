@@ -22,6 +22,8 @@ import "leaflet.browser.print/dist/leaflet.browser.print.js"
 import {antPath} from 'leaflet-ant-path'
 import {CRITICAL_LINKS, NON_CRITICAL_LINKS, NON_CRITICAL_COLOR, CRITICAL_COLOR} from "../components/constants"
 import {LATITUDE, LONGITUDE, DASH_LINES_OPTIONS, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH, POPUP_OPTIONS}  from "../components/Maps/constants"
+import {extractAndDrawVectors, gatherVectorLines, drawFailureChains, getMarkers, drawPolyLine} from "../components/Maps/utils"
+
 
 export const HomePage = () => {
     const [query, setQuery] = useState(false)
@@ -88,39 +90,13 @@ export const HomePage = () => {
 
 	}
 
-    function getPopContent (coord){
-        return `<div>
-            <div> name:  ${coord.name} </div>
-            <div> lat:   ${coord.lat} </div>
-            <div> lng:   ${coord.lng}</div>
-        </div>`
-    }
-
+    // function to load markers on to map
     function loadMarkers (assets, layerGroup, map) {
         if(!assets) return
         clearMap()
-        assets.map(asset => {
-            // get marker lat lng
-            let coord = {name:asset[VAR_NAME] ,lat: asset.lat, lng: asset.lng}
-
-            let marker = L.marker(coord , MARKER_OPTIONS)
-                //.bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
-                .bindPopup(getPopContent(coord), POPUP_OPTIONS)
-                .on('click', function(e) {
-                    let cData = asset //coord
-                    cData[REFRESH] = Date.now()
-                    //map.setView(e.latlng, 13)
-                    if(setOnMarkerClick) setOnMarkerClick(cData)
-                })
-                .addTo(layerGroup)
-
-            marker.on('mouseover',function(ev) { // on hover
-                marker.openPopup()
-            })
-        })
+        getMarkers (assets, layerGroup, setOnMarkerClick)
         map.addLayer(layerGroup)
         setLayerGroup(layerGroup)
-
     }
 
     function clearMap() {
@@ -143,150 +119,25 @@ export const HomePage = () => {
     }
 
     function changeMap () {
-
-        let vectorJson = [], failureChainJson = []
         clearMap()
         var mg = L.layerGroup()
-        if(polyLine && Array.isArray(polyLine)) {
-            // Draw markers
-			polyLine.map(pl => {
-				if(!pl.hasOwnProperty("data")) return
-				pl.data.map(arr => {
-					let linkArray = arr
-					linkArray.map(la => {
-						// get marker lat lng
-						let coord = {name: la[VAR_NAME], lat: la.lat, lng: la.lng}
-						let marker = L.marker(coord , MARKER_OPTIONS)
-						    //.bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
-                            .bindPopup(getPopContent(coord), POPUP_OPTIONS)
-						    .on('click', function(e) {
-                                let cData = la //coord
-                                cData[REFRESH] = Date.now()
-                                //mapComponent.setView(e.latlng, 13) // zoom in on click
-                                if(setOnMarkerClick) setOnMarkerClick(cData)
-                            })
-                        marker.on('mouseover',function(ev) { // on hover
-                            marker.openPopup()
-                        })
-                        marker.addTo(mg)
-					})
-				})
-			})
-
-			// extracting only lat lng
-			polyLine.map(pl => {
-				let vectorCoords = []
-				pl.data.map(arr => {
-					let linkArray = arr
-                    vectorJson.push({color: pl.color, title: pl.title, data: linkArray})
-				})
-
-			})
-		}
-
-        // gather failure chain markers
-        if(displayFailureChains && Array.isArray(displayFailureChains )) {
-            displayFailureChains.map(linkChains => {
-                if(Array.isArray(linkChains)){
-                    linkChains.map(link => {
-                        let coord = { name:link[VAR_NAME], lat: link.lat, lng: link.lng }
-                        let marker = L.marker(coord , MARKER_OPTIONS)
-                            //.bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
-                            .bindPopup(getPopContent(coord), POPUP_OPTIONS)
-                            .on('click', function(e) {
-                                let cData = link //coord
-                                cData[REFRESH] = Date.now()
-                                //map.setView(e.latlng, 13)
-                                if(setOnMarkerClick) setOnMarkerClick(cData)
-                            })
-                        marker.on('mouseover',function(ev) { // on hover
-                            marker.openPopup()
-                        })
-                        marker.addTo(mg)
-                    })
-                }
-            })
-        }
+        let vectorJson=extractAndDrawVectors(polyLine, setOnMarkerClick, mg)
+        // draw failure chain
+        drawFailureChains (displayFailureChains, mg)
 
         // get vector and add arrows
-		function getVector (vector, failureChainJson) {
-			let layerJson = {}
-
+		function getVector (vector) {
             clearMap()
-
-            let vectorControl = {
-                [CRITICAL_LINKS]: [],
-                [NON_CRITICAL_LINKS]: []
-            }
-
-            vector.map(vc => {
-				if(vc.title === CRITICAL_LINKS) {
-                    vectorControl[CRITICAL_LINKS].push(vc.data)
-                }
-                else if (vc.title === NON_CRITICAL_LINKS) {
-                    vectorControl[NON_CRITICAL_LINKS].push(vc.data)
-                }
-			})
-
-            //layer control for critical links
-            if(vectorControl[CRITICAL_LINKS].length) {
-                var things = L.polyline(vectorControl[CRITICAL_LINKS] , { color: CRITICAL_COLOR})
-					.arrowheads(ARROW_OPTIONS)
-					.bindPopup(
-						`<code>var simpleVector0: L.polyline(coords).arrowheads()</code>`,
-						{ maxWidth: 2000 }
-					)
-
-				//layerJson[CRITICAL_LINKS] = things.addTo(mapComponent)
-                layerJson[CRITICAL_LINKS] = things.addTo(mg)
-            }
-            //layer control for non critical links
-            if (vectorControl[NON_CRITICAL_LINKS].length) {
-                var things = L.polyline(vectorControl[NON_CRITICAL_LINKS] , { color: NON_CRITICAL_COLOR})
-					.arrowheads(ARROW_OPTIONS)
-					.bindPopup(
-						`<code>var simpleVector0: L.polyline(coords).arrowheads()</code>`,
-						{ maxWidth: 2000 }
-					)
-
-				//layerJson[NON_CRITICAL_LINKS] = things.addTo(mapComponent)
-                layerJson[NON_CRITICAL_LINKS] = things.addTo(mg)
-            }
-
-            console.log("displayFailureChains",displayFailureChains)
-
-            // display Failure Chains
-            if(displayFailureChains && Array.isArray(displayFailureChains )) {
-                let gatherLinkedChains=[]
-                displayFailureChains.map(linkChains => {
-                    if(Array.isArray(linkChains)) gatherLinkedChains.push(linkChains)
-                })
-
-                //gatherLinkedChains.length === 1 means its the last node in chain - so we dont display
-                // /commenting for now && gatherLinkedChains.length > 1
-                if (Array.isArray(gatherLinkedChains) ) {
-                    // add dashed lines to map to show indirect links
-                    var  antPolyline = L.polyline.antPath(gatherLinkedChains, DASH_LINES_OPTIONS)
-                    layerJson["Failure Nodes"] = antPolyline.addTo(mg)
-                }
-
-            }
-
-			return layerJson
+            return gatherVectorLines(vector, displayFailureChains, mg)
 		}
 
-
         var layersControl = L.control
-			.layers(null, getVector(vectorJson, failureChainJson),  {position: 'topleft', collapsed: false})
+			.layers(null, getVector(vectorJson, displayFailureChains),  {position: 'topleft', collapsed: false})
 			.addTo(mapComponent)
-
 
         // add all gathered markers, polylines, failure chains to layer
         mapComponent.addLayer(mg)
         setLayerGroup(mg)
-
-        //L.control.browserPrint().addTo(mapComponent)
-
         setVectorLayerGroup(layersControl)
 
     } //changeMap()
@@ -427,24 +278,4 @@ export const HomePage = () => {
 }
 
 
-
-//gatherLinkedChains.length === 1 means its the last node in chain - so we dont display
-                /*if (Array.isArray(gatherLinkedChains) && gatherLinkedChains.length > 1) {
-                    var things = L.polyline(gatherLinkedChains, {
-                        color: "maroon",
-                        dashArray: '10, 10'
-                    })
-                    .arrowheads(ARROW_OPTIONS)
-                    .bindPopup(
-                        `<code>var simpleVector0: L.polyline(coords).arrowheads()</code>`,
-                        { maxWidth: 2000 }
-                    )
-                    //layerJson["Failure Nodes"] = things.addTo(mapComponent)
-                    layerJson["Failure Nodes"] = things.addTo(mg)
-
-                    // add dashed lines to map to show indirect links
-                    var  antPolyline = L.polyline.antPath(gatherLinkedChains, DASH_LINES_OPTIONS)
-                    antPolyline.addTo(mg)
-                    setAntPathLayer(antPolyline)
-                } */
 

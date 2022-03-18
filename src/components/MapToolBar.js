@@ -13,6 +13,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import {GradedButtons} from "./GradedButtons"
 import {getEventScaleQuery} from "../hooks/queries"
 import {QueryHook} from "../hooks/QueryHook"
+import {ASSET_TYPE} from "../pages/constants"
 
 export const MapToolBar = ({setResetMap, onMarkerClick, setDisplayFailureChains, setFilterAssetByEvent, setFailureChain, setFilterAssetById}) => {
 
@@ -121,7 +122,11 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setDisplayFailureChains,
             <Row className="flex-row flex-wrap">
 
                 <Col>
-                    <SearchBar placeholder={SEARCH_ASSET_PLACEHOLDER} setFilterAssetById={setFilterAssetById}/>
+                    <SearchBar
+                        woqlClient={woqlClient}
+                        type={ASSET_TYPE}
+                        placeholder={SEARCH_ASSET_PLACEHOLDER}
+                        setFilterAssetById={setFilterAssetById}/>
                 </Col>
 
 

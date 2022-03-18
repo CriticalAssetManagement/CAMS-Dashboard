@@ -94,3 +94,49 @@ export const BG_RED="#d30000"
 export const BG_CHILI="#c21807"
 export const BG_BURGUNDY="#8d021f"
 export const BG_SANGRIA="#5e1914"
+
+// select style
+export const SELECT_STYLES = {
+    control: (styles) => ({ ...styles,
+            backgroundColor: '#fff',
+            borderColor: "#e6e6e6" }),
+    menu: (styles) => ({ ...styles, backgroundColor: '#fff'}),
+    option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+        return {
+            ...styles,
+            backgroundColor: isDisabled
+                ? undefined
+                : isSelected
+                ? "#fff"
+                : isFocused
+                ? "#fff"
+                : undefined,
+            color: isDisabled
+                ? '#000'
+                : isSelected,
+                cursor: isDisabled ? 'not-allowed' : 'default',
+            ':active': {
+                ...styles[':active'],
+                backgroundColor: !isDisabled
+                    ? isSelected
+                    ? "#000"
+                    : "#000"
+                    : undefined,
+            color: "#000"
+            },
+        }
+    },
+    input: (styles) => {
+        return {
+            ...styles,
+            color: '#000',
+            width: 450
+        }
+    },
+    singleValue:(styles) => {
+        return {
+            ...styles,
+            color: '#000'
+        }
+    }
+}
