@@ -15,13 +15,16 @@ export async function handleDocumentSelect(woqlClient, inp, type) {
         if(inp){
             response.bindings.map(thing => {
                 if(thing["Documents"].toUpperCase().includes(inp.toUpperCase())){
-                    options.push({value: thing["Documents"], label: thing["Documents"]})
+
+                    let label = thing["Documents"].replace("Asset/",'')
+                    options.push({value: thing["Documents"], label: decodeURI(label)})
                 }
             })
         }
         else {
             response.bindings.map(thing => {
-                options.push({value: thing["Documents"], label: thing["Documents"]})
+                let label = thing["Documents"].replace("Asset/",'')
+                options.push({value: thing["Documents"], label: decodeURI(label)})
             })
         }
         return options
