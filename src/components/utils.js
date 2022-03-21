@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 const TerminusDBClient = require("@terminusdb/terminusdb-client")
-import {VAR_DEPENDENT_ON, VAR_LATITUDE, VAR_LAST_MAINTAINED, LAT, VAR_DESCRIPTION, LNG, VAR_LONGITUDE, VAR_DESIGN_STANDARDS, VAR_ASSET_IDENTIFIER, VAR_LINKED_ASSET, VAR_NAME, VAR_CRITICAL, VAR_PATH, VAR_INDEX, VAR_ASSET, VAR_VALUE} from "./constants"
+import {VAR_DEPENDENT_ON, VAR_LATITUDE, VAR_GRADE, VAR_LAST_MAINTAINED, LAT, VAR_DESCRIPTION, LNG, VAR_LONGITUDE, VAR_DESIGN_STANDARDS, VAR_ASSET_IDENTIFIER, VAR_LINKED_ASSET, VAR_NAME, VAR_CRITICAL, VAR_PATH, VAR_INDEX, VAR_ASSET, VAR_VALUE} from "./constants"
 import {MdAddAlert} from "react-icons/md"
 
 export async function handleDocumentSelect(woqlClient, inp, type) {
@@ -133,6 +133,9 @@ export function extractAssetLocations(results) {
             if(item.hasOwnProperty(VAR_PATH)) {
                 json[item[VAR_ASSET]]["path"] = item[VAR_PATH]
             }
+            if(item.hasOwnProperty(VAR_GRADE)) {
+                json[item[VAR_ASSET]][VAR_GRADE] = item[VAR_GRADE]["@value"]
+            }
         }
     })
     for(var things in json) {
@@ -150,7 +153,7 @@ export function extractNewAssetLocations(results) {
     results.map(item => {
 
         if(item.hasOwnProperty(VAR_CRITICAL)) { // skip non ciritical values for failure chain
-            console.log('item[VAR_CRITICAL]["@value"]', item[VAR_CRITICAL]["@value"])
+            //console.log('item[VAR_CRITICAL]["@value"]', item[VAR_CRITICAL]["@value"])
             if(item[VAR_CRITICAL]["@value"] === false) {
                 return
             }
@@ -178,7 +181,7 @@ export function extractNewAssetLocations(results) {
     for(var things in json) {
         docs.push(json[things])
     }
-    console.log("docs", docs)
+    //console.log("docs", docs)
     return docs
 }
 

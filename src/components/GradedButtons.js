@@ -1,7 +1,7 @@
 
 import React, {useState, useEffect} from "react"
 import {Button} from "react-bootstrap"
-import {BG_AMBER, BG_GOLD, BG_FIRE, BG_DIJON, BG_RED, BG_CHILI, BG_BURGUNDY, BG_SANGRIA} from "./constants"
+import {BG_AMBER, BG_GOLD, BG_FIRE, BG_DIJON, BG_RED, BG_CHILI, BG_BURGUNDY, BG_SANGRIA} from "./Maps/markers"
 
 export const GradedButtons = ({setCurrentGrade, max}) => {
 
@@ -15,8 +15,7 @@ export const GradedButtons = ({setCurrentGrade, max}) => {
             let buttonList = []
             for(var count = 1; count < max+1; count ++) { // review this bit - with (max)
                 var color
-                if(count === 0) color=BG_AMBER
-                else if(count === 1) color=BG_FIRE
+                if(count === 1) color=BG_AMBER
                 else if(count === 2) color=BG_DIJON
                 else if(count === 3) color=BG_RED
                 else if(count === 4) color=BG_CHILI

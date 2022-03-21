@@ -1,8 +1,8 @@
 import {LATITUDE, LONGITUDE, DASH_LINES_OPTIONS, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH, POPUP_OPTIONS}  from "./constants"
-import {CRITICAL_LINKS, VAR_NAME, NON_CRITICAL_LINKS, NON_CRITICAL_COLOR, CRITICAL_COLOR} from ".././constants"
+import {CRITICAL_LINKS, VAR_NAME, NON_CRITICAL_LINKS, NON_CRITICAL_COLOR, CRITICAL_COLOR, VAR_GRADE} from ".././constants"
 import "leaflet-arrowheads"
 import "leaflet.browser.print/dist/leaflet.browser.print.js"
-
+import {ICON, BG_CHILI_ICON, BG_RED_ICON, BG_BURGUNDY_ICON,BG_AMBER_ICON, BG_DIJON_ICON,BG_FIRE_ICON, BG_GOLD_ICON} from "./markers"
 
 // get vector and add arrows critical and non critical lines
 export function  gatherVectorLines(vector, displayFailureChains, layerGorup) {
@@ -149,11 +149,42 @@ export function getPopContent (coord){
 
 // get all markers
 export function getMarkers (assets, layerGroup, setOnMarkerClick) {
+    console.log("assets", assets)
     assets.map(asset => {
         // get marker lat lng
         let coord = {name:asset[VAR_NAME] ,lat: asset.lat, lng: asset.lng}
+        var options=MARKER_OPTIONS, test=ICON
+        if(asset.hasOwnProperty(VAR_GRADE)) {
+            if(asset[VAR_GRADE] === 1) {
+                options = {
+                    icon: BG_AMBER_ICON
+                }
+            }
+            else if(asset[VAR_GRADE] === 2) {
+                options = {
+                    icon: BG_DIJON_ICON
+                }
+            }
+            else if(asset[VAR_GRADE] === 3) {
+                options = {
+                    icon: BG_RED_ICON
+                }
+            }
+            else if(asset[VAR_GRADE] === 4) {
+                options = {
+                    icon: BG_CHILI_ICON
+                }
+            }
+            else if(asset[VAR_GRADE] === 5) {
+                options = {
+                    icon: BG_BURGUNDY_ICON
+                }
+            }
+        }
 
-        let marker = L.marker(coord , MARKER_OPTIONS)
+        console.log("options", test)
+
+        let marker = L.marker(coord , options)
             //.bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
             .bindPopup(getPopContent(coord), POPUP_OPTIONS)
             .on('click', function(e) {

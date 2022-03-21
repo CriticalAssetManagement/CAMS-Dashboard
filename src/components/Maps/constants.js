@@ -1,15 +1,4 @@
-// map icon component
-import L from "leaflet"
-
-
-// map icons
-export const icon = L.icon({
-    iconSize: [25, 41],
-    iconAnchor: [10, 41],
-    popupAnchor: [2, -40],
-    iconUrl: "https://unpkg.com/leaflet@1.6/dist/images/marker-icon.png",
-    shadowUrl: "https://unpkg.com/leaflet@1.6/dist/images/marker-shadow.png"
-})
+import {ICON} from "./markers"
 
 // MAP id for ref
 export const MAP_ID = "map-leaflet-id-polylines"
@@ -33,7 +22,7 @@ export const MAP_OPTIONS = {
 // Options for the marker
 export const MARKER_OPTIONS = {
 	clickable: true,
-	icon: icon
+	icon: ICON
 }
 
 export const ARROW_OPTIONS = {

@@ -21,6 +21,7 @@ export const VAR_LONGITUDE="Longitude"
 export const VAR_LATITUDE="Latitude"
 export const VAR_NAME="Name"
 export const VAR_CRITICAL="Critical"
+export const VAR_GRADE="Grade"
 export const VAR_INDEX="Index"
 export const VAR_ASSET="Asset"
 export const VAR_LINKED_ASSET="LinkedAsset"
@@ -84,16 +85,6 @@ export const FAILURE_CHAIN_TITLE="Failure Chain"
 
 //types
 export const HAZARD_TYPE = "Hazard"
-
-// graded events color
-export const BG_AMBER="#ffbf00"
-export const BG_GOLD="#f9a602"
-export const BG_FIRE="#fda50f"
-export const BG_DIJON="#c49102"
-export const BG_RED="#d30000"
-export const BG_CHILI="#c21807"
-export const BG_BURGUNDY="#8d021f"
-export const BG_SANGRIA="#5e1914"
 
 // select style
 export const SELECT_STYLES = {
