@@ -146,44 +146,47 @@ export function getPopContent (coord){
     </div>`
 }
 
+// get colored markers if grade is available
+function getMarkerOptions(asset) {
+    var options=MARKER_OPTIONS
+    if(asset.hasOwnProperty(VAR_GRADE)) {
+        if(asset[VAR_GRADE] === 1) {
+            options = {
+                icon: BG_AMBER_ICON
+            }
+        }
+        else if(asset[VAR_GRADE] === 2) {
+            options = {
+                icon: BG_DIJON_ICON
+            }
+        }
+        else if(asset[VAR_GRADE] === 3) {
+            options = {
+                icon: BG_RED_ICON
+            }
+        }
+        else if(asset[VAR_GRADE] === 4) {
+            options = {
+                icon: BG_CHILI_ICON
+            }
+        }
+        else if(asset[VAR_GRADE] === 5) {
+            options = {
+                icon: BG_BURGUNDY_ICON
+            }
+        }
+    }
+    return options
+}
 
 // get all markers
 export function getMarkers (assets, layerGroup, setOnMarkerClick) {
-    console.log("assets", assets)
+    //console.log("assets", assets)
     assets.map(asset => {
         // get marker lat lng
         let coord = {name:asset[VAR_NAME] ,lat: asset.lat, lng: asset.lng}
-        var options=MARKER_OPTIONS, test=ICON
-        if(asset.hasOwnProperty(VAR_GRADE)) {
-            if(asset[VAR_GRADE] === 1) {
-                options = {
-                    icon: BG_AMBER_ICON
-                }
-            }
-            else if(asset[VAR_GRADE] === 2) {
-                options = {
-                    icon: BG_DIJON_ICON
-                }
-            }
-            else if(asset[VAR_GRADE] === 3) {
-                options = {
-                    icon: BG_RED_ICON
-                }
-            }
-            else if(asset[VAR_GRADE] === 4) {
-                options = {
-                    icon: BG_CHILI_ICON
-                }
-            }
-            else if(asset[VAR_GRADE] === 5) {
-                options = {
-                    icon: BG_BURGUNDY_ICON
-                }
-            }
-        }
 
-        console.log("options", test)
-
+        let options = getMarkerOptions(asset)
         let marker = L.marker(coord , options)
             //.bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
             .bindPopup(getPopContent(coord), POPUP_OPTIONS)

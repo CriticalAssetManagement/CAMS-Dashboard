@@ -52,3 +52,11 @@ export const POPUP_OPTIONS = {
 	className : 'map-leaflet-popup'
 }
 
+export const BROWSER_PRINT_OPTIONS = {
+	title: "Print Map",
+	documentTitle: "Map printed using leaflet.browser.print plugin",
+	closePopupsOnPrint: false,
+	manualMode: false,
+	printModes: [ "Portrait", "Landscape"]
+}
+

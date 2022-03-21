@@ -7,23 +7,16 @@ import {QueryHook} from "../hooks/QueryHook"
 import {getAvailableAssets} from "../hooks/queries"
 import {extractAssetLocations} from "../components/utils"
 import {MapHook} from "../hooks/MapHook"
-import {Table} from "../components/Table"
-import {Legend} from "../components/Legend"
-import {getCriticalAssetConfig} from "../components/Views"
 import {DEPENDENCY_RELATION_TYPE_TITLE, HOME_PAGE_TABLE_CSS, NO_DEPENDENCY_ALERT, SEARCH_ASSET} from "./constants"
 import {MapToolBar} from "../components/MapToolBar"
 import {SearchBar} from "../components/SearchBar"
 import {DisplayMarkerInfo} from "../components/DisplayMarkerInfo"
 import "leaflet-arrowheads"
-import "leaflet.browser.print/dist/leaflet.browser.print.js"
-//import "leaflet/dist/leaflet.css";
-//import "leaflet.browser.print"
-//import 'leaflet/dist/leaflet.css';
 import {antPath} from 'leaflet-ant-path'
-import {CRITICAL_LINKS, NON_CRITICAL_LINKS, NON_CRITICAL_COLOR, CRITICAL_COLOR} from "../components/constants"
-import {LATITUDE, LONGITUDE, DASH_LINES_OPTIONS, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH, POPUP_OPTIONS}  from "../components/Maps/constants"
+import {LATITUDE, LONGITUDE, DASH_LINES_OPTIONS, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, BROWSER_PRINT_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH, POPUP_OPTIONS}  from "../components/Maps/constants"
 import {extractAndDrawVectors, gatherVectorLines, drawFailureChains, getMarkers, drawPolyLine} from "../components/Maps/utils"
-
+import "leaflet.browser.print/dist/leaflet.browser.print.min.js"
+import "leaflet/dist/leaflet.css"
 
 export const HomePage = () => {
     const [query, setQuery] = useState(false)
@@ -56,35 +49,9 @@ export const HomePage = () => {
         var mg = L.layerGroup()
         loadMarkers (showAssets, mg, map)
 
-        let options = {
-            position: "topleft",
-            title: "Print Map",
-            printModes: ["Portrait", "Landscape", "Auto"]
-        }
-
-        var customActionToPrint = function(context, mode) {
-            return function() {
-                window.alert("We are printing the MAP. Let's do Custom print here!");
-                context._printMode(mode);
-            }
-        };
-
-        L.control.browserPrint({
-            title: 'Just print me!',
-            documentTitle: 'Map printed using leaflet.browser.print plugin',
-
-            closePopupsOnPrint: false,
-            printModes: ["Portrait", "Landscape", "Auto"],
-            manualMode: false
-        }).addTo(map);
-        //var browserControl = L.control.browserPrint(options).addTo(map)
-        //L.control.browserPrint(options).addTo(map);
-
-        /*L.control.browserPrint({
-            documentTitle:'Verify Me!',
-            closePopupsOnPrint:false
-        }).addTo(map) */
-
+        // add print control
+        L.control.browserPrint(BROWSER_PRINT_OPTIONS)
+        .addTo(map)
 
 		window.map = map
 

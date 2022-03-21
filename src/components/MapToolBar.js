@@ -119,7 +119,7 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setDisplayFailureChains,
 
     return <Card>
         <Card.Body className="d-flex">
-            <Row className="flex-row flex-wrap">
+            <Row className="flex-row flex-wrap" style={{position: 'relative', zIndex: 999}}>
 
                 <Col>
                     <SearchBar
