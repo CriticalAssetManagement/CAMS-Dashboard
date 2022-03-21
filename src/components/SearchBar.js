@@ -1,16 +1,11 @@
 import React, {useState, useEffect} from "react"
-import {Form, Button} from "react-bootstrap"
-import {BsSearch} from "react-icons/bs"
 import AsyncSelect from 'react-select/async'
 import {handleDocumentSelect} from "../components/utils"
 import {SELECT_STYLES} from "./constants"
 
 export const SearchBar = ({woqlClient, type, placeholder, setFilterAssetById}) => {
 
-    function handleInput(e) {
-        //e.preventDefault()
-        if(setFilterAssetById) setFilterAssetById(e.target.value)
-    }
+    const [inputValue, setInputValue]=useState(null) // select value
 
     const loadOptions = async (inputValue, callback) => {
         //let opts = await onSelect(inputValue, frame[item])
@@ -20,8 +15,10 @@ export const SearchBar = ({woqlClient, type, placeholder, setFilterAssetById}) =
     }
 
     const handleInputChange = (newValue) => {
-        const inputValue = newValue.replace(/\W/g, '');
-        return inputValue
+        const inp = newValue.replace(/\W/g, '')
+        //console.log("inp", inp)
+        setInputValue(inp)
+        return inp
     }
 
     function onChange(e) {
@@ -38,6 +35,7 @@ export const SearchBar = ({woqlClient, type, placeholder, setFilterAssetById}) =
                 placeholder={placeholder}
                 onChange={onChange}
                 loadOptions={loadOptions}
+                inputValue={inputValue}
                 onInputChange={handleInputChange}
             />
         </div>

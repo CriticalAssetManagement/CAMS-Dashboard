@@ -15,15 +15,16 @@ export const DisplayDocuments = ({results, css, config, title}) => {
 }
 
 export const ViewDocument = ({frames, type, getDocumentToolBar, onTraverse, FieldTemplate, uiFrame, handleSelect, showDocument}) => {
+
     return <Card className="text-break p-4">
-        <Card.Header className="text-dark" tilte={`Asset ID - ${showDocument["@id"]}`}>
+        <Card.Header className="text-dark border-primary" tilte={`Asset ID - ${showDocument["@id"]}`}>
             {showDocument["@id"]}
         </Card.Header>
         <Row>
             {getDocumentToolBar && getDocumentToolBar(showDocument)}
         </Row>
         <Row className="text-break">
-            <Form frames={frames}
+            {frames && <Form frames={frames}
                 uiFrame={uiFrame}
                 FieldTemplate={FieldTemplate}
                 type={type}
@@ -32,7 +33,7 @@ export const ViewDocument = ({frames, type, getDocumentToolBar, onTraverse, Fiel
                 onSelect={handleSelect}
                 onTraverse={onTraverse}
                 formData={showDocument}
-            />
+            />}
         </Row>
     </Card>
 }

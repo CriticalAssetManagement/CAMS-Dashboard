@@ -17,6 +17,9 @@ export const DocumentContextProvider = ({children, params}) => {
     const [tabKey, setTabKey] = useState(params.listTab)
     const [showDocument, setShowDocument] = useState(false)
 
+    // on traverse
+    const [traverseDocument, setTraverseDocument]= useState(false)
+
     const {
         setSuccessMsg,
         setErrorMsg,
@@ -97,9 +100,42 @@ export const DocumentContextProvider = ({children, params}) => {
         setExtractedUpdate(data)
     }
 
+    function getNewPrevious(cur, traverseDocument) {
+        let newArr=traverseDocument.previous
+        if(Array.isArray(newArr)){
+            let index = newArr.indexOf(cur)
+            newArr.splice(index, 1)
+        }
+        return newArr
+    }
+
+    function goToPreviousLinkedDocument() {
+        if(!traverseDocument) return
+        let cur = traverseDocument.previous[traverseDocument.previous.length-1]
+        let newPrevious= getNewPrevious(cur, traverseDocument)
+        if(Array.isArray(newPrevious) && newPrevious.length === 0)
+            setTraverseDocument(false)
+        else {
+            setTraverseDocument({
+                current: cur,
+                previous: newPrevious
+            })
+        }
+        setDocumentId(cur) // set to previous document id
+    }
+
     // function to handle traverse
     function handleTraverse(clicked) {
-        console.log("clicked", clicked)
+        var previous = []
+        if(Array.isArray(traverseDocument.previous)) {
+            previous = traverseDocument.previous
+        }
+        previous.push(documentId) // save document ids via traverse
+        setTraverseDocument({
+            current: clicked,
+            previous: previous
+        })
+        setDocumentId(clicked)
     }
 
     // function to handle select search
@@ -147,7 +183,9 @@ export const DocumentContextProvider = ({children, params}) => {
                 extractedUpdate,
                 setExtractedUpdate,
                 setType,
-                type
+                type,
+                traverseDocument,
+                goToPreviousLinkedDocument
             }}
         >
             {children}

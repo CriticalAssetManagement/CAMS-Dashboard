@@ -1,3 +1,3 @@
 // data product name to connect
-export const DATA_PRODUCT="testDemoPART1"
+export const DATA_PRODUCT="CAMSDemo"
 

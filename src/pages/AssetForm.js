@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
-import {ProgressBar} from "react-bootstrap"
+import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
 import {ASSET_TYPE, AREA_PAGE_TABLE_CSS, EDIT_CLICKED_ASSET, CREATE_ASSET_TAB, VIEW_ASSET_LIST, VIEW_CLICKED_ASSET} from "./constants"
 import {Alerts} from "../components/Alerts"
@@ -10,13 +10,14 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
-
+import {BiArrowBack} from "react-icons/bi"
 
 export const AssetForm = () => {
 
     const {
 		connectionError,
         frames,
+        prefix,
         successMsg,
         setSuccessMsg,
         errorMsg,
@@ -47,7 +48,9 @@ export const AssetForm = () => {
         extractedUpdate,
         setDocumentId,
         setType,
-        type
+        type,
+        traverseDocument,
+        goToPreviousLinkedDocument
     } = DocumentContextObj()
 
     // create
@@ -78,7 +81,6 @@ export const AssetForm = () => {
         }
     }, [documentResults])
 
-
     return <div className="mb-5">
         <Layout/>
 
@@ -99,12 +101,33 @@ export const AssetForm = () => {
                 </Tab>
                 {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_ASSET} title={VIEW_CLICKED_ASSET}>
 
-                        <ViewDocument frames={frames}
-                            getDocumentToolBar={getDocumentToolBar}
-                            handleSelect={handleSelect}
-                            type={ASSET_TYPE}
-                            onTraverse={handleTraverse}
-                            showDocument={showDocument}/>
+                        {Array.isArray(traverseDocument.previous) && <span className="col-md-1 ml-5">
+                            <Button
+                                className="btn-sm"
+                                title={`Go to previous document ${traverseDocument.previous}`}
+                                onClick={goToPreviousLinkedDocument}>
+                                    <BiArrowBack className="mr-2"/>Back
+                            </Button>
+                        </span>}
+                        {
+                            traverseDocument && traverseDocument.hasOwnProperty("current") &&
+                                <ViewDocument frames={frames}
+                                    getDocumentToolBar={getDocumentToolBar}
+                                    handleSelect={handleSelect}
+                                    type={showDocument["@type"]}
+                                    onTraverse={handleTraverse}
+                                    showDocument={showDocument}
+                                />
+                        }
+                        {!traverseDocument &&
+                            <ViewDocument frames={frames}
+                                getDocumentToolBar={getDocumentToolBar}
+                                handleSelect={handleSelect}
+                                type={ASSET_TYPE}
+                                onTraverse={handleTraverse}
+                                showDocument={showDocument}
+                            />
+                        }
                     </Tab>
                 }
                 {editDocument && <Tab eventKey={EDIT_CLICKED_ASSET} title={EDIT_CLICKED_ASSET}>

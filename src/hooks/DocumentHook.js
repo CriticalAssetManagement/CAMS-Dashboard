@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
 
+// create a new document
 export function DocumentHook(woqlClient, document, onRefreshTab, handleRefresh, setLoading, setSuccessMsg, setErrorMsg) {
     const [result, setResult] = useState(false)
 
@@ -24,6 +25,7 @@ export function DocumentHook(woqlClient, document, onRefreshTab, handleRefresh, 
     return result
 }
 
+// view document type instances
 export function GetDocumentListHook(woqlClient, type, refresh, setLoading, setSuccessMsg, setErrorMsg) {
     const [result, setResult] = useState(false)
 
@@ -50,6 +52,7 @@ export function GetDocumentListHook(woqlClient, type, refresh, setLoading, setSu
     return result
 }
 
+// view a document
 export function GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMsg, setErrorMsg) {
     const [result, setResult] = useState(false)
 
@@ -76,6 +79,7 @@ export function GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMs
     return result
 }
 
+// delete documents
 export function DeleteDocumentHook(woqlClient, documentId, onRefreshTab, handleRefresh, setLoading, setSuccessMsg, setErrorMsg) {
     const [result, setResult] = useState(false)
 
@@ -102,6 +106,8 @@ export function DeleteDocumentHook(woqlClient, documentId, onRefreshTab, handleR
     return result
 }
 
+
+// edit documents
 export function EditDocumentHook(woqlClient, extractedUpdate, onRefreshTab, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg) {
     const [result, setResult] = useState(false)
 
@@ -130,5 +136,7 @@ export function EditDocumentHook(woqlClient, extractedUpdate, onRefreshTab, hand
 
     return result
 }
+
+
 
 

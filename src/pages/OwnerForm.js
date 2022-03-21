@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
-import {ProgressBar, Container} from "react-bootstrap"
+import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
 import {OWNER_TYPE, OWNER_PAGE_TABLE_CSS, EDIT_CLICKED_OWNER, CREATE_OWNER_TAB, VIEW_OWNER_LIST, VIEW_CLICKED_OWNER} from "./constants"
 import {Alerts} from "../components/Alerts"
@@ -10,7 +10,7 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
-
+import {BiArrowBack} from "react-icons/bi"
 
 export const OwnerForm = () => {
 
@@ -37,6 +37,7 @@ export const OwnerForm = () => {
         setShowDocument,
         managePageTabs,
         handleDocumentSubmit,
+        handleTraverse,
         extracted,
         handleSelect,
         deleteDocument,
@@ -47,7 +48,9 @@ export const OwnerForm = () => {
         extractedUpdate,
         setDocumentId,
         setType,
-        type
+        type,
+        traverseDocument,
+        goToPreviousLinkedDocument
     } = DocumentContextObj()
 
 
@@ -101,12 +104,36 @@ export const OwnerForm = () => {
                         config={getOwnerConfig(ownerResults, onRowClick)}/>
                 </Tab>
                 {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_OWNER} title={VIEW_CLICKED_OWNER}>
-
-                        <ViewDocument frames={frames}
-                            getDocumentToolBar={getDocumentToolBar}
-                            handleSelect={handleSelect}
-                            type={OWNER_TYPE}
-                            showDocument={showDocument}/>
+                    {Array.isArray(traverseDocument.previous) &&
+                        <span className="col-md-1 ml-5">
+                            <Button
+                                className="btn-sm"
+                                title={`Go to previous document ${traverseDocument.previous}`}
+                                onClick={goToPreviousLinkedDocument}>
+                                    <BiArrowBack className="mr-2"/>Back
+                            </Button>
+                        </span>
+                    }
+                    {
+                        traverseDocument && traverseDocument.hasOwnProperty("current") &&
+                            <ViewDocument frames={frames}
+                                getDocumentToolBar={getDocumentToolBar}
+                                handleSelect={handleSelect}
+                                type={showDocument["@type"]}
+                                onTraverse={handleTraverse}
+                                showDocument={showDocument}
+                            />
+                    }
+                    {
+                        !traverseDocument &&
+                            <ViewDocument frames={frames}
+                                getDocumentToolBar={getDocumentToolBar}
+                                handleSelect={handleSelect}
+                                onTraverse={handleTraverse}
+                                type={OWNER_TYPE}
+                                showDocument={showDocument}
+                            />
+                    }
                     </Tab>
                 }
                 {editDocument && <Tab eventKey={EDIT_CLICKED_OWNER} title={EDIT_CLICKED_OWNER}>
