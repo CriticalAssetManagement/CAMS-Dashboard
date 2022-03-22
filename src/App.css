@@ -84,12 +84,36 @@ and (max-device-width: 1024px)  {
     span.homePageTableCss > span > table > tbody > tr >td:nth-of-type(4):before { content: "Longitude"; }
     span.homePageTableCss > span > table > tbody > tr >td:nth-of-type(5):before { content: "Latitude"; }
 
+    span.criticalAssetTableCss > span > table > tbody > tr > td:nth-of-type(1):before { content: "ID"; }
+    span.criticalAssetTableCss > span > table > tbody > tr >td:nth-of-type(2):before { content: "Name"; }
+
     span.userPageTableCss > span > table > tbody > tr > td:nth-of-type(1):before { content: "Person"; }
     span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(2):before { content: "Email"; }
     span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(3):before { content: "First Name"; }
-    span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(4):before { content: "Last Name"; }
-    span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(5):before { content: "Organization"; }
-    span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(5):before { content: "Phone Number"; }
+    span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(4):before { content: "Job Title"; }
+    span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(5):before { content: "Last Name"; }
+    span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(6):before { content: "Organization"; }
+    span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(7):before { content: "Phone Number"; }
+
+    span.ownerPageTableCss > span > table > tbody > tr > td:nth-of-type(1):before { content: "Owner"; }
+    span.ownerPageTableCss > span > table > tbody > tr >td:nth-of-type(2):before { content: "Contact Person"; }
+    span.ownerPageTableCss > span > table > tbody > tr >td:nth-of-type(3):before { content: "Name"; }
+
+    span.assetPageTableCss > span > table > tbody > tr > td:nth-of-type(1):before { content: "Asset"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(2):before { content: "Asset Identifier"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(3):before { content: "Commisioning Date"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(4):before { content: "Design Standards"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(5):before { content: "Last Maintained"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(6):before { content: "Last Modified"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(7):before { content: "Location"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(8):before { content: "Name"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(9):before { content: "Owner"; }
+
+    span.linkPageTableCss > span > table > tbody > tr > td:nth-of-type(1):before { content: "Link"; }
+    span.linkPageTableCss > span > table > tbody > tr >td:nth-of-type(2):before { content: "Comment"; }
+    span.linkPageTableCss > span > table > tbody > tr >td:nth-of-type(3):before { content: ""; }
+    span.linkPageTableCss > span > table > tbody > tr >td:nth-of-type(4):before { content: "Dependent"; }
+    span.linkPageTableCss > span > table > tbody > tr >td:nth-of-type(5):before { content: "Depends On"; }
 
     span.areaPageTableCss > span > table > tbody > tr > td:nth-of-type(1):before { content: "ID"; }
     span.areaPageTableCss > span > table > tbody > tr >td:nth-of-type(2):before { content: "Name"; }

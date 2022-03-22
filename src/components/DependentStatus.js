@@ -10,6 +10,7 @@ import {Table} from "./Table"
 import {WOQLClientObj} from '../init-woql-client'
 import {getOwnerDetailsQuery} from "../hooks/queries"
 import {ContactClickedAsset} from "./ContactClickedAsset"
+import {CRITCAL_LIST_TABLE_CSS} from "../pages/constants"
 
 const ShowCriticalList = ({documents, setCurrentAsset, ownerResults}) => {
     if(!Array.isArray(documents)) return <small className="text-muted">{EMPTY_PLACEHOLDER}</small>
@@ -29,6 +30,7 @@ const ShowCriticalList = ({documents, setCurrentAsset, ownerResults}) => {
     return <span className="table-word-break">
         <Table documents = {criticalList}
             title={CRITICAL_LINKS}
+            css={CRITCAL_LIST_TABLE_CSS}
             config={getCriticalAssetConfig(criticalList, onRowClick)}
         />
     </span>
@@ -48,6 +50,7 @@ const ShowNonCriticalList = ({documents}) => {
     return <span className="table-word-break">
         <Table documents = {nonCriticalList}
             title={NON_CRITICAL_LINKS}
+            css={CRITCAL_LIST_TABLE_CSS}
             config={getCriticalAssetConfig(nonCriticalList)}
         />
     </span>

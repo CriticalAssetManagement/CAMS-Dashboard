@@ -2,7 +2,7 @@ import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
 import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
-import {ASSET_TYPE, AREA_PAGE_TABLE_CSS, EDIT_CLICKED_ASSET, CREATE_ASSET_TAB, VIEW_ASSET_LIST, VIEW_CLICKED_ASSET} from "./constants"
+import {ASSET_TYPE, ASSET_PAGE_TABLE_CSS, EDIT_CLICKED_ASSET, CREATE_ASSET_TAB, VIEW_ASSET_LIST, VIEW_CLICKED_ASSET} from "./constants"
 import {Alerts} from "../components/Alerts"
 import {DocumentHook, GetDocumentListHook, GetDocumentHook, DeleteDocumentHook, EditDocumentHook} from "../hooks/DocumentHook"
 import {getAssetConfig} from "../components/Views"
@@ -94,7 +94,7 @@ export const AssetForm = () => {
                 className="mb-3">
                 <Tab eventKey={VIEW_ASSET_LIST} title={VIEW_ASSET_LIST}>
                     <DisplayDocuments results={assetResults}
-                        css={AREA_PAGE_TABLE_CSS}
+                        css={ASSET_PAGE_TABLE_CSS}
                         config={getAssetConfig(assetResults, onRowClick)}
                         title={ASSET_TYPE}
                         onRowClick={onRowClick}/>

@@ -2,7 +2,7 @@ import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
 import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
-import {LINK_TYPE, USER_PAGE_TABLE_CSS, EDIT_CLICKED_LINK, CREATE_LINK_TAB, VIEW_LINK_LIST, VIEW_CLICKED_LINK} from "./constants"
+import {LINK_TYPE, LINK_PAGE_TABLE_CSS, EDIT_CLICKED_LINK, CREATE_LINK_TAB, VIEW_LINK_LIST, VIEW_CLICKED_LINK} from "./constants"
 import {Alerts} from "../components/Alerts"
 import {DocumentHook, GetDocumentListHook, GetDocumentHook, DeleteDocumentHook, EditDocumentHook} from "../hooks/DocumentHook"
 import {getUserConfig} from "../components/Views"
@@ -99,7 +99,7 @@ export const LinkForm = () => {
                 className="mb-3">
                 <Tab eventKey={VIEW_LINK_LIST} title={VIEW_LINK_LIST}>
                     <DisplayDocuments results={linkResults}
-                        css={USER_PAGE_TABLE_CSS}
+                        css={LINK_PAGE_TABLE_CSS}
                         title={LINK_TYPE}
                         config={getUserConfig(linkResults, onRowClick)}/>
                 </Tab>

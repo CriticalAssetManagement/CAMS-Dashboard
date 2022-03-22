@@ -57,7 +57,7 @@ export const CRITICAL_LINKS_TITLE="Show Only Ciritcal Links"
 export const SEARCH_ASSET_PLACEHOLDER= "Input an Asset to search"
 export const SEARCH_ASSET_Label= "Filter by Asset ID"
 export const SHOW_ASSET_DETAIL="View Details"
-export const SHOW_ALL_ASSETS="Clear Filters"
+export const SHOW_ALL_ASSETS="Reset"
 export const SHOW_ALL_ASSETS_TITLE="Clear filters and Show All Available Assets"
 export const SHOW_ALL_FAILURE_CHAIN_TITLE="Show failure chain"
 
@@ -81,7 +81,7 @@ export const HIDE_OFFCANVAS_TITLE="Click to go back"
 
 // Dropdown
 export const HAZARD_DROPDOWN_TITLE="Filter by Events"
-export const FAILURE_CHAIN_TITLE="Failure Chain"
+export const FAILURE_CHAIN_TITLE="Failure Path"
 
 //types
 export const HAZARD_TYPE = "Hazard"

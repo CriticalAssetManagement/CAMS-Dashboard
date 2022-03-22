@@ -161,14 +161,20 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setDisplayFailureChains,
                 {
                 onMarkerClick && onMarkerClick.hasOwnProperty("id") &&
                     <Col>
-                        <Button variant="outline-secondary" onClick={handleClicked} title={SHOW_ALL_FAILURE_CHAIN_TITLE}>
+                        <Button variant="outline-secondary"
+                            className="btn-sm"
+                            onClick={handleClicked}
+                            title={SHOW_ALL_FAILURE_CHAIN_TITLE}>
                             {FAILURE_CHAIN_TITLE}
                         </Button>
                     </Col>
                 }
 
                 <Col>
-                    <Button variant="outline-secondary" onClick={handleShowAll} title={SHOW_ALL_ASSETS_TITLE}>
+                    <Button variant="outline-secondary"
+                        className="btn-sm"
+                        onClick={handleShowAll}
+                        title={SHOW_ALL_ASSETS_TITLE}>
                         {SHOW_ALL_ASSETS}
                     </Button>
                 </Col>

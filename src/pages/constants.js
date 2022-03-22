@@ -16,8 +16,11 @@ export const DEPENDENCY_RELATION_TYPE_TITLE = "Dependency Relation"
 
 // control css to support mobile version
 export const HOME_PAGE_TABLE_CSS="homePageTableCss"
+export const CRITCAL_LIST_TABLE_CSS="criticalAssetTableCss"
 export const USER_PAGE_TABLE_CSS="userPageTableCss"
-export const OWNER_PAGE_TABLE_CSS="homePageTableCss"
+export const ASSET_PAGE_TABLE_CSS="assetPageTableCss"
+export const LINK_PAGE_TABLE_CSS="linkPageTableCss"
+export const OWNER_PAGE_TABLE_CSS="ownerPageTableCss"
 export const AREA_PAGE_TABLE_CSS="areaPageTableCss"
 
 //user form Tab
