@@ -132,23 +132,17 @@ form.rjsf > div > fieldset > div.form-group > div.checkbox > label > span {
     color: #3459e6 !important;
 }
 
-/** search bar css to come over map **/
-/*.search-bar {
-    position: absolute;
-    z-index: 999;
-    left: 70px;
-    top: 110px;
-    height: fit-content;
-    bottom: 20px;
-    border-radius: 5px;
-    overflow: auto;
-    background-color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 0 5px 0 rgb(0 0 0 / 30%);
-}*/
 
-.search-bar{
+
+div.search-bar{
     border: 1px solid #ccc;
     border-radius: 4px;
+    width: 500px !important;
+}
+
+
+div.search-bar > div{
+    width: 100% !important;
 }
 
 .search-button:hover {

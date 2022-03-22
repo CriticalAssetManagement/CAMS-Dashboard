@@ -92,7 +92,7 @@ export const SELECT_STYLES = {
         ...styles,
         backgroundColor: '#fff',
         borderColor: "#ced4da !important",
-        width: "100%"
+        width: '100%'
     }),
     menu: (styles) => ({
         ...styles,
