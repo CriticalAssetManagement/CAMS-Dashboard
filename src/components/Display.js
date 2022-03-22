@@ -4,6 +4,7 @@ import {Table} from "./Table"
 import {VIEW_MODE, CREATE_MODE, EDIT_MODE} from "../pages/constants"
 import {Row, Card} from "react-bootstrap"
 import {Form} from "./Form"
+import {UI_FRAMES} from "./constants"
 
 export const DisplayDocuments = ({results, css, config, title}) => {
     return <div className="text-break m-2 border-0">
@@ -25,7 +26,7 @@ export const ViewDocument = ({frames, type, getDocumentToolBar, onTraverse, Fiel
         </Row>
         <Row className="text-break">
             {frames && <Form frames={frames}
-                uiFrame={uiFrame}
+                uiFrame={UI_FRAMES}
                 FieldTemplate={FieldTemplate}
                 type={type}
                 mode={VIEW_MODE}
@@ -43,7 +44,7 @@ export const CreateDocument = ({frames, type, handleSelect, handleSubmit}) => {
 
     return <Card className="text-break p-4">
         <Form frames={frames}
-            //uiFrame={uiSchema}
+            uiFrame={UI_FRAMES}
             type={type}
             mode={CREATE_MODE}
             onSubmit={handleSubmit}
@@ -62,6 +63,7 @@ export const EditDocument = ({frames, type, editDocument, getDocumentToolBar, ha
         <Row className="text-break">
             <Form frames={frames}
                 type={type}
+                uiFrame={UI_FRAMES}
                 mode={EDIT_MODE}
                 onSubmit={handleUpdate}
                 onSelect={handleSelect}

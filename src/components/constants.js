@@ -88,10 +88,18 @@ export const HAZARD_TYPE = "Hazard"
 
 // select style
 export const SELECT_STYLES = {
-    control: (styles) => ({ ...styles,
-            backgroundColor: '#fff',
-            borderColor: "#e6e6e6" }),
-    menu: (styles) => ({ ...styles, backgroundColor: '#fff'}),
+    control: (styles) => ({
+        ...styles,
+        backgroundColor: '#fff',
+        borderColor: "#ced4da !important",
+        width: "100%"
+    }),
+    menu: (styles) => ({
+        ...styles,
+        backgroundColor: '#fff',
+        zIndex: "999 !important"
+    }),
+    menuPortal: base => ({ ...base, zIndex: 999 }),
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
         return {
             ...styles,
@@ -105,23 +113,25 @@ export const SELECT_STYLES = {
             color: isDisabled
                 ? '#000'
                 : isSelected,
-                cursor: isDisabled ? 'not-allowed' : 'default',
-            ':active': {
-                ...styles[':active'],
+            cursor: isDisabled ? 'not-allowed' : 'default',
+                ':active': {
+                    ...styles[':active'],
                 backgroundColor: !isDisabled
                     ? isSelected
                     ? "#000"
                     : "#000"
                     : undefined,
-            color: "#000"
+                color: "#000",
+                "&:hover": {
+                    backgroundColor:"#f4f4f4"
+                },
             },
         }
     },
     input: (styles) => {
         return {
             ...styles,
-            color: '#000',
-            width: 450
+            color: '#000'
         }
     },
     singleValue:(styles) => {
@@ -130,4 +140,10 @@ export const SELECT_STYLES = {
             color: '#000'
         }
     }
+}
+
+// ui frames for changing styles for react-select in terminusdb-documents-ui
+export const UI_FRAMES={
+    select_styles: SELECT_STYLES,
+    subDocument_styles: "subDocumentCard"
 }

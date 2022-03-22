@@ -223,4 +223,14 @@ a.leaflet-browser-print{
     height: 50px !important;
 }
 
+.subDocumentCard{
+    background-color: #f4f6fe !important;
+    border-color: transparent !important;
+    border: 1px solid #ced4da !important;
+}
 
+.tdb__input > input, .tdb__input > select, .tdb__view__enum__input > select {
+    border-color: transparent !important;
+    border: 1px solid #ced4da !important;
+    color: #000 !important;
+}
