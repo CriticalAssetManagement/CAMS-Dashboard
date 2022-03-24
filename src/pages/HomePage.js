@@ -61,7 +61,7 @@ export const HomePage = () => {
     function loadMarkers (assets, layerGroup, map) {
         if(!assets) return
         clearMap()
-        getMarkers (assets, layerGroup, setOnMarkerClick)
+        getMarkers (assets, layerGroup, setOnMarkerClick, filterAssetByEvent)
         map.addLayer(layerGroup)
         setLayerGroup(layerGroup)
     }
@@ -209,6 +209,7 @@ export const HomePage = () => {
 
         <div className="content-container">
             <MapToolBar setResetMap={setResetMap}
+                resetMap={resetMap}
                 setDisplayFailureChains={setDisplayFailureChains}
                 onMarkerClick={onMarkerClick}
                 setFilterAssetByEvent={setFilterAssetByEvent}

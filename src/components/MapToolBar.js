@@ -15,7 +15,7 @@ import {getEventScaleQuery} from "../hooks/queries"
 import {QueryHook} from "../hooks/QueryHook"
 import {ASSET_TYPE} from "../pages/constants"
 
-export const MapToolBar = ({setResetMap, onMarkerClick, setDisplayFailureChains, setFilterAssetByEvent, setFailureChain, setFilterAssetById}) => {
+export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFailureChains, setFilterAssetByEvent, setFailureChain, setFilterAssetById}) => {
 
     // constants to gather events and grades
     const [eventList, setEventList] = useState(false)
@@ -77,10 +77,14 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setDisplayFailureChains,
             setDisplayFailureChains([])
             setFailureChain(false)
         }
+        // clear filter by ID, Events
+        if(setFilterAssetById) setFilterAssetById(false)
+        if(setFilterAssetByEvent) setFilterAssetByEvent(false)
         // clear grades
         setGradedEvents(false)
         // clear grade scales
         setMaxScale(false)
+        setCurrentGrade(false)
         // clear react select value
         setValue(null)
     }
@@ -123,12 +127,12 @@ export const MapToolBar = ({setResetMap, onMarkerClick, setDisplayFailureChains,
 
                 <Col>
                     <SearchBar
+                        resetMap={resetMap}
                         woqlClient={woqlClient}
                         type={ASSET_TYPE}
                         placeholder={SEARCH_ASSET_PLACEHOLDER}
                         setFilterAssetById={setFilterAssetById}/>
                 </Col>
-
 
 
                 {

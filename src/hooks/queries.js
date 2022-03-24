@@ -58,7 +58,7 @@ export const getAssetsByEventsOrIDQuery = (event, asset) => {
     let documentID=false, eventQuery=false
     if(asset) documentID=asset
 
-    console.log("event", event)
+    //console.log("event", event)
 
     if(event && Object.keys(event).length && event.hasOwnProperty("eventName")) {
         let eventName = encodeURI(event.eventName.trim())
@@ -67,7 +67,7 @@ export const getAssetsByEventsOrIDQuery = (event, asset) => {
             .triple("v:Hazard", "@schema:hazard", hazard)
             .opt(WOQL.triple("v:Hazard", "@schema:Grade", "v:Grade"))
 
-        if(event.hasOwnProperty("grade")){ // get grade match
+        if(event.hasOwnProperty("grade") && event.grade){ // get grade match
             eventQuery.not(WOQL.greater("v:Grade", Number(event.grade)))
                 //.less("v:Grade",  Number(event.grade))
             //eventQuery.triple("v:Hazard", "@schema:Grade", Number(event.grade))

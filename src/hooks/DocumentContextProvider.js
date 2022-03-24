@@ -30,6 +30,7 @@ export const DocumentContextProvider = ({children, params}) => {
 
     // on click of row in WOQLTable
     function onRowClick(row) {
+        console.log("row", row)
         if(row.hasOwnProperty("values") && row.values.hasOwnProperty("@id")) {
             setDocumentId(row.values["@id"])
             setTabKey(params.viewTab)

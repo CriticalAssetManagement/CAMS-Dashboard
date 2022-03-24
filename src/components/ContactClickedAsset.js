@@ -17,8 +17,6 @@ export const ContactClickedAsset =({info, ownerResults}) => {
     }, [ownerResults[0].Owner]) // onchange of owner
 
 
-    //className="contact-off-canvas"
-
     return <Offcanvas show={open}
             restoreFocus={true}
             scroll={true}

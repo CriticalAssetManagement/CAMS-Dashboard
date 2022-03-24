@@ -141,10 +141,11 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
         // get failure node
         if(Array.isArray(failureChainResults) && failureChainResults.length && onMarkerClick.hasOwnProperty("id")) {
 
-            //console.log("failureChainResults", extractNewAssetLocations(failureChainResults))
-
             let locationResults = extractNewAssetLocations(failureChainResults), display=[]
             let linkArray=[], doc = onMarkerClick.id // get links from whichever marker is clicked
+
+
+            //console.log("failureChainResults ****", failureChainResults, locationResults)
 
             function getAltered(lcs) {
                 let altered ={}

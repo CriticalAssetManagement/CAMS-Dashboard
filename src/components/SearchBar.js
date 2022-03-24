@@ -3,9 +3,11 @@ import AsyncSelect from 'react-select/async'
 import {handleDocumentSelect} from "../components/utils"
 import {SELECT_STYLES} from "./constants"
 
-export const SearchBar = ({woqlClient, type, placeholder, setFilterAssetById}) => {
+export const SearchBar = ({woqlClient, type, placeholder, setFilterAssetById, resetMap}) => {
 
     const [inputValue, setInputValue]=useState(null) // select value
+    const [value, setValue]=useState(null) // select value
+
 
     const loadOptions = async (inputValue, callback) => {
         //let opts = await onSelect(inputValue, frame[item])
@@ -24,18 +26,24 @@ export const SearchBar = ({woqlClient, type, placeholder, setFilterAssetById}) =
     function onChange(e) {
         //props.onChange(e.value)
         if(setFilterAssetById) setFilterAssetById(e.value)
+        setValue({value:e.value, label: e.label})
     }
+
+    useEffect(() => {
+        if(resetMap) setValue(null)
+    }, [resetMap])
 
     return <React.Fragment>
         <div className="search-bar d-flex">
             <AsyncSelect
-                cacheOptions
+                //cacheOptions
                 classNames="tdb__input search-asset-input"
                 styles={SELECT_STYLES}
                 placeholder={placeholder}
+                value={value}
                 onChange={onChange}
                 loadOptions={loadOptions}
-                inputValue={inputValue}
+                //inputValue={inputValue}
                 onInputChange={handleInputChange}
             />
         </div>
