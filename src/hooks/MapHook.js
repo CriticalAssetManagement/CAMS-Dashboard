@@ -1,9 +1,9 @@
 import {useEffect, useState} from 'react'
 import {QueryHook, executeQuery} from "./QueryHook"
-import {NON_CRITICAL_COLOR, CRITICAL_COLOR, CRITICAL_LINKS, NON_CRITICAL_LINKS, NO_DATA_AVAILABLE, VAR_ASSET, VAR_LINKED_ASSET} from "../components/constants"
+import {NON_CRITICAL_COLOR, CRITICAL_COLOR, CRITICAL_LINKS, VAR_CRITICAL, VAR_LATITUDE, VAR_LONGITUDE, NON_CRITICAL_LINKS, NO_DATA_AVAILABLE, VAR_ASSET, VAR_LINKED_ASSET} from "../components/constants"
 import {getAssetFailureChain, getAssetsByEventsOrIDQuery, getAssetDependentOnQuery} from "./queries"
 import {DEPENDENT} from "../pages/constants"
-import {extractLocations, handleDocumentSelect, extractAssetLocations, extractNewAssetLocations} from "../components/utils"
+import {extractLocations, handleDocumentSelect, extractAssetLocations, extractNewAssetLocations, getFailureChainAssetLocation} from "../components/utils"
 import { arrayOf } from 'prop-types'
 
 export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
@@ -51,7 +51,7 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
             setPolyLine(false)
             setDependencies(false)
             setLoading(true)
-            let documentID = onMarkerClick.id
+            let documentID = onMarkerClick["id"]
             let q = getAssetDependentOnQuery(documentID)
             setQuery(q)
         }
@@ -69,8 +69,9 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
         let locs = extractAssetLocations(queryResults)
         setDependencies(locs)
 
-        let gatherPolylines = [], json = {}
+        let gatherPolylines = []
 
+        //console.log("locs", locs)
         locs.map(lcs => {
             // link is array of dependant and dependant on info
             let link = []
@@ -78,8 +79,8 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
             link.push(lcs)
             if(!gatherPolylines.length) {  //empty
                 gatherPolylines.push({
-                    color: lcs.critical === "true" ? CRITICAL_COLOR : NON_CRITICAL_COLOR,
-                    title: lcs.critical === "true" ? CRITICAL_LINKS : NON_CRITICAL_LINKS,
+                    color: lcs[VAR_CRITICAL] === "true" ? CRITICAL_COLOR : NON_CRITICAL_COLOR,
+                    title: lcs[VAR_CRITICAL] === "true" ? CRITICAL_LINKS : NON_CRITICAL_LINKS,
                     data: [link]
                 })
             }
@@ -87,7 +88,7 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
                 let colorExists = false
                 gatherPolylines.map(polys => {
                     var color = NON_CRITICAL_COLOR
-                    if(lcs.critical === "true") color = CRITICAL_COLOR
+                    if(lcs[VAR_CRITICAL] === "true") color = CRITICAL_COLOR
                     if(polys.color === color) { // color links exists to populate data array
                         colorExists=true
                         polys.data.push(link) // add on entries of links to same color
@@ -96,8 +97,8 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
                 })
                 if(!colorExists) { // add a new entry color link to gatherPolylines
                     gatherPolylines.push({
-                        color: lcs.critical === "true" ? CRITICAL_COLOR : NON_CRITICAL_COLOR,
-                        title: lcs.critical === "true" ? CRITICAL_LINKS : NON_CRITICAL_LINKS,
+                        color: lcs[VAR_CRITICAL] === "true" ? CRITICAL_COLOR : NON_CRITICAL_COLOR,
+                        title: lcs[VAR_CRITICAL] === "true" ? CRITICAL_LINKS : NON_CRITICAL_LINKS,
                         data: [link]
                     })
                 }
@@ -107,7 +108,6 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
         setPolyLine(gatherPolylines)
         setLoading(false)
     }, [queryResults])
-
 
     // on results of filtering by asset
     useEffect(() => {
@@ -141,13 +141,16 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
         // get failure node
         if(Array.isArray(failureChainResults) && failureChainResults.length && onMarkerClick.hasOwnProperty("id")) {
 
-            let locationResults = extractNewAssetLocations(failureChainResults), display=[]
+            console.log("failureChainResults ****", failureChainResults, locationResults)
+
+            console.log("polyline", polyLine)
+
+            let locationResults = getFailureChainAssetLocation(failureChainResults), display=[]
+            //let locationResults = extractNewAssetLocations(failureChainResults), display=[]
             let linkArray=[], doc = onMarkerClick.id // get links from whichever marker is clicked
 
 
-            //console.log("failureChainResults ****", failureChainResults, locationResults)
-
-            function getAltered(lcs) {
+            /*function getAltered(lcs) {
                 let altered ={}
                 for(var key in lcs) {
                     if(key === "LinkedAsset") continue
@@ -178,9 +181,9 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
                     getOtherLinks(res["LinkedAsset"], locationResults)
                 }
                 if(linkArray.length) display.push(linkArray)
-            })
+            }) */
 
-           setDisplayFailureChains(display)
+           setDisplayFailureChains(locationResults)
 
         }
     }, [failureChainResults])

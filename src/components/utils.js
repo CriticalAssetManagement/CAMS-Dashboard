@@ -1,6 +1,34 @@
 import React, {useState, useEffect} from 'react'
 const TerminusDBClient = require("@terminusdb/terminusdb-client")
-import {VAR_DEPENDENT_ON, VAR_LATITUDE, VAR_GRADE, VAR_LAST_MAINTAINED, LAT, VAR_DESCRIPTION, LNG, VAR_LONGITUDE, VAR_DESIGN_STANDARDS, VAR_ASSET_IDENTIFIER, VAR_LINKED_ASSET, VAR_NAME, VAR_CRITICAL, VAR_PATH, VAR_INDEX, VAR_ASSET, VAR_VALUE} from "./constants"
+import {
+    VAR_DEPENDENT_ON,
+    VAR_LATITUDE,
+    VAR_ASSET_X,
+    VAR_ASSET_Y,
+    VAR_GRADE,
+    VAR_LAST_MAINTAINED,
+    LAT,
+    VAR_DESCRIPTION,
+    LNG,
+    VAR_LONGITUDE,
+    VAR_DESIGN_STANDARDS,
+    VAR_ASSET_IDENTIFIER,
+    VAR_LINKED_ASSET,
+    VAR_NAME,
+    VAR_CRITICAL,
+    VAR_PATH,
+    VAR_INDEX,
+    VAR_ASSET,
+    ASSET_LAT,
+    ASSET_LNG,
+    VAR_VALUE,
+    VAR_LINKED_ASSET_X,
+    VAR_LINKED_ASSET_Y,
+    VAR_LINKED_ASSET_LAT,
+    VAR_LINKED_ASSET_LNG,
+    VAR_LINKED_ASSET_NAME,
+    VAR_LINKED_ASSET_DESCRIPTION
+} from "./constants"
 import {MdAddAlert} from "react-icons/md"
 
 export async function handleDocumentSelect(woqlClient, inp, type) {
@@ -94,7 +122,7 @@ export function extractLocations(id, results) {
 
 
 // function to extract latitude and longitude of all assets
-export function extractAssetLocations(results) {
+/*export function extractAssetLocations(results) {
     let docs = [], json = {}
     if(!Array.isArray(results)) return docs
 
@@ -143,6 +171,91 @@ export function extractAssetLocations(results) {
     }
     //console.log("docs", docs)
     return docs
+} */
+
+// function to extract latitude and longitude of all assets
+export function extractAssetLocations(results) {
+    let docs = [], json = {}
+    if(!Array.isArray(results)) return docs
+
+    //console.log("***8results***", results)
+
+    results.map(item => {
+        json = {}
+        if(item.hasOwnProperty(VAR_ASSET)) {
+            json["id"]=item[VAR_ASSET]
+        }
+        if(item.hasOwnProperty(VAR_NAME)) {
+            json[VAR_NAME]=item[VAR_NAME]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_DESCRIPTION) && item[VAR_DESCRIPTION]) {
+            json[VAR_DESCRIPTION]=item[VAR_DESCRIPTION]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_ASSET_IDENTIFIER) && item[VAR_ASSET_IDENTIFIER]) {
+            json[VAR_ASSET_IDENTIFIER]=item[VAR_ASSET_IDENTIFIER]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_DESIGN_STANDARDS) && item[VAR_DESIGN_STANDARDS]) {
+            json[VAR_DESIGN_STANDARDS]=item[VAR_DESIGN_STANDARDS]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_LAST_MAINTAINED) && item[VAR_LAST_MAINTAINED]) {
+            json[VAR_LAST_MAINTAINED]=item[VAR_LAST_MAINTAINED]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_ASSET_X)) {
+            json[VAR_LATITUDE] = item[VAR_ASSET_X]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_ASSET_Y)) {
+            json[VAR_LONGITUDE] = item[VAR_ASSET_Y]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_CRITICAL)) {
+            json[VAR_CRITICAL] = item[VAR_CRITICAL]["@value"].toString()
+        }
+        if(item.hasOwnProperty(VAR_GRADE)) {
+            json[VAR_GRADE] = item[VAR_GRADE]["@value"]
+        }
+        docs.push(json)
+     })
+    //console.log("docs", docs)
+    return docs
+}
+
+export function getFailureChainAssetLocation(results) {
+    let docs = [], json = {}
+    if(!Array.isArray(results)) return docs
+
+    //console.log("***8results***", results)
+
+    results.map(item => {
+        json = {}
+        if(item.hasOwnProperty(VAR_ASSET)) {
+            json[VAR_ASSET]=item[VAR_ASSET]
+        }
+        if(item.hasOwnProperty(VAR_ASSET_X)) {
+            json[ASSET_LAT] = item[VAR_ASSET_X]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_ASSET_Y)) {
+            json[ASSET_LNG] = item[VAR_ASSET_Y]["@value"]
+        }
+
+        if(item.hasOwnProperty(VAR_LINKED_ASSET)) {
+            json[VAR_LINKED_ASSET]=item[VAR_LINKED_ASSET]
+        }
+        if(item.hasOwnProperty(VAR_LINKED_ASSET_X)) {
+            json[VAR_LINKED_ASSET_LAT] = item[VAR_LINKED_ASSET_X]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_LINKED_ASSET_Y)) {
+            json[VAR_LINKED_ASSET_LNG] = item[VAR_LINKED_ASSET_Y]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_LINKED_ASSET_NAME)) {
+            json[VAR_LINKED_ASSET_NAME] = item[VAR_LINKED_ASSET_NAME]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_LINKED_ASSET_DESCRIPTION) && item[VAR_LINKED_ASSET_DESCRIPTION]) {
+            json[VAR_LINKED_ASSET_DESCRIPTION] = item[VAR_LINKED_ASSET_DESCRIPTION]["@value"]
+        }
+        docs.push(json)
+     })
+    //console.log("docs", docs)
+    return docs
+
 }
 
 // function to extract latitude and longitude of all assets
@@ -184,6 +297,8 @@ export function extractNewAssetLocations(results) {
     //console.log("docs", docs)
     return docs
 }
+
+
 
 export function getAssetSelectOptions(list) {
     if(!Array.isArray(list) && !list.length) return []

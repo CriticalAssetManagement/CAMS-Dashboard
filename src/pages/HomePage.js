@@ -95,7 +95,7 @@ export const HomePage = () => {
         // get vector and add arrows
 		function getVector (vector) {
             clearMap()
-            return gatherVectorLines(vector, displayFailureChains, mg)
+            return gatherVectorLines(vector, displayFailureChains, mg, onMarkerClick)
 		}
 
         var layersControl = L.control

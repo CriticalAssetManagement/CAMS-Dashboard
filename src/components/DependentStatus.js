@@ -1,7 +1,7 @@
 import React, {useState, useLayoutEffect, useEffect} from "react"
 import {ButtonToolbar, Badge, ButtonGroup, Button, Row, Col, ListGroup} from "react-bootstrap"
 import {AiFillAlert, AiOutlineAlert} from "react-icons/ai"
-import {CRITICAL_LINKS, NON_CRITICAL_LINKS, EMPTY_PLACEHOLDER, VAR_NAME} from "./constants"
+import {CRITICAL_LINKS, NON_CRITICAL_LINKS, EMPTY_PLACEHOLDER, VAR_NAME, VAR_CRITICAL} from "./constants"
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import {getCriticalAssetConfig} from "./Views"
@@ -22,7 +22,7 @@ const ShowCriticalList = ({documents, setCurrentAsset, ownerResults}) => {
     }
 
     documents.map(docs => {
-        if(docs.critical === 'true') { // have stored as string to display in WOQLTable
+        if(docs[VAR_CRITICAL] === 'true') { // have stored as string to display in WOQLTable
             criticalList.push(docs)
         }
     })
@@ -42,7 +42,7 @@ const ShowNonCriticalList = ({documents}) => {
     let nonCriticalList = []
 
     documents.map(docs => {
-        if(docs.critical === 'false') { // have stored as string to display in WOQLTable
+        if(docs[VAR_CRITICAL] === 'false') { // have stored as string to display in WOQLTable
             nonCriticalList.push(docs)
         }
     })
@@ -76,7 +76,7 @@ export const DependentStatus = ({documents}) => {
         setQuery(q)
     }, [currentAsset])
 
-    console.log("ownerResults", ownerResults)
+    //console.log("ownerResults", ownerResults)
     //<OwnerContactNotifications ownerResults={ownerResults}/>
 
     return <React.Fragment>

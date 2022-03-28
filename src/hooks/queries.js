@@ -13,9 +13,13 @@ export const getAssetDependentOnQuery = (documentID) =>{
         .triple("v:Asset", "@schema:last_maintained", "v:LastMaintained")
         .triple("v:Asset", "@schema:location", "v:DependentLocation")
         .triple("v:DependentLocation", "@schema:geometry_location", "v:Point")
-        .triple("v:Point", "@schema:coordinates", "v:Coordinates")
-        .triple("v:Coordinates", "sys:value", "v:Value")
-        .triple("v:Coordinates", "sys:index", "v:Index")
+        .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesX")
+        .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesY")
+        .triple("v:AssetCoordinatesX", "sys:value", "v:AssetX")
+        .triple("v:AssetCoordinatesX", "sys:index", "v:X_AssetX")
+        .eq("v:X_AssetX", 0)
+        .triple("v:AssetCoordinatesY", "sys:value", "v:AssetY")
+        .triple("v:AssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
 }
 
 
@@ -30,16 +34,15 @@ export const getAvailableAssets = () => {
         .triple("v:Asset", "@schema:last_maintained", "v:LastMaintained")
         .triple("v:Asset", "@schema:location", "v:Location")
         .triple("v:Location", "@schema:geometry_location", "v:Point")
-        .triple("v:Point", "@schema:coordinates", "v:Coordinates")
-        .triple("v:Coordinates", "sys:value", "v:Value")
-        .triple("v:Coordinates", "sys:index", "v:Index")
+        .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesX")
+        .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesY")
+        .triple("v:AssetCoordinatesX", "sys:value", "v:AssetX")
+        .triple("v:AssetCoordinatesX", "sys:index", "v:X_AssetX")
+        .eq("v:X_AssetX", 0)
+        .triple("v:AssetCoordinatesY", "sys:value", "v:AssetY")
+        .triple("v:AssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
 }
 
-
-
-
-//to c array val for coordinates
-//triple("Array_8ce4bb1279bfdec43a11dec861e0e4fd3257382cabb1c7dc0a0880bebabb9d2a", "v:A", "v:C")
 
 // query to get Owner info assosciated to an asset
 export const getOwnerDetailsQuery = (asset) => {
@@ -82,9 +85,13 @@ export const getAssetsByEventsOrIDQuery = (event, asset) => {
             .opt(WOQL.triple("v:Asset", "@schema:description", "v:Description"))
             .triple("v:Asset", "@schema:location", "v:Location")
             .triple("v:Location", "@schema:geometry_location", "v:Point")
-            .triple("v:Point", "@schema:coordinates", "v:Coordinates")
-            .triple("v:Coordinates", "sys:value", "v:Value")
-            .triple("v:Coordinates", "sys:index", "v:Index")
+            .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesX")
+            .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesY")
+            .triple("v:AssetCoordinatesX", "sys:value", "v:AssetX")
+            .triple("v:AssetCoordinatesX", "sys:index", "v:X_AssetX")
+            .eq("v:X_AssetX", 0)
+            .triple("v:AssetCoordinatesY", "sys:value", "v:AssetY")
+            .triple("v:AssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
     }
     else if (asset && !eventQuery) { // filter by ID alone
         return WOQL.triple("v:Asset", "rdf:type","@schema:Asset").eq("v:Asset", documentID)
@@ -94,8 +101,13 @@ export const getAssetsByEventsOrIDQuery = (event, asset) => {
             .triple("v:Asset", "@schema:location", "v:Location")
             .triple("v:Location", "@schema:geometry_location", "v:Point")
             .triple("v:Point", "@schema:coordinates", "v:Coordinates")
-            .triple("v:Coordinates", "sys:value", "v:Value")
-            .triple("v:Coordinates", "sys:index", "v:Index")
+            .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesX")
+            .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesY")
+            .triple("v:AssetCoordinatesX", "sys:value", "v:AssetX")
+            .triple("v:AssetCoordinatesX", "sys:index", "v:X_AssetX")
+            .eq("v:X_AssetX", 0)
+            .triple("v:AssetCoordinatesY", "sys:value", "v:AssetY")
+            .triple("v:AssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
     }
     else if (!asset && eventQuery) { // filter by event alone
         return eventQuery.triple("v:Asset", "rdf:type","@schema:Asset")
@@ -103,9 +115,13 @@ export const getAssetsByEventsOrIDQuery = (event, asset) => {
             .opt(WOQL.triple("v:Asset", "@schema:description", "v:Description"))
             .triple("v:Asset", "@schema:location", "v:Location")
             .triple("v:Location", "@schema:geometry_location", "v:Point")
-            .triple("v:Point", "@schema:coordinates", "v:Coordinates")
-            .triple("v:Coordinates", "sys:value", "v:Value")
-            .triple("v:Coordinates", "sys:index", "v:Index")
+            .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesX")
+            .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesY")
+            .triple("v:AssetCoordinatesX", "sys:value", "v:AssetX")
+            .triple("v:AssetCoordinatesX", "sys:index", "v:X_AssetX")
+            .eq("v:X_AssetX", 0)
+            .triple("v:AssetCoordinatesY", "sys:value", "v:AssetY")
+            .triple("v:AssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
     }
     return null
 }
@@ -154,20 +170,35 @@ export const getAssetFailureChain = (asset) => {
     let WOQL=TerminusDBClient.WOQL
     let documentID=asset
 
-    return WOQL.and (
-        WOQL.path(documentID, "(<depends_on,dependent>)*", "v:Asset")
-            .triple("v:Relation", "@schema:depends_on", "v:Asset")
-            .triple("v:Relation", "@schema:dependent", "v:LinkedAsset")
-            .triple("v:Relation", "@schema:critical", "v:Critical")
+    //let documentID = "Asset/Castle%20bruce%20Electrical%20substation%20"
+    return WOQL.and(
+        WOQL.path(documentID, "(<depends_on,dependent>)*", "v:Asset"),
+        WOQL.triple("v:Inter", "@schema:depends_on", "v:Asset"),
+        WOQL.triple("v:Inter", "@schema:dependent", "v:LinkedAsset"),
     )
+    .triple("v:LinkedAsset", "@schema:name", "v:LinkedAssetName")
+    .opt(WOQL.triple("v:LinkedAsset", "@schema:description", "v:LinkedAssetDescription"))
+    .triple("v:LinkedAsset", "@schema:location", "v:LinkedAssetLocation")
+    .triple("v:LinkedAssetLocation", "@schema:geometry_location", "v:LinkedAssetPoint")
+    .triple("v:LinkedAssetPoint", "@schema:coordinates", "v:LinkedAssetCoordinatesX")
+    .triple("v:LinkedAssetPoint", "@schema:coordinates", "v:LinkedAssetCoordinatesY")
+    .triple("v:LinkedAssetCoordinatesX", "sys:value", "v:LinkedAssetX")
+    .triple("v:LinkedAssetCoordinatesX", "sys:index", "v:X_LinkedAssetX")
+    .eq("v:X_LinkedAssetX", 0)
+    .triple("v:LinkedAssetCoordinatesY", "sys:value", "v:LinkedAssetY")
+    .triple("v:LinkedAssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
 
-    .triple("v:LinkedAsset", "@schema:name", "v:Name")
-    .opt(WOQL.triple("v:Asset", "@schema:description", "v:Description"))
-    .triple("v:LinkedAsset", "@schema:location", "v:Location")
-    .triple("v:Location", "@schema:geometry_location", "v:Point")
-    .triple("v:Point", "@schema:coordinates", "v:Coordinates")
-    .triple("v:Coordinates", "sys:value", "v:Value")
-    .triple("v:Coordinates", "sys:index", "v:Index")
+
+    .triple("v:Asset", "@schema:location", "v:AssetLocation")
+    .triple("v:AssetLocation", "@schema:geometry_location", "v:AssetPoint")
+    .triple("v:AssetPoint", "@schema:coordinates", "v:AssetCoordinatesX")
+    .triple("v:AssetPoint", "@schema:coordinates", "v:AssetCoordinatesY")
+    .triple("v:AssetCoordinatesX", "sys:value", "v:AssetX")
+    .triple("v:AssetCoordinatesX", "sys:index", "v:X_AssetX")
+    .eq("v:X_AssetX", 0)
+    .triple("v:AssetCoordinatesY", "sys:value", "v:AssetY")
+    .triple("v:AssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
+
 }
 
 
@@ -283,5 +314,63 @@ let doc = "Asset/ASSET1"
 
 
 path(doc, "(<depends_on,dependent>)+", "v:Y", "v:Path") */
+
+//correct query
+/*let doc = "Asset/Castle%20bruce%20Electrical%20substation%20"
+and(path(doc, "(<depends_on,dependent>)*", "v:X"),
+    triple("v:Inter", "@schema:depends_on", "v:X"),
+    triple("v:Inter", "@schema:dependent", "v:Y"))*/
+
+// query which we used before for depends
+/*return WOQL.and (
+    WOQL.path(documentID, "(<depends_on,dependent>)*", "v:Asset")
+        .triple("v:Relation", "@schema:depends_on", "v:Asset")
+        .triple("v:Relation", "@schema:dependent", "v:LinkedAsset")
+        .triple("v:Relation", "@schema:critical", "v:Critical")
+)
+
+.triple("v:LinkedAsset", "@schema:name", "v:Name")
+.opt(WOQL.triple("v:Asset", "@schema:description", "v:Description"))
+.triple("v:LinkedAsset", "@schema:location", "v:Location")
+.triple("v:Location", "@schema:geometry_location", "v:Point")
+.triple("v:Point", "@schema:coordinates", "v:Coordinates")
+.triple("v:Coordinates", "sys:value", "v:Value")
+.triple("v:Coordinates", "sys:index", "v:Index")     */
+
+
+
+
+
+/* // gavins corect version
+let documentID = "Asset/Castle%20bruce%20Electrical%20substation%20"
+WOQL.and(
+    WOQL.path(documentID, "(<depends_on,dependent>)*", "v:Asset"),
+    WOQL.triple("v:Inter", "@schema:depends_on", "v:Asset"),
+    WOQL.triple("v:Inter", "@schema:dependent", "v:LinkedAsset"),
+)
+.triple("v:LinkedAsset", "@schema:location", "v:LinkedAssetLocation")
+.triple("v:LinkedAssetLocation", "@schema:geometry_location", "v:LinkedAssetPoint")
+.triple("v:LinkedAssetPoint", "@schema:coordinates", "v:LinkedAssetCoordinatesX")
+.triple("v:LinkedAssetPoint", "@schema:coordinates", "v:LinkedAssetCoordinatesY")
+.triple("v:LinkedAssetCoordinatesX", "sys:value", "v:LinkedAssetX")
+.triple("v:LinkedAssetCoordinatesX", "sys:index", "v:X_LinkedAssetX")
+.eq("v:X_LinkedAssetX", 0)
+.triple("v:LinkedAssetCoordinatesY", "sys:value", "v:LinkedAssetY")
+.triple("v:LinkedAssetCoordinatesY", "sys:index",  literal(1, "xsd:nonNegativeInteger"))
+
+
+.triple("v:Asset", "@schema:location", "v:AssetLocation")
+.triple("v:AssetLocation", "@schema:geometry_location", "v:AssetPoint")
+.triple("v:AssetPoint", "@schema:coordinates", "v:AssetCoordinatesX")
+.triple("v:AssetPoint", "@schema:coordinates", "v:AssetCoordinatesY")
+.triple("v:AssetCoordinatesX", "sys:value", "v:AssetX")
+.triple("v:AssetCoordinatesX", "sys:index", "v:X_AssetX")
+.eq("v:X_AssetX", 0)
+.triple("v:AssetCoordinatesY", "sys:value", "v:AssetY")
+.triple("v:AssetCoordinatesY", "sys:index",  literal(1, "xsd:nonNegativeInteger")) */
+
+
+
+
 
 

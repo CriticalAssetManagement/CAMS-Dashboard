@@ -23,8 +23,6 @@ export const ClickedMarkerInfo = ({info, dependencies}) => {
 		setPage
 	} = WOQLClientObj()
 
-
-
     for(var key in info) {
         if(key === "refresh") continue
         else if(key === VAR_NAME) {

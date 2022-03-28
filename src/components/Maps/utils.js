@@ -1,11 +1,66 @@
-import {LATITUDE, LONGITUDE, DASH_LINES_OPTIONS, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH, POPUP_OPTIONS}  from "./constants"
-import {CRITICAL_LINKS, VAR_NAME, NON_CRITICAL_LINKS, NON_CRITICAL_COLOR, CRITICAL_COLOR, VAR_GRADE} from ".././constants"
+import {
+    LATITUDE,
+    LONGITUDE,
+    DASH_LINES_OPTIONS,
+    MAP_ID,
+    ARROW_OPTIONS,
+    MARKER_OPTIONS,
+    MAP_OPTIONS,
+    POINTS,
+    POLYGON,
+    LAT,
+    LNG,
+    REFRESH,
+    POPUP_OPTIONS
+}  from "./constants"
+import {
+    CRITICAL_LINKS,
+    VAR_NAME,
+    NON_CRITICAL_LINKS,
+    NON_CRITICAL_COLOR,
+    CRITICAL_COLOR,
+    VAR_GRADE,
+    VAR_ASSET,
+    ASSET_LAT,
+    ASSET_LNG,
+    VAR_LINKED_ASSET_LNG,
+    VAR_LINKED_ASSET_LAT,
+    VAR_LINKED_ASSET_NAME,
+    VAR_LONGITUDE,
+    VAR_LATITUDE
+} from ".././constants"
 import "leaflet-arrowheads"
 import "leaflet.browser.print/dist/leaflet.browser.print.js"
-import {ICON, BG_CHILI_ICON, BG_RED_ICON, BG_BURGUNDY_ICON,BG_AMBER_ICON, BG_DIJON_ICON,BG_FIRE_ICON, BG_GOLD_ICON} from "./markers"
+import {
+    ICON,
+    BG_CHILI_ICON,
+    BG_RED_ICON,
+    BG_BURGUNDY_ICON,
+    BG_AMBER_ICON,
+    BG_DIJON_ICON,
+    BG_FIRE_ICON,
+    BG_GOLD_ICON
+} from "./markers"
+
+// modifying failureChainArray to draw lines in leaflet map format
+function gatherFailureLines(failureChainArray, onMarkerClick) {
+    let modifiedFailrueChainArray=[]
+    // write a function here to check if all keys are available to display map
+    if(!onMarkerClick) return
+    failureChainArray.map(fcs => {
+        if(fcs[VAR_ASSET] !== onMarkerClick.id) {
+            modifiedFailrueChainArray.push([
+                [ fcs[ASSET_LAT], fcs[ASSET_LNG] ],
+                [ fcs[VAR_LINKED_ASSET_LAT], fcs[VAR_LINKED_ASSET_LNG] ]
+            ])
+        }
+    })
+    //console.log("modifiedFailrueChainArray", modifiedFailrueChainArray)
+    return modifiedFailrueChainArray
+}
 
 // get vector and add arrows critical and non critical lines
-export function  gatherVectorLines(vector, displayFailureChains, layerGorup) {
+export function  gatherVectorLines(vector, displayFailureChains, layerGorup, onMarkerClick) {
     let layerJson = {}
     let vectorControl = {
         [CRITICAL_LINKS]: [],
@@ -49,12 +104,7 @@ export function  gatherVectorLines(vector, displayFailureChains, layerGorup) {
     // display Failure Chains
     if(displayFailureChains && Array.isArray(displayFailureChains )) {
         let gatherLinkedChains=[]
-        displayFailureChains.map(linkChains => {
-            if(Array.isArray(linkChains)) gatherLinkedChains.push(linkChains)
-        })
-
-        //gatherLinkedChains.length === 1 means its the last node in chain - so we dont display
-        // /commenting for now && gatherLinkedChains.length > 1
+        gatherLinkedChains=gatherFailureLines(displayFailureChains, onMarkerClick)
         if (Array.isArray(gatherLinkedChains) ) {
             // add dashed lines to map to show indirect links
             var  antPolyline = L.polyline.antPath(gatherLinkedChains, DASH_LINES_OPTIONS)
@@ -84,29 +134,30 @@ export function extractAndDrawVectors(polyLine, setOnMarkerClick, layerGorup) {
 // draw failure chains
 export function drawFailureChains (displayFailureChains, layerGroup) {
     // gather failure chain markers
-    if(displayFailureChains && Array.isArray(displayFailureChains )) {
+    if(displayFailureChains && Array.isArray(displayFailureChains)) {
         displayFailureChains.map(linkChains => {
-            if(Array.isArray(linkChains)){
-                linkChains.map(link => {
-                    let coord = { name:link[VAR_NAME], lat: link.lat, lng: link.lng }
-                    let marker = L.marker(coord , MARKER_OPTIONS)
-                        //.bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
-                        .bindPopup(getPopContent(coord), POPUP_OPTIONS)
-                        .on('click', function(e) {
-                            let cData = link //coord
-                            cData[REFRESH] = Date.now()
-                            //map.setView(e.latlng, 13)
-                            if(setOnMarkerClick) setOnMarkerClick(cData)
-                        })
-                    marker.on('mouseover',function(ev) { // on hover
-                        marker.openPopup()
-                    })
-                    marker.addTo(layerGroup)
-                })
+            var link = linkChains
+            let coord = {
+                name:link[VAR_LINKED_ASSET_NAME],
+                lat: link[VAR_LINKED_ASSET_LAT],
+                lng: link[VAR_LINKED_ASSET_LNG]
             }
+            let marker = L.marker(coord , MARKER_OPTIONS)
+                //.bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
+                .bindPopup(getPopContent(coord), POPUP_OPTIONS)
+                .on('click', function(e) {
+                    let cData = link //coord
+                    cData[REFRESH] = Date.now()
+                    //map.setView(e.latlng, 13)
+                    //if(setOnMarkerClick) setOnMarkerClick(cData)
+                })
+            marker.on('mouseover',function(ev) { // on hover
+                marker.openPopup()
+            })
+            marker.addTo(layerGroup)
         })
     }
-}
+ }
 
 
 // function to draw polyline markers
@@ -117,7 +168,7 @@ export function drawPolyLine(polyLine, setOnMarkerClick, layerGroup) {
             let linkArray = arr
             linkArray.map(la => {
                 // get marker lat lng
-                let coord = {name: la[VAR_NAME], lat: la.lat, lng: la.lng}
+                let coord = {name: la[VAR_NAME], lat: la[VAR_LATITUDE], lng: la[VAR_LONGITUDE]}
                 let marker = L.marker(coord , MARKER_OPTIONS)
                     //.bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
                     .bindPopup(getPopContent(coord), POPUP_OPTIONS)
@@ -184,7 +235,7 @@ export function getMarkers (assets, layerGroup, setOnMarkerClick) {
     //console.log("assets", assets)
     assets.map(asset => {
         // get marker lat lng
-        let coord = {name:asset[VAR_NAME] ,lat: asset.lat, lng: asset.lng}
+        let coord = {name:asset[VAR_NAME] ,lat: asset[VAR_LATITUDE], lng: asset[VAR_LONGITUDE]}
 
         let options = getMarkerOptions(asset)
         let marker = L.marker(coord , options)

@@ -1,7 +1,7 @@
 
 import React, {useState, useEffect} from "react"
 import Badge from 'react-bootstrap/Badge'
-import {CRITICAL_LINKS, NON_CRITICAL_LINKS, VAR_NAME, ASSET_FORM} from "./constants"
+import {CRITICAL_LINKS, NON_CRITICAL_LINKS, VAR_NAME, ASSET_FORM, VAR_CRITICAL} from "./constants"
 import {NavLink as RouterNavLink} from "react-router-dom"
 import {FiMoreHorizontal} from "react-icons/fi"
 import {ASSET_FORM_PAGE} from "../routing/constants"
@@ -17,8 +17,8 @@ export const InfoBar = ({documents, info}) => {
         if(Array.isArray(documents) && documents.length){
             let criticalSum = 0, nonCriticalSum = 0
             documents.map(docs => {
-                if(docs.critical === 'true') criticalSum += 1 // have stored as string to display in WOQLTable
-                if(docs.critical === 'false') nonCriticalSum += 1
+                if(docs[VAR_CRITICAL] === 'true') criticalSum += 1 // have stored as string to display in WOQLTable
+                if(docs[VAR_CRITICAL] === 'false') nonCriticalSum += 1
             })
             setCritical(criticalSum)
             setNonCritical(nonCriticalSum)
