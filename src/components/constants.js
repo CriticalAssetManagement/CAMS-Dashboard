@@ -63,6 +63,7 @@ export const ALERT_SUCCESS = "success"
 // map tool bar
 export const CRITICAL_LINKS="Critical Links"
 export const NON_CRITICAL_LINKS="Non Critical Links"
+export const FAILURE_CHAIN_LINKS="Failure Nodes"
 export const CRITICAL_LINKS_TITLE="Show Only Ciritcal Links"
 export const SEARCH_ASSET_PLACEHOLDER= "Input an Asset to search"
 export const SEARCH_ASSET_Label= "Filter by Asset ID"

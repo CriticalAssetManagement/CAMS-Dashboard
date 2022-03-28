@@ -122,58 +122,6 @@ export function extractLocations(id, results) {
 
 
 // function to extract latitude and longitude of all assets
-/*export function extractAssetLocations(results) {
-    let docs = [], json = {}
-    if(!Array.isArray(results)) return docs
-
-    results.map(item => {
-        if(json.hasOwnProperty(item[VAR_ASSET])) { // if asset exists
-            if(item[VAR_INDEX]["@value"] === 0) json[item[VAR_ASSET]][LAT] = item[VAR_VALUE]["@value"]
-            if(item[VAR_INDEX]["@value"] === 1) json[item[VAR_ASSET]][LNG] = item[VAR_VALUE]["@value"]
-        }
-        else { // if asset dosent exists
-            json[item[VAR_ASSET]] = {
-                id: item[VAR_ASSET]
-            }
-            if(item[VAR_INDEX]["@value"] === 0) json[item[VAR_ASSET]][LAT] = item[VAR_VALUE]["@value"]
-            if(item[VAR_INDEX]["@value"] === 1) json[item[VAR_ASSET]][LNG] = item[VAR_VALUE]["@value"]
-            if(item.hasOwnProperty(VAR_NAME)) json[item[VAR_ASSET]][VAR_NAME] = item[VAR_NAME]["@value"]
-
-            if(item.hasOwnProperty(VAR_ASSET_IDENTIFIER) && item[VAR_ASSET_IDENTIFIER] !== null)
-                json[item[VAR_ASSET]][VAR_ASSET_IDENTIFIER] = item[VAR_ASSET_IDENTIFIER]["@value"]
-
-            if(item.hasOwnProperty(VAR_DESIGN_STANDARDS) && item[VAR_DESIGN_STANDARDS] !== null)
-                json[item[VAR_ASSET]][VAR_DESIGN_STANDARDS] = item[VAR_DESIGN_STANDARDS]["@value"]
-                VAR_LAST_MAINTAINED
-
-            if(item.hasOwnProperty(VAR_DESCRIPTION) && item[VAR_DESCRIPTION] !== null)
-                json[item[VAR_ASSET]][VAR_DESCRIPTION] = item[VAR_DESCRIPTION]["@value"]
-                VAR_LAST_MAINTAINED
-
-            if(item.hasOwnProperty(VAR_LAST_MAINTAINED)&& item[VAR_LAST_MAINTAINED] !== null)
-                json[item[VAR_ASSET]][VAR_LAST_MAINTAINED] = item[VAR_LAST_MAINTAINED]["@value"]
-
-
-            if(item.hasOwnProperty(VAR_NAME)) json[item[VAR_ASSET]][VAR_NAME] = item[VAR_NAME]["@value"]
-            if(item.hasOwnProperty(VAR_CRITICAL)) {
-                json[item[VAR_ASSET]]["critical"] = item[VAR_CRITICAL]["@value"].toString()
-            }
-            if(item.hasOwnProperty(VAR_PATH)) {
-                json[item[VAR_ASSET]]["path"] = item[VAR_PATH]
-            }
-            if(item.hasOwnProperty(VAR_GRADE)) {
-                json[item[VAR_ASSET]][VAR_GRADE] = item[VAR_GRADE]["@value"]
-            }
-        }
-    })
-    for(var things in json) {
-        docs.push(json[things])
-    }
-    //console.log("docs", docs)
-    return docs
-} */
-
-// function to extract latitude and longitude of all assets
 export function extractAssetLocations(results) {
     let docs = [], json = {}
     if(!Array.isArray(results)) return docs

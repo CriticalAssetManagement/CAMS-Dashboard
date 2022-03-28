@@ -15,6 +15,7 @@ import {
 }  from "./constants"
 import {
     CRITICAL_LINKS,
+    FAILURE_CHAIN_LINKS,
     VAR_NAME,
     NON_CRITICAL_LINKS,
     NON_CRITICAL_COLOR,
@@ -28,7 +29,7 @@ import {
     VAR_LINKED_ASSET_NAME,
     VAR_LONGITUDE,
     VAR_LATITUDE
-} from ".././constants"
+} from "../constants"
 import "leaflet-arrowheads"
 import "leaflet.browser.print/dist/leaflet.browser.print.js"
 import {
@@ -85,7 +86,16 @@ export function  gatherVectorLines(vector, displayFailureChains, layerGorup, onM
                 { maxWidth: 2000 }
             )
 
-        layerJson[CRITICAL_LINKS] = things.addTo(layerGorup)
+        layerJson[
+            `<span class='my-layer-item'>${CRITICAL_LINKS}</span>
+                <i style='background: ${CRITICAL_COLOR};
+                    width: 10px;
+                    height: 10px;
+                    float: left;
+                    margin-right: 8px;
+                    margin-top: 3px;'/>`
+        ] = things.addTo(layerGorup)
+
     }
     //layer control for non critical links
     if (vectorControl[NON_CRITICAL_LINKS].length) {
@@ -96,19 +106,40 @@ export function  gatherVectorLines(vector, displayFailureChains, layerGorup, onM
                 { maxWidth: 2000 }
             )
 
-        layerJson[NON_CRITICAL_LINKS] = things.addTo(layerGorup)
+        layerJson[
+            `<span class='my-layer-item'>${NON_CRITICAL_LINKS}</span>
+                <i style='background: ${NON_CRITICAL_COLOR};
+                    width: 10px;
+                    height: 10px;
+                    float: left;
+                    margin-right: 8px;
+                    margin-top: 3px;'/>`
+        ] = things.addTo(layerGorup)
     }
 
     //console.log("displayFailureChains",displayFailureChains)
 
     // display Failure Chains
-    if(displayFailureChains && Array.isArray(displayFailureChains )) {
+    if(displayFailureChains && Array.isArray(displayFailureChains) && displayFailureChains.length>0) {
         let gatherLinkedChains=[]
         gatherLinkedChains=gatherFailureLines(displayFailureChains, onMarkerClick)
         if (Array.isArray(gatherLinkedChains) ) {
             // add dashed lines to map to show indirect links
             var  antPolyline = L.polyline.antPath(gatherLinkedChains, DASH_LINES_OPTIONS)
-            layerJson["Failure Nodes"] = antPolyline.addTo(layerGorup)
+
+            layerJson[
+                `<span class='my-layer-item'>${FAILURE_CHAIN_LINKS}</span>
+                <i style='display: inline-block;
+                    border-top: 10px solid #ffffffff;
+                    border-right: 10px solid #800000;
+                    width: 10px;
+                    height: 10px;
+                    float: left;
+                    opacity: 0.5;
+                    margin-right: 8px;
+                    margin-top: 3px;'/>`
+            ] = antPolyline.addTo(layerGorup)
+
         }
 
     }
