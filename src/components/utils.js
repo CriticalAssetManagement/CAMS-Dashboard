@@ -27,9 +27,11 @@ import {
     VAR_LINKED_ASSET_LAT,
     VAR_LINKED_ASSET_LNG,
     VAR_LINKED_ASSET_NAME,
-    VAR_LINKED_ASSET_DESCRIPTION
+    VAR_LINKED_ASSET_DESCRIPTION,
+    VAR_ASSET_TYPE
 } from "./constants"
 import {MdAddAlert} from "react-icons/md"
+import { ASSET_TYPE } from '../pages/constants'
 
 export async function handleDocumentSelect(woqlClient, inp, type) {
 
@@ -159,6 +161,9 @@ export function extractAssetLocations(results) {
         }
         if(item.hasOwnProperty(VAR_GRADE)) {
             json[VAR_GRADE] = item[VAR_GRADE]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_ASSET_TYPE)) {
+            json[VAR_ASSET_TYPE] = item[VAR_ASSET_TYPE]
         }
         docs.push(json)
      })

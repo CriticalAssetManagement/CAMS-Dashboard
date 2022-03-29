@@ -55,9 +55,9 @@ export const HomePage = () => {
         L.control.browserPrint(BROWSER_PRINT_OPTIONS)
         .addTo(map)
 
-        // get legends and add to map
-        //let legend=getLegend(L)
-        //legend.addTo(map)
+        // get icon legends and add to map
+        let legend=getLegend(L)
+        legend.addTo(map)
 
 		window.map = map
 
@@ -67,7 +67,7 @@ export const HomePage = () => {
     function loadMarkers (assets, layerGroup, map) {
         if(!assets) return
         clearMap()
-        getMarkers (assets, layerGroup, setOnMarkerClick, filterAssetByEvent)
+        getMarkers (assets, layerGroup, setOnMarkerClick)
         map.addLayer(layerGroup)
         setLayerGroup(layerGroup)
     }
@@ -121,6 +121,7 @@ export const HomePage = () => {
         setErrorMsg,
         loading,
         setLoading,
+        frames
 	} = WOQLClientObj()
 
     const {
@@ -159,7 +160,7 @@ export const HomePage = () => {
     useEffect(() => {
         if(queryResults.length) {
             //console.log("queryResults", queryResults)
-            let locs = extractAssetLocations(queryResults)
+            let locs = extractAssetLocations(queryResults, frames)
             setShowAssets(locs)
             setLoading(false)
         }
@@ -190,10 +191,6 @@ export const HomePage = () => {
             loadMarkers (showAssets, mg, mapComponent)
         }
     }, [resetMap])
-
-
-
-
 
     useEffect(() => {
         if(filteredAssets.length) {

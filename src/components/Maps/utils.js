@@ -28,20 +28,12 @@ import {
     VAR_LINKED_ASSET_LAT,
     VAR_LINKED_ASSET_NAME,
     VAR_LONGITUDE,
-    VAR_LATITUDE
+    VAR_LATITUDE,
+    VAR_ASSET_TYPE
 } from "../constants"
 import "leaflet-arrowheads"
 import "leaflet.browser.print/dist/leaflet.browser.print.js"
-import {
-    ICON,
-    BG_CHILI_ICON,
-    BG_RED_ICON,
-    BG_BURGUNDY_ICON,
-    BG_AMBER_ICON,
-    BG_DIJON_ICON,
-    BG_FIRE_ICON,
-    BG_GOLD_ICON
-} from "./markers"
+import {getGradeIcons, getAssetTypeIcons} from "./icons"
 
 // modifying failureChainArray to draw lines in leaflet map format
 function gatherFailureLines(failureChainArray, onMarkerClick) {
@@ -232,31 +224,10 @@ export function getPopContent (coord){
 function getMarkerOptions(asset) {
     var options=MARKER_OPTIONS
     if(asset.hasOwnProperty(VAR_GRADE)) {
-        if(asset[VAR_GRADE] === 1) {
-            options = {
-                icon: BG_AMBER_ICON
-            }
-        }
-        else if(asset[VAR_GRADE] === 2) {
-            options = {
-                icon: BG_DIJON_ICON
-            }
-        }
-        else if(asset[VAR_GRADE] === 3) {
-            options = {
-                icon: BG_RED_ICON
-            }
-        }
-        else if(asset[VAR_GRADE] === 4) {
-            options = {
-                icon: BG_CHILI_ICON
-            }
-        }
-        else if(asset[VAR_GRADE] === 5) {
-            options = {
-                icon: BG_BURGUNDY_ICON
-            }
-        }
+        options=getGradeIcons(asset)
+    }
+    if(asset.hasOwnProperty(VAR_ASSET_TYPE)) {
+        options=getAssetTypeIcons(asset)
     }
     return options
 }
@@ -266,7 +237,7 @@ export function getMarkers (assets, layerGroup, setOnMarkerClick) {
     //console.log("assets", assets)
     assets.map(asset => {
         // get marker lat lng
-        let coord = {name:asset[VAR_NAME] ,lat: asset[VAR_LATITUDE], lng: asset[VAR_LONGITUDE]}
+        let coord = {name:asset[VAR_NAME], lat: asset[VAR_LATITUDE], lng: asset[VAR_LONGITUDE]}
 
         let options = getMarkerOptions(asset)
         let marker = L.marker(coord , options)

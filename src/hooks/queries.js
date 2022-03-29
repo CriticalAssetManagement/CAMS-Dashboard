@@ -30,6 +30,7 @@ export const getAvailableAssets = () => {
         .triple("v:Asset", "@schema:name", "v:Name")
         .opt(WOQL.triple("v:Asset", "@schema:description", "v:Description"))
         .triple("v:Asset", "@schema:asset_identifier", "v:AssetIdentifier")
+        .opt(WOQL.triple("v:Asset", "@schema:assetType", "v:AssetType"))
         .triple("v:Asset", "@schema:design_standards", "v:DesignStandards")
         .triple("v:Asset", "@schema:last_maintained", "v:LastMaintained")
         .triple("v:Asset", "@schema:location", "v:Location")
