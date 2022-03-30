@@ -281,7 +281,8 @@ a.leaflet-browser-print{
 }
 
 .legend-icon-color {
-    color: #013220;
+    /*color: #013220;*/
+    color: #00008b;
     font-size: 14px;
 }
 

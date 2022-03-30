@@ -19,9 +19,10 @@ export const TRANSPORTATION="Transportation"
 export const HAZARDOUS_MATERIAL="Hazardous Material"
 export const OTHERS="Others"
 
-const MARKER_COLOR='green-dark' //cyan/ green-dark
+const MARKER_COLOR='#e194ff' //'blue-dark' //cyan/ green-dark
 const ICON_SIZE='fa-2x'
-const ICON_COLOR='#fff'
+const ICON_COLOR= '#00008b'//'#62ff97'
+
 
 // Asset Type Icons
 // Creates Others icon
@@ -34,7 +35,8 @@ export const OTHERS_ICON = L.ExtraMarkers.icon({
     iconRotate: 0,
     extraClasses: ICON_SIZE,
     number: '',
-    svg: false
+    shadowSize: [0, 0],
+    svg: true
 })
 
 
@@ -48,7 +50,8 @@ export const TRANSPORTATION_ICON = L.ExtraMarkers.icon({
     iconRotate: 0,
     extraClasses: ICON_SIZE,
     number: '',
-    svg: false
+    shadowSize: [0, 0],
+    svg: true
 })
 
 // Creates Communications icon
@@ -61,7 +64,8 @@ export const COMMUNICATIONS_ICON = L.ExtraMarkers.icon({
     iconRotate: 0,
     extraClasses: ICON_SIZE,
     number: '',
-    svg: false
+    shadowSize: [0, 0],
+    svg: true
 })
 
 // Creates food health and medical icon
@@ -74,7 +78,8 @@ export const HEALTH_AND_MEDICAL_ICON = L.ExtraMarkers.icon({
     iconRotate: 0,
     extraClasses: ICON_SIZE,
     number: '',
-    svg: false
+    shadowSize: [0, 0],
+    svg: true
 })
 
 // Creates an food water and shelter icon
@@ -87,7 +92,8 @@ export const FOOD_WATER_SHELTER_ICON = L.ExtraMarkers.icon({
     iconRotate: 0,
     extraClasses: ICON_SIZE,
     number: '',
-    svg: false
+    shadowSize: [0, 0],
+    svg: true
 })
 
 // Creates an Security and safety icon
@@ -100,7 +106,8 @@ export const SAFETY_AND_SECURITY_ICON = L.ExtraMarkers.icon({
     iconRotate: 0,
     extraClasses: ICON_SIZE,
     number: '',
-    svg: false
+    shadowSize: [0, 0],
+    svg: true
 })
 
 // Creates an Energy icon
@@ -113,7 +120,8 @@ export const ENERGY_ICON = L.ExtraMarkers.icon({
     iconRotate: 0,
     extraClasses: ICON_SIZE,
     number: '',
-    svg: false
+    svg: true,
+    shadowSize: [0, 0]
 })
 
 // Creates an Building icon
@@ -126,7 +134,8 @@ export const GOVERNMENT_BUILDINGS_ICON = L.ExtraMarkers.icon({
     iconRotate: 0,
     extraClasses: ICON_SIZE,
     number: '',
-    svg: false
+    shadowSize: [0, 0],
+    svg: true
 })
 
 // Creates an Ports icon
@@ -139,7 +148,8 @@ export const MARINE_PORTS_ICON = L.ExtraMarkers.icon({
     iconRotate: 0,
     extraClasses: ICON_SIZE,
     number: '',
-    svg: false
+    shadowSize: [0, 0],
+    svg: true
 })
 
 // Creates an Airport icon
@@ -152,7 +162,8 @@ export const AIRPORT_ICON = L.ExtraMarkers.icon({
     iconRotate: 0,
     extraClasses: ICON_SIZE,
     number: '',
-    svg: false
+    shadowSize: [0, 0],
+    svg: true
 })
 
 
@@ -166,7 +177,8 @@ export const ELECTRICAL_POWER_GENERATING_PLANTS_ICON = L.ExtraMarkers.icon({
     iconRotate: 0,
     extraClasses: ICON_SIZE,
     number: '',
-    svg: false
+    shadowSize: [0, 0],
+    svg: true
 })
 
 // Creates an water system  icon
@@ -179,7 +191,8 @@ export const WATER_DISTRIBUTION_SYSTEM_ICON = L.ExtraMarkers.icon({
     iconRotate: 0,
     extraClasses: ICON_SIZE,
     number: '',
-    svg: false
+    shadowSize: [0, 0],
+    svg: true
 })
 
 

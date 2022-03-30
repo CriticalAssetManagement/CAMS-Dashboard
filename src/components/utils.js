@@ -29,7 +29,8 @@ import {
     VAR_LINKED_ASSET_NAME,
     VAR_LINKED_ASSET_DESCRIPTION,
     VAR_ASSET_TYPE,
-    VAR_LINKED_ASSET_TYPE
+    VAR_LINKED_ASSET_TYPE,
+    VAR_ASSET_NAME
 } from "./constants"
 import {MdAddAlert} from "react-icons/md"
 import { ASSET_TYPE } from '../pages/constants'
@@ -166,6 +167,50 @@ export function extractAssetLocations(results) {
         }
         if(item.hasOwnProperty(VAR_ASSET_TYPE)) {
             json[VAR_ASSET_TYPE] = item[VAR_ASSET_TYPE]
+        }
+        docs.push(json)
+     })
+    //console.log("docs", docs)
+    return docs
+}
+
+export function getUpwardChainAssetLocation (results) {
+    let docs = [], json = {}
+    if(!Array.isArray(results)) return docs
+    results.map(item => {
+        json = {}
+        if(item.hasOwnProperty(VAR_ASSET)) {
+            json[VAR_ASSET]=item[VAR_ASSET]
+        }
+        if(item.hasOwnProperty(VAR_ASSET_X)) {
+            json[ASSET_LAT] = item[VAR_ASSET_X]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_ASSET_Y)) {
+            json[ASSET_LNG] = item[VAR_ASSET_Y]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_ASSET_NAME)) {
+            json[VAR_ASSET_NAME] = item[VAR_ASSET_NAME]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_ASSET_TYPE)) {
+            json[VAR_ASSET_TYPE] = item[VAR_ASSET_TYPE]
+        }
+        if(item.hasOwnProperty(VAR_LINKED_ASSET)) {
+            json[VAR_LINKED_ASSET]=item[VAR_LINKED_ASSET]
+        }
+        if(item.hasOwnProperty(VAR_LINKED_ASSET_X)) {
+            json[VAR_LINKED_ASSET_LAT] = item[VAR_LINKED_ASSET_X]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_LINKED_ASSET_Y)) {
+            json[VAR_LINKED_ASSET_LNG] = item[VAR_LINKED_ASSET_Y]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_LINKED_ASSET_NAME)) {
+            json[VAR_LINKED_ASSET_NAME] = item[VAR_LINKED_ASSET_NAME]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_LINKED_ASSET_DESCRIPTION) && item[VAR_LINKED_ASSET_DESCRIPTION]) {
+            json[VAR_LINKED_ASSET_DESCRIPTION] = item[VAR_LINKED_ASSET_DESCRIPTION]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_LINKED_ASSET_TYPE) && item[VAR_LINKED_ASSET_TYPE]) {
+            json[VAR_LINKED_ASSET_TYPE] = item[VAR_LINKED_ASSET_TYPE]
         }
         docs.push(json)
      })

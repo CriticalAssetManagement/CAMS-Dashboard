@@ -28,7 +28,7 @@ export function getCriticalAssetConfig(documents, onRowClick) {
         tConf.column(VAR_LAST_MAINTAINED).hidden(true)
         tConf.column(VAR_DESCRIPTION).hidden(true)
 
-        if(onRowClick) tConf.row().click(onRowClick)
+        //if(onRowClick) tConf.row().click(onRowClick) // disabling rowclick of rows to display ownr info
         return tConf
     }
 }

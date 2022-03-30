@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect, useContext} from "react"
 import {Layout} from "../components/Layout"
-import {ProgressBar, Button, Row, Toast, ToastContainer} from "react-bootstrap"
+import {ProgressBar, Button, Row} from "react-bootstrap"
 import {VAR_NAME} from "../components/constants"
 import {WOQLClientObj} from '../init-woql-client'
 import {QueryHook} from "../hooks/QueryHook"
@@ -14,7 +14,7 @@ import {DisplayMarkerInfo} from "../components/DisplayMarkerInfo"
 import "leaflet-arrowheads"
 import {antPath} from 'leaflet-ant-path'
 import {LATITUDE, LONGITUDE, DASH_LINES_OPTIONS, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, BROWSER_PRINT_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH, POPUP_OPTIONS}  from "../components/maps/constants"
-import {extractAndDrawVectors, gatherVectorLines, drawFailureChains, getMarkers, drawPolyLine} from "../components/maps/utils"
+import {extractAndDrawVectors, gatherVectorLines, drawFailureChains, getMarkers, drawUpwardChains, drawPolyLine} from "../components/maps/utils"
 import "leaflet.browser.print/dist/leaflet.browser.print.min.js"
 import "leaflet/dist/leaflet.css"
 import {getLegend} from "../components/maps/legend"
@@ -98,10 +98,13 @@ export const HomePage = () => {
         // draw failure chain
         drawFailureChains (displayFailureChains, mg)
 
+        // draw upward chain
+        drawUpwardChains (displayUpwardChains, mg)
+
         // get vector and add arrows
 		function getVector (vector) {
             clearMap()
-            return gatherVectorLines(vector, displayFailureChains, mg, onMarkerClick)
+            return gatherVectorLines(vector, displayFailureChains, displayUpwardChains, mg, onMarkerClick)
 		}
 
         var layersControl = L.control
@@ -137,12 +140,13 @@ export const HomePage = () => {
         setFailureChain,
         displayFailureChains,
         setDisplayFailureChains,
+        setDisplayUpwardChains,
         setVectorLayerGroup,
         vectorLayerGroup,
         layerGroup,
         setLayerGroup,
-        emptyMessage,
-        setEmptyMessage
+        setUpwardChain,
+        displayUpwardChains
     } = MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg)
 
     console.log("displayFailureChains", displayFailureChains)
@@ -174,13 +178,21 @@ export const HomePage = () => {
         }
     }, [polyLine])
 
+    // failure chains
     useEffect(() => {
-        if(Array.isArray(displayFailureChains) && displayFailureChains.length) {
+        if(Array.isArray(displayFailureChains) && displayFailureChains.length > 0) {
             setRefresh(Date.now())
             changeMap()
         }
     }, [displayFailureChains])
 
+    // upward chains
+    useEffect(() => {
+        if(Array.isArray(displayUpwardChains) && displayUpwardChains.length > 0) {
+            setRefresh(Date.now())
+            changeMap()
+        }
+    }, [displayUpwardChains])
 
     useEffect(() => {
         if(mapComponent) {
@@ -214,22 +226,12 @@ export const HomePage = () => {
             <MapToolBar setResetMap={setResetMap}
                 resetMap={resetMap}
                 setDisplayFailureChains={setDisplayFailureChains}
+                setDisplayUpwardChains={setDisplayUpwardChains}
                 onMarkerClick={onMarkerClick}
                 setFilterAssetByEvent={setFilterAssetByEvent}
                 setFailureChain={setFailureChain}
+                setUpwardChain={setUpwardChain}
                 setFilterAssetById={setFilterAssetById}/>
-
-            {
-                emptyMessage &&
-                <ToastContainer className="p-3 empty-result-toast" position={"middle-start"}>
-                    <Toast  onClose={(e) => setEmptyMessage(false)}>
-                        <Toast.Header>
-                            <strong className="me-auto">{`Clicked on ${onMarkerClick.id}`}</strong>
-                        </Toast.Header>
-                        <Toast.Body>{emptyMessage}</Toast.Body>
-                    </Toast>
-                </ToastContainer>
-            }
 
             {showAssets && <React.Fragment>
 

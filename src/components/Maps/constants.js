@@ -45,7 +45,21 @@ export const DASH_LINES_OPTIONS = {
 	"paused": false,
 	"reverse": false,
 	"hardwareAccelerated": true
-  }
+}
+
+export const UPWARD_DASH_LINES_OPTIONS = {
+	"delay": 800,
+	"dashArray": [
+	  10,
+	  20
+	],
+	"weight": 5,
+	"color": "#ffff",
+	"pulseColor": "#133333",
+	"paused": false,
+	"reverse": false,
+	"hardwareAccelerated": true
+}
 
 export const POPUP_OPTIONS = {
 	maxWidth: '500',

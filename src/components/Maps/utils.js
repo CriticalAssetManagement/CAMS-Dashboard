@@ -2,6 +2,7 @@ import {
     LATITUDE,
     LONGITUDE,
     DASH_LINES_OPTIONS,
+    UPWARD_DASH_LINES_OPTIONS,
     MAP_ID,
     ARROW_OPTIONS,
     MARKER_OPTIONS,
@@ -30,31 +31,87 @@ import {
     VAR_LONGITUDE,
     VAR_LATITUDE,
     VAR_ASSET_TYPE,
-    VAR_LINKED_ASSET_TYPE
+    VAR_LINKED_ASSET,
+    VAR_LINKED_ASSET_TYPE,
+    VAR_ASSET_NAME,
+    UPWARD_TITLE,
+    UPWARD_FAILURE_CHAIN_TITLE,
+    UPWARD_LINKS_COLOR
 } from "../constants"
 import "leaflet-arrowheads"
 import "leaflet.browser.print/dist/leaflet.browser.print.js"
 import {getGradeIcons, getAssetTypeIcons} from "./icons"
 
+// modifying upwardChainArray to draw lines in leaflet map format
+function gatherUpwardChainLines (upwardChainArray, onMarkerClick) {
+    let modifiedUpwardChainArray=[]
+    // write a function here to check if all keys are available to display map
+    if(!onMarkerClick) return
+    upwardChainArray.map(uca => {
+        if(uca[VAR_ASSET] !== onMarkerClick.id) {
+            modifiedUpwardChainArray.push([
+                [ uca[ASSET_LAT], uca[ASSET_LNG] ],
+                [ uca[VAR_LINKED_ASSET_LAT], uca[VAR_LINKED_ASSET_LNG] ]
+            ])
+        }
+    })
+    //console.log("modifiedUpwardChainArray", modifiedUpwardChainArray)
+    return modifiedUpwardChainArray
+}
+
+// upward chains directly linked
+function gatherDirectlyLinkedUpwardChain (upwardChainArray, onMarkerClick) {
+    let modifiedUpwardChainArray=[]
+    if(!onMarkerClick) return
+    upwardChainArray.map( uca => {
+        // direct links
+        if(uca[VAR_LINKED_ASSET] !== onMarkerClick.id) return
+        if(uca.hasOwnProperty(VAR_LINKED_ASSET) && uca[VAR_LINKED_ASSET] === onMarkerClick.id) {
+            modifiedUpwardChainArray.push([
+                [ uca[ASSET_LAT], uca[ASSET_LNG] ],
+                [ uca[VAR_LINKED_ASSET_LAT], uca[VAR_LINKED_ASSET_LNG] ]
+            ])
+        }
+    })
+    return modifiedUpwardChainArray
+}
+
+// upward chains failure linked
+function gatherLinkedUpwardFailureChain (upwardChainArray, onMarkerClick) {
+    let modifiedUpwardFailureChainArray=[]
+    if(!onMarkerClick) return
+    upwardChainArray.map( uca => {
+        // direct links
+        if(uca["Asset"] === onMarkerClick.id) return
+        if(uca["LinkedAsset"] === onMarkerClick.id) return
+
+        modifiedUpwardFailureChainArray.push([
+            [ uca[ASSET_LAT], uca[ASSET_LNG] ],
+            [ uca[VAR_LINKED_ASSET_LAT], uca[VAR_LINKED_ASSET_LNG] ]
+        ])
+    })
+    return modifiedUpwardFailureChainArray
+}
+
 // modifying failureChainArray to draw lines in leaflet map format
 function gatherFailureLines(failureChainArray, onMarkerClick) {
-    let modifiedFailrueChainArray=[]
+    let modifiedFailureChainArray=[]
     // write a function here to check if all keys are available to display map
     if(!onMarkerClick) return
     failureChainArray.map(fcs => {
         if(fcs[VAR_ASSET] !== onMarkerClick.id) {
-            modifiedFailrueChainArray.push([
+            modifiedFailureChainArray.push([
                 [ fcs[ASSET_LAT], fcs[ASSET_LNG] ],
                 [ fcs[VAR_LINKED_ASSET_LAT], fcs[VAR_LINKED_ASSET_LNG] ]
             ])
         }
     })
-    //console.log("modifiedFailrueChainArray", modifiedFailrueChainArray)
-    return modifiedFailrueChainArray
+    //console.log("modifiedFailureChainArray", modifiedFailureChainArray)
+    return modifiedFailureChainArray
 }
 
 // get vector and add arrows critical and non critical lines
-export function  gatherVectorLines(vector, displayFailureChains, layerGorup, onMarkerClick) {
+export function  gatherVectorLines(vector, displayFailureChains, displayUpwardChains, layerGorup, onMarkerClick) {
     let layerJson = {}
     let vectorControl = {
         [CRITICAL_LINKS]: [],
@@ -136,6 +193,53 @@ export function  gatherVectorLines(vector, displayFailureChains, layerGorup, onM
         }
 
     }
+
+    // display upward chains
+    if(displayUpwardChains && Array.isArray(displayUpwardChains) && displayUpwardChains.length) {
+        let gatherDirectlyLinked=[], gatherUpwardFailureLinked=[]
+        gatherDirectlyLinked=gatherDirectlyLinkedUpwardChain(displayUpwardChains, onMarkerClick)
+
+        // when no upward links available to clicked asset
+        if(Array.isArray(gatherDirectlyLinked) && gatherDirectlyLinked.length === 0) return layerJson
+
+        var things = L.polyline(gatherDirectlyLinked , { color: UPWARD_LINKS_COLOR})
+            .arrowheads(ARROW_OPTIONS)
+            .bindPopup(
+                `<code>var simpleVector0: L.polyline(coords).arrowheads()</code>`,
+                { maxWidth: 2000 }
+            )
+
+        layerJson[
+            `<span class='my-layer-item'>${UPWARD_TITLE}</span>
+                <i style='background: ${UPWARD_LINKS_COLOR};
+                    width: 10px;
+                    height: 10px;
+                    float: left;
+                    margin-right: 8px;
+                    margin-top: 3px;'/>`
+        ] = things.addTo(layerGorup)
+
+        gatherUpwardFailureLinked=gatherLinkedUpwardFailureChain(displayUpwardChains, onMarkerClick)
+        if (Array.isArray(gatherUpwardFailureLinked) ) {
+            // add dashed lines to map to show indirect links
+            var  antPolyline = L.polyline.antPath(gatherUpwardFailureLinked, UPWARD_DASH_LINES_OPTIONS)
+
+            layerJson[
+                `<span class='my-layer-item'>${UPWARD_FAILURE_CHAIN_TITLE}</span>
+                <i style='display: inline-block;
+                    border-top: 10px solid #ffffffff;
+                    border-right: 10px solid #133333;
+                    width: 10px;
+                    height: 10px;
+                    float: left;
+                    opacity: 0.5;
+                    margin-right: 8px;
+                    margin-top: 3px;'/>`
+            ] = antPolyline.addTo(layerGorup)
+
+        }
+
+    }
     return layerJson
 }
 
@@ -167,8 +271,59 @@ export function drawFailureChains (displayFailureChains, layerGroup) {
                 lat: link[VAR_LINKED_ASSET_LAT],
                 lng: link[VAR_LINKED_ASSET_LNG]
             }
-            options = getLinkedMarkerOptions(link)
+            options = getLinkedMarkerOptions(link, VAR_LINKED_ASSET_TYPE)
             let marker = L.marker(coord , options)
+                //.bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
+                .bindPopup(getPopContent(coord), POPUP_OPTIONS)
+                .on('click', function(e) {
+                    let cData = link //coord
+                    cData[REFRESH] = Date.now()
+                    //map.setView(e.latlng, 13)
+                    //if(setOnMarkerClick) setOnMarkerClick(cData)
+                })
+            marker.on('mouseover',function(ev) { // on hover
+                marker.openPopup()
+            })
+            marker.addTo(layerGroup)
+        })
+    }
+ }
+
+ // draw upward chains
+ export function drawUpwardChains (displayUpwardChains, layerGroup) {
+    // gather failure chain markers
+    //console.log("displayUpwardChains",displayUpwardChains)
+    if(displayUpwardChains && Array.isArray(displayUpwardChains) && displayUpwardChains.length) {
+        var options=MARKER_OPTIONS
+        displayUpwardChains.map(linkChains => {
+
+            var link = linkChains
+            var coord = {
+                name:link[VAR_ASSET_NAME],
+                lat: link[ASSET_LAT],
+                lng: link[ASSET_LNG]
+            }
+            options = getLinkedMarkerOptions(link, VAR_ASSET_TYPE)
+            var marker = L.marker(coord , options)
+                //.bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
+                .bindPopup(getPopContent(coord), POPUP_OPTIONS)
+                .on('click', function(e) {
+                    let cData = link //coord
+                    cData[REFRESH] = Date.now()
+                    //map.setView(e.latlng, 13)
+                    //if(setOnMarkerClick) setOnMarkerClick(cData)
+                })
+            marker.on('mouseover',function(ev) { // on hover
+                marker.openPopup()
+            })
+            marker.addTo(layerGroup)
+            var coord = {
+                name:link[VAR_LINKED_ASSET_NAME],
+                lat: link[VAR_LINKED_ASSET_LAT],
+                lng: link[VAR_LINKED_ASSET_LNG]
+            }
+            options = getLinkedMarkerOptions(link, VAR_LINKED_ASSET_TYPE)
+            var marker = L.marker(coord , options)
                 //.bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
                 .bindPopup(getPopContent(coord), POPUP_OPTIONS)
                 .on('click', function(e) {
@@ -245,7 +400,8 @@ function getMarkerOptions(asset) {
                 iconRotate: 0,
                 extraClasses: 'fa-2x',
                 number: '',
-                svg: true
+                svg: true,
+                shadowSize: [0, 0]
             })
         }
         return gradedOptions
@@ -254,8 +410,8 @@ function getMarkerOptions(asset) {
 }
 
 // get colored failure chain markers
-function getLinkedMarkerOptions (asset) {
-    let options=getAssetTypeIcons(asset, VAR_LINKED_ASSET_TYPE)
+function getLinkedMarkerOptions (asset , key) {
+    let options=getAssetTypeIcons(asset, key)
     return options
 }
 

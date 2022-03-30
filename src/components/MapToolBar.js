@@ -1,7 +1,19 @@
 import React, {useState, useEffect} from "react"
 import {Card, Col, Row, Button} from "react-bootstrap"
 import Dropdown from 'react-bootstrap/Dropdown'
-import {VAR_MAX, SHOW_ALL_FAILURE_CHAIN_TITLE, SHOW_ALL_ASSETS_TITLE, SHOW_ALL_ASSETS, SEARCH_ASSET, SEARCH_ASSET_PLACEHOLDER, FAILURE_CHAIN_TITLE, HAZARD_TYPE, HAZARD_DROPDOWN_TITLE} from "./constants"
+import {
+    VAR_MAX,
+    SHOW_ALL_FAILURE_CHAIN_TITLE,
+    SHOW_ALL_ASSETS_TITLE,
+    SHOW_ALL_ASSETS,
+    SEARCH_ASSET,
+    SEARCH_ASSET_PLACEHOLDER,
+    FAILURE_CHAIN_TITLE,
+    HAZARD_TYPE,
+    HAZARD_DROPDOWN_TITLE,
+    UPWARD_CHAIN_TITLE,
+    SHOW_ALL_UPWARD_CHAIN_TITLE
+} from "./constants"
 import Select from 'react-select'
 import {getAssetSelectOptions} from "./utils"
 import {DocumentDetail} from "./DocumentDetail"
@@ -15,7 +27,7 @@ import {getEventScaleQuery} from "../hooks/queries"
 import {QueryHook} from "../hooks/QueryHook"
 import {ASSET_TYPE} from "../pages/constants"
 
-export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFailureChains, setFilterAssetByEvent, setFailureChain, setFilterAssetById}) => {
+export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFailureChains, setDisplayUpwardChains, setUpwardChain, setFilterAssetByEvent, setFailureChain, setFilterAssetById}) => {
 
     // constants to gather events and grades
     const [eventList, setEventList] = useState(false)
@@ -77,6 +89,11 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
             setDisplayFailureChains([])
             setFailureChain(false)
         }
+        // clear upward chain
+        if(setDisplayUpwardChains) {
+            setDisplayUpwardChains([])
+            setUpwardChain(false)
+        }
         // clear filter by ID, Events
         if(setFilterAssetById) setFilterAssetById(false)
         if(setFilterAssetByEvent) setFilterAssetByEvent(false)
@@ -109,12 +126,18 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
         }
     }, [frames])
 
+    // function to display failure chains
     function handleClicked (e) {
         //setFailureChain(e.target.checked)
         if(setFailureChain) setFailureChain(true)
         // clear filter by events or ID
         //if(setFilterAssetByEvent) setFilterAssetByEvent(false)
         //if(setFilterAssetById) setFilterAssetById(false)
+    }
+
+    // function to display upward links
+    function handleUpwardChainClick(e) {
+        if(setUpwardChain) setUpwardChain(true)
     }
 
     //console.log("value", value)
@@ -170,6 +193,18 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
                             onClick={handleClicked}
                             title={SHOW_ALL_FAILURE_CHAIN_TITLE}>
                             {FAILURE_CHAIN_TITLE}
+                        </Button>
+                    </Col>
+                }
+
+                {
+                onMarkerClick && onMarkerClick.hasOwnProperty("id") &&
+                    <Col>
+                        <Button variant="outline-secondary"
+                            className="btn-sm"
+                            onClick={handleUpwardChainClick}
+                            title={SHOW_ALL_UPWARD_CHAIN_TITLE}>
+                            {UPWARD_CHAIN_TITLE}
                         </Button>
                     </Col>
                 }

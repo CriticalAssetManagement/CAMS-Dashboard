@@ -1,17 +1,26 @@
 
 import React, {useState, useEffect} from "react"
 import Badge from 'react-bootstrap/Badge'
-import {CRITICAL_LINKS, NON_CRITICAL_LINKS, VAR_NAME, ASSET_FORM, VAR_CRITICAL} from "./constants"
+import {CRITICAL_LINKS, NON_CRITICAL_LINKS, VAR_NAME, ASSET_FORM, VAR_CRITICAL, MORE_INFO_TITLE} from "./constants"
 import {NavLink as RouterNavLink} from "react-router-dom"
 import {FiMoreHorizontal} from "react-icons/fi"
 import {ASSET_FORM_PAGE} from "../routing/constants"
 import {Nav} from "react-bootstrap"
+import {WOQLClientObj} from '../init-woql-client'
 
 export const InfoBar = ({documents, info}) => {
     const [critical, setCritical]=useState(false)
     const [nonCritical, setNonCritical]=useState(false)
 
+    const {
+		setPage
+	} = WOQLClientObj()
+
     let documentId = info.hasOwnProperty(VAR_NAME) ? info[VAR_NAME] : ""
+
+    function handleMoreInfo(e) {
+        setPage(ASSET_FORM_PAGE)
+    }
 
     useEffect(() => {
         if(Array.isArray(documents) && documents.length){
@@ -51,7 +60,7 @@ export const InfoBar = ({documents, info}) => {
                 onClick={(e) => handleMoreInfo(e)}
             >
                 <div className="d-flex justify-content-center">
-                    <label className="m-1 text-primary mt-2">More Info</label>
+                    <label className="m-1 text-primary mt-2">{MORE_INFO_TITLE}</label>
                     <h5 className="text-primary "><FiMoreHorizontal/></h5>
                 </div>
             </Nav.Link>

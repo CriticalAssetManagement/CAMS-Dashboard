@@ -34,7 +34,8 @@ export const VAR_MAX="Max"
 export const VAR_ASSET_X="AssetX"
 export const VAR_ASSET_Y="AssetY"
 export const ASSET_LAT="Asset_Lat"
-export const ASSET_LNG="Asset_LNG"
+export const ASSET_LNG="Asset_Lng"
+export const VAR_ASSET_NAME="AssetName"
 export const VAR_LINKED_ASSET="LinkedAsset"
 export const VAR_LINKED_ASSET_X="LinkedAssetX"
 export const VAR_LINKED_ASSET_Y="LinkedAssetY"
@@ -45,8 +46,10 @@ export const VAR_LINKED_ASSET_DESCRIPTION ="LinkedAssetDescription"
 export const VAR_ASSET_TYPE="AssetType"
 export const VAR_LINKED_ASSET_TYPE="LinkedAssetType"
 
+// color constants
 export const CRITICAL_COLOR="#bf0a30"//"#dc3545"
 export const NON_CRITICAL_COLOR="#198754"
+export const UPWARD_LINKS_COLOR="#000"
 
 //react leaflet variables
 export const LAT="lat"
@@ -63,9 +66,9 @@ export const ALERT_SUCCESS = "success"
 
 
 // map tool bar
-export const CRITICAL_LINKS="Critical Links"
-export const NON_CRITICAL_LINKS="Non Critical Links"
-export const FAILURE_CHAIN_LINKS="Failure Nodes"
+export const CRITICAL_LINKS="Downward Critical Links"
+export const NON_CRITICAL_LINKS="Downward Non Critical Links"
+export const FAILURE_CHAIN_LINKS="Downward Failure Chain"
 export const CRITICAL_LINKS_TITLE="Show Only Ciritcal Links"
 export const SEARCH_ASSET_PLACEHOLDER= "Input an Asset to search"
 export const SEARCH_ASSET_Label= "Filter by Asset ID"
@@ -73,6 +76,10 @@ export const SHOW_ASSET_DETAIL="View Details"
 export const SHOW_ALL_ASSETS="Reset"
 export const SHOW_ALL_ASSETS_TITLE="Clear filters and Show All Available Assets"
 export const SHOW_ALL_FAILURE_CHAIN_TITLE="Show failure chain"
+export const SHOW_ALL_UPWARD_CHAIN_TITLE="Show Upward Links"
+export const MORE_INFO_TITLE="Assets List ..."
+export const UPWARD_TITLE="Upward Critical Links"
+export const UPWARD_FAILURE_CHAIN_TITLE="Upward Failure Chain"
 
 // details constants for Asset details
 export const ASSET_IDENTIFIER="asset_identifier"
@@ -85,7 +92,6 @@ export const LAST_MODIFIED="last_modified"
 export const EMPTY_PLACEHOLDER="No documents to display ..."
 export const EMPTY_DESCRIPTION="No description provided ..."
 export const NO_OWNER_INFO="No contact details available ..."
-export const NO_DATA_AVAILABLE= "No Asset links to display ..."
 
 // Accordian titles
 export const OWNER_ACCORDIAN_TITLE = "Contact Info"
@@ -95,6 +101,7 @@ export const HIDE_OFFCANVAS_TITLE="Click to go back"
 // Dropdown
 export const HAZARD_DROPDOWN_TITLE="Filter by Events"
 export const FAILURE_CHAIN_TITLE="Failure Path"
+export const UPWARD_CHAIN_TITLE="Upward Links"
 
 //types
 export const HAZARD_TYPE = "Hazard"

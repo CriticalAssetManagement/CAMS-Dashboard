@@ -1,11 +1,10 @@
 
 import React, {useState, useEffect} from "react"
-import {Offcanvas,Button} from "react-bootstrap"
+import {Offcanvas, Button, Alert} from "react-bootstrap"
 import {VAR_NAME, LAT, LNG, EMPTY_DESCRIPTION, VAR_ASSET_IDENTIFIER, HIDE_OFFCANVAS_TITLE, VAR_DESCRIPTION, VAR_LAST_MAINTAINED, VAR_DESIGN_STANDARDS} from "./constants"
 import {ASSET_FORM_PAGE} from "../routing/constants"
 import {InfoBar} from "./InfoBar"
 import {DependentStatus} from "./DependentStatus"
-import {WOQLClientObj} from '../init-woql-client'
 import {RiArrowGoBackFill} from "react-icons/ri"
 import {FiCompass} from "react-icons/fi"
 import {AccordianSection} from "./AccordianSection"
@@ -18,10 +17,6 @@ import {GoTriangleLeft} from "react-icons/go"
 export const ClickedMarkerInfo = ({info, dependencies}) => {
     if(!Object.keys(info).length) return <div/>
     let displayInfo = []
-
-    const {
-		setPage
-	} = WOQLClientObj()
 
     for(var key in info) {
         if(key === "refresh") continue
@@ -70,10 +65,6 @@ export const ClickedMarkerInfo = ({info, dependencies}) => {
         }
     }
 
-    function handleMoreInfo(e) {
-        setPage(ASSET_FORM_PAGE)
-    }
-
     // if only info and no dependencies available
     if(!Array.isArray(dependencies)) return <React.Fragment>{displayInfo}</React.Fragment>
 
@@ -85,12 +76,19 @@ export const ClickedMarkerInfo = ({info, dependencies}) => {
     </React.Fragment>
 }
 
+const NoDependents = ({info}) => {
+    return <Alert variant="warning">
+        <p>{`No dependencies available for Asset - ${info[VAR_NAME]}`}</p>
+    </Alert>
+}
+
 const DisplayLinks = ({dependencies, info}) => {
-    if (!Array.isArray(dependencies)) return <div/>
+    //if (!Array.isArray(dependencies)) return <div/>
 
     return <React.Fragment>
         <ClickedMarkerInfo info={info} dependencies={dependencies}/>
-        <DependentStatus documents = {dependencies}/>
+        {Array.isArray(dependencies) && <DependentStatus documents = {dependencies}/>}
+        {!Array.isArray(dependencies) && <NoDependents info = {info}/>}
     </React.Fragment>
 }
 

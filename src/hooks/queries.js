@@ -145,32 +145,7 @@ export const getEventScaleQuery = (event) => {
     }
 }
 
-
-
-
-
-/*
-let eventName="Drought", clickedGrade = 5
-let hazard = `@schema:Hazard/${eventName}`
-       triple("v:Asset", "@schema:applicable_hazards", "v:AssetHazard")
-		.triple("v:AssetHazard", "@schema:hazard", hazard)
-		.triple("v:AssetHazard", "@schema:Grade", "v:Grade")
-		.less ("v:Grade", clickedGrade) */
-
-
-
-/*let eventName="Drought", clickedGrade = 4
-let hazard = `@schema:Hazard/${eventName}`
-       triple("v:Asset", "@schema:applicable_hazards", "v:AssetHazard")
-		.triple("v:AssetHazard", "@schema:hazard", hazard)
-		.triple("v:Scale", "rdf:type", "@schema:HazardScale")//.triple("v:Scale", "v:A", "v:B")
-         .triple("v:Scale", "@schema:hazard", hazard)
-		.triple("v:Scale", "@schema:max", "v:Max")
-		.triple("v:Scale", "@schema:min", "v:Min")
-           //.triple("v:Hazard", "@schema:hazard", hazard)
-			//.triple("v:Hazard", "@schema:Grade", "v:Grades") */
-
-
+// failure chain query - Linked Asset is dependants
 export const getAssetFailureChain = (asset) => {
     let WOQL=TerminusDBClient.WOQL
     let documentID=asset
@@ -205,6 +180,44 @@ export const getAssetFailureChain = (asset) => {
     .triple("v:AssetCoordinatesY", "sys:value", "v:AssetY")
     .triple("v:AssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
 
+}
+
+
+// upward chain query
+export const getAssetUpwardChain = (asset) => {
+    let WOQL=TerminusDBClient.WOQL
+    let documentID=asset
+
+    //let documentID = "Asset/Castle%20bruce%20Electrical%20substation"
+    return WOQL.and(
+        WOQL.path("v:Asset", "(<depends_on,dependent>)*", documentID),
+        WOQL.triple("v:Inter", "@schema:depends_on", "v:Asset"),
+        WOQL.triple("v:Inter", "@schema:dependent", "v:LinkedAsset"),
+    )
+    .triple("v:LinkedAsset", "@schema:name", "v:LinkedAssetName")
+    .opt(WOQL.triple("v:LinkedAsset", "@schema:description", "v:LinkedAssetDescription"))
+    .opt(WOQL.triple("v:LinkedAsset", "@schema:assetType", "v:LinkedAssetType"))
+    .triple("v:LinkedAsset", "@schema:location", "v:LinkedAssetLocation")
+    .triple("v:LinkedAssetLocation", "@schema:geometry_location", "v:LinkedAssetPoint")
+    .triple("v:LinkedAssetPoint", "@schema:coordinates", "v:LinkedAssetCoordinatesX")
+    .triple("v:LinkedAssetPoint", "@schema:coordinates", "v:LinkedAssetCoordinatesY")
+    .triple("v:LinkedAssetCoordinatesX", "sys:value", "v:LinkedAssetX")
+    .triple("v:LinkedAssetCoordinatesX", "sys:index", "v:X_LinkedAssetX")
+    .eq("v:X_LinkedAssetX", 0)
+    .triple("v:LinkedAssetCoordinatesY", "sys:value", "v:LinkedAssetY")
+    .triple("v:LinkedAssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
+
+    .triple("v:Asset", "@schema:name", "v:AssetName")
+    .opt(WOQL.triple("v:Asset", "@schema:assetType", "v:AssetType"))
+    .triple("v:Asset", "@schema:location", "v:AssetLocation")
+    .triple("v:AssetLocation", "@schema:geometry_location", "v:AssetPoint")
+    .triple("v:AssetPoint", "@schema:coordinates", "v:AssetCoordinatesX")
+    .triple("v:AssetPoint", "@schema:coordinates", "v:AssetCoordinatesY")
+    .triple("v:AssetCoordinatesX", "sys:value", "v:AssetX")
+    .triple("v:AssetCoordinatesX", "sys:index", "v:X_AssetX")
+    .eq("v:X_AssetX", 0)
+    .triple("v:AssetCoordinatesY", "sys:value", "v:AssetY")
+    .triple("v:AssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
 }
 
 
