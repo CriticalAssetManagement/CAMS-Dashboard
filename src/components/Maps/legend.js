@@ -48,7 +48,7 @@ export function getLegend(L) {
 					let currentLabel = labelArray[i]
 
 					labels.push(
-						'<i  class="fa ' +
+						'<i class="fa ' +
 							getIcon(currentLabel) +
 							' legend-icon-color"></i> ' +
 						currentLabel

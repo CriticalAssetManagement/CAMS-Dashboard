@@ -5,9 +5,14 @@ import {
     BG_AMBER_ICON,
     BG_DIJON_ICON,
     BG_FIRE_ICON,
-    BG_GOLD_ICON
+    BG_GOLD_ICON,
+    BG_AMBER,
+    BG_CHILI,
+    BG_RED,
+    BG_DIJON,
+    BG_BURGUNDY
 } from "./markers"
-import {VAR_GRADE, VAR_ASSET_TYPE} from "../constants"
+import {VAR_GRADE} from "../constants"
 import {
     ENERGY_ICON,
     ENERGY,
@@ -32,47 +37,48 @@ function getEnumTypeFromFrames(type) {
     return "@schema:AssetEnum/"+encodeURI(type.trim())
 }
 
-//"@schema:AssetEnum/Communications"
-export function getAssetTypeIcons(asset) {
+
+// function returns marker icons
+export function getAssetTypeIcons(asset, key) {
 
     let options = {}
 
-    if(asset[VAR_ASSET_TYPE] === getEnumTypeFromFrames(ENERGY)) {
+    if(asset[key] === getEnumTypeFromFrames(ENERGY)) {
         options = {
             icon: ENERGY_ICON
         }
     }
-    else if(asset[VAR_ASSET_TYPE] === getEnumTypeFromFrames(TRANSPORTATION)) {
+    else if(asset[key] === getEnumTypeFromFrames(TRANSPORTATION)) {
         options = {
             icon: TRANSPORTATION_ICON
         }
     }
-    else if(asset[VAR_ASSET_TYPE] === getEnumTypeFromFrames(HEALTH_AND_MEDICAL)) {
+    else if(asset[key] === getEnumTypeFromFrames(HEALTH_AND_MEDICAL)) {
         options = {
             icon: HEALTH_AND_MEDICAL_ICON
         }
     }
-    else if(asset[VAR_ASSET_TYPE] === getEnumTypeFromFrames(FOOD_WATER_SHELTER)) {
+    else if(asset[key] === getEnumTypeFromFrames(FOOD_WATER_SHELTER)) {
         options = {
             icon: FOOD_WATER_SHELTER_ICON
         }
     }
-    else if(asset[VAR_ASSET_TYPE] === getEnumTypeFromFrames(SAFETY_AND_SECURITY)) {
+    else if(asset[key] === getEnumTypeFromFrames(SAFETY_AND_SECURITY)) {
         options = {
             icon: SAFETY_AND_SECURITY_ICON
         }
     }
-    else if(asset[VAR_ASSET_TYPE] === getEnumTypeFromFrames(ELECTRICAL_POWER_GENERATING_PLANTS)) {
+    else if(asset[key] === getEnumTypeFromFrames(ELECTRICAL_POWER_GENERATING_PLANTS)) {
         options = {
             icon: ELECTRICAL_POWER_GENERATING_PLANTS_ICON
         }
     }
-    else if(asset[VAR_ASSET_TYPE] === getEnumTypeFromFrames(COMMUNICATIONS)) {
+    else if(asset[key] === getEnumTypeFromFrames(COMMUNICATIONS)) {
         options = {
             icon: COMMUNICATIONS_ICON
         }
     }
-    else if(asset[VAR_ASSET_TYPE] === getEnumTypeFromFrames(AIRPORT)) {
+    else if(asset[key] === getEnumTypeFromFrames(AIRPORT)) {
         options = {
             icon: AIRPORT_ICON
         }
@@ -85,6 +91,26 @@ export function getAssetTypeIcons(asset) {
     return options
 }
 
+//function returns grade color
+export function getGradeIcons (asset) {
+    if(asset[VAR_GRADE] === 1) {
+        return BG_AMBER
+    }
+    else if(asset[VAR_GRADE] === 2) {
+        return BG_DIJON
+    }
+    else if(asset[VAR_GRADE] === 3) {
+        return BG_RED
+    }
+    else if(asset[VAR_GRADE] === 4) {
+        return BG_CHILI
+    }
+    else if(asset[VAR_GRADE] === 5) {
+        return BG_BURGUNDY
+    }
+}
+
+/* //function returns grade colored marker icons
 export function getGradeIcons (asset) {
     let options = {}
     if(asset[VAR_GRADE] === 1) {
@@ -113,5 +139,5 @@ export function getGradeIcons (asset) {
         }
     }
     return options
-}
+}*/
 

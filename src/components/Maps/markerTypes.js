@@ -1,5 +1,4 @@
 // map icon component
-import L from "leaflet"
 import 'leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css'
 import 'leaflet-extra-markers/dist/js/leaflet.extra-markers.min.js'
 
@@ -20,7 +19,7 @@ export const TRANSPORTATION="Transportation"
 export const HAZARDOUS_MATERIAL="Hazardous Material"
 export const OTHERS="Others"
 
-const MARKER_COLOR='green-dark' //cyan
+const MARKER_COLOR='green-dark' //cyan/ green-dark
 const ICON_SIZE='fa-2x'
 const ICON_COLOR='#fff'
 

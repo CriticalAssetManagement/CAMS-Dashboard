@@ -29,7 +29,8 @@ import {
     VAR_LINKED_ASSET_NAME,
     VAR_LONGITUDE,
     VAR_LATITUDE,
-    VAR_ASSET_TYPE
+    VAR_ASSET_TYPE,
+    VAR_LINKED_ASSET_TYPE
 } from "../constants"
 import "leaflet-arrowheads"
 import "leaflet.browser.print/dist/leaflet.browser.print.js"
@@ -158,6 +159,7 @@ export function extractAndDrawVectors(polyLine, setOnMarkerClick, layerGorup) {
 export function drawFailureChains (displayFailureChains, layerGroup) {
     // gather failure chain markers
     if(displayFailureChains && Array.isArray(displayFailureChains)) {
+        var options=MARKER_OPTIONS
         displayFailureChains.map(linkChains => {
             var link = linkChains
             let coord = {
@@ -165,7 +167,8 @@ export function drawFailureChains (displayFailureChains, layerGroup) {
                 lat: link[VAR_LINKED_ASSET_LAT],
                 lng: link[VAR_LINKED_ASSET_LNG]
             }
-            let marker = L.marker(coord , MARKER_OPTIONS)
+            options = getLinkedMarkerOptions(link)
+            let marker = L.marker(coord , options)
                 //.bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
                 .bindPopup(getPopContent(coord), POPUP_OPTIONS)
                 .on('click', function(e) {
@@ -187,12 +190,14 @@ export function drawFailureChains (displayFailureChains, layerGroup) {
 export function drawPolyLine(polyLine, setOnMarkerClick, layerGroup) {
     polyLine.map(pl => {
         if(!pl.hasOwnProperty("data")) return
+        var options=MARKER_OPTIONS
         pl.data.map(arr => {
             let linkArray = arr
             linkArray.map(la => {
                 // get marker lat lng
                 let coord = {name: la[VAR_NAME], lat: la[VAR_LATITUDE], lng: la[VAR_LONGITUDE]}
-                let marker = L.marker(coord , MARKER_OPTIONS)
+                options = getMarkerOptions(la)
+                let marker = L.marker(coord , options)
                     //.bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
                     .bindPopup(getPopContent(coord), POPUP_OPTIONS)
                     .on('click', function(e) {
@@ -220,15 +225,37 @@ export function getPopContent (coord){
     </div>`
 }
 
-// get colored markers if grade is available
+// get colored markers if grade and asset type avail
 function getMarkerOptions(asset) {
     var options=MARKER_OPTIONS
-    if(asset.hasOwnProperty(VAR_GRADE)) {
-        options=getGradeIcons(asset)
-    }
     if(asset.hasOwnProperty(VAR_ASSET_TYPE)) {
-        options=getAssetTypeIcons(asset)
+        options=getAssetTypeIcons(asset, VAR_ASSET_TYPE)
     }
+    if(asset.hasOwnProperty(VAR_GRADE)) {
+        let gradeColor=getGradeIcons(asset)
+        // create a new icon with the grade color
+        let icon = options.icon.options.icon
+        let gradedOptions = {
+            icon: L.ExtraMarkers.icon({
+                shape: 'circle',
+                markerColor: gradeColor,
+                prefix: 'fa',
+                icon: icon,
+                iconColor: "#fff",
+                iconRotate: 0,
+                extraClasses: 'fa-2x',
+                number: '',
+                svg: true
+            })
+        }
+        return gradedOptions
+    }
+    return options
+}
+
+// get colored failure chain markers
+function getLinkedMarkerOptions (asset) {
+    let options=getAssetTypeIcons(asset, VAR_LINKED_ASSET_TYPE)
     return options
 }
 

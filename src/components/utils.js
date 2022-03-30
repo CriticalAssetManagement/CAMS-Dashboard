@@ -28,7 +28,8 @@ import {
     VAR_LINKED_ASSET_LNG,
     VAR_LINKED_ASSET_NAME,
     VAR_LINKED_ASSET_DESCRIPTION,
-    VAR_ASSET_TYPE
+    VAR_ASSET_TYPE,
+    VAR_LINKED_ASSET_TYPE
 } from "./constants"
 import {MdAddAlert} from "react-icons/md"
 import { ASSET_TYPE } from '../pages/constants'
@@ -75,6 +76,7 @@ export function displayResults(documentResults) {
     documentResults.map(item=> {
         var newJson={}
         for(var key in item){
+            if(!item[key]) continue
             if(Array.isArray(item[key])){
                 /*var type = item[key][0]["@type"]
                 if(frames[`terminusdb:///schema#${type}`] && frames[`terminusdb:///schema#${type}`]["@subdocument"]){
@@ -203,6 +205,9 @@ export function getFailureChainAssetLocation(results) {
         }
         if(item.hasOwnProperty(VAR_LINKED_ASSET_DESCRIPTION) && item[VAR_LINKED_ASSET_DESCRIPTION]) {
             json[VAR_LINKED_ASSET_DESCRIPTION] = item[VAR_LINKED_ASSET_DESCRIPTION]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_LINKED_ASSET_TYPE) && item[VAR_LINKED_ASSET_TYPE]) {
+            json[VAR_LINKED_ASSET_TYPE] = item[VAR_LINKED_ASSET_TYPE]
         }
         docs.push(json)
      })

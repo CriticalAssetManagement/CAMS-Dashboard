@@ -43,6 +43,7 @@ export const VAR_LINKED_ASSET_LNG = "LinkedAsset_Lng"
 export const VAR_LINKED_ASSET_NAME ="LinkedAssetName"
 export const VAR_LINKED_ASSET_DESCRIPTION ="LinkedAssetDescription"
 export const VAR_ASSET_TYPE="AssetType"
+export const VAR_LINKED_ASSET_TYPE="LinkedAssetType"
 
 export const CRITICAL_COLOR="#bf0a30"//"#dc3545"
 export const NON_CRITICAL_COLOR="#198754"

@@ -52,8 +52,8 @@ export const HomePage = () => {
         loadMarkers (showAssets, mg, map)
 
         // add print control
-        L.control.browserPrint(BROWSER_PRINT_OPTIONS)
-        .addTo(map)
+        //L.control.browserPrint(BROWSER_PRINT_OPTIONS)
+        //.addTo(map)
 
         // get icon legends and add to map
         let legend=getLegend(L)
