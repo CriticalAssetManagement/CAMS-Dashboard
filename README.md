@@ -46,7 +46,7 @@ TerminusX is used as our database back-end to store the critical assets.
 ### Step 4 - Run development environment (NodeJS locally)
 
 Run inside the CAMS-dashboard directory:
-- `npm run install`
+- `npm install`
 
 
 - Run locally `npm run start`
