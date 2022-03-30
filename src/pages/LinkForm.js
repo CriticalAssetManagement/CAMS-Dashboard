@@ -2,7 +2,7 @@ import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
 import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
-import {USER_TYPE, USER_PAGE_TABLE_CSS, EDIT_CLICKED_USER, CREATE_USER_TAB, VIEW_USER_LIST, VIEW_CLICKED_USER} from "./constants"
+import {LINK_TYPE, LINK_PAGE_TABLE_CSS, EDIT_CLICKED_LINK, CREATE_LINK_TAB, VIEW_LINK_LIST, VIEW_CLICKED_LINK} from "./constants"
 import {Alerts} from "../components/Alerts"
 import {DocumentHook, GetDocumentListHook, GetDocumentHook, DeleteDocumentHook, EditDocumentHook} from "../hooks/DocumentHook"
 import {getUserConfig} from "../components/Views"
@@ -12,7 +12,7 @@ import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
 import {BiArrowBack} from "react-icons/bi"
 
-export const UserForm = () => {
+export const LinkForm = () => {
 
     const {
 		connectionError,
@@ -36,10 +36,10 @@ export const UserForm = () => {
         showDocument,
         setShowDocument,
         managePageTabs,
-        handleTraverse,
         handleDocumentSubmit,
         extracted,
         handleSelect,
+        handleTraverse,
         deleteDocument,
         handleUpdate,
         getDocumentToolBar,
@@ -56,15 +56,15 @@ export const UserForm = () => {
 
 
     // create
-    let result=DocumentHook(woqlClient, extracted, VIEW_USER_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let result=DocumentHook(woqlClient, extracted, VIEW_LINK_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     //view all document
-    let userResults=GetDocumentListHook(woqlClient, type, refresh, setLoading, setSuccessMsg, setErrorMsg)
+    let linkResults=GetDocumentListHook(woqlClient, type, refresh, setLoading, setSuccessMsg, setErrorMsg)
     //get a document
     let documentResults=GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMsg, setErrorMsg)
     // delete a document
-    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, VIEW_USER_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, VIEW_LINK_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     // edit a document
-    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_CLICKED_USER, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
+    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_CLICKED_LINK, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
 
 
     useEffect(() => {
@@ -74,8 +74,8 @@ export const UserForm = () => {
 
 
     useEffect(() => {
-        setType(USER_TYPE)
-    }, []) // refresh user Results list on reload or change of tabs
+        setType(LINK_TYPE)
+    }, []) // refresh link Results list on reload or change of tabs
 
 
     useEffect(() => {
@@ -97,58 +97,57 @@ export const UserForm = () => {
                 activeKey={tabKey}
                 onSelect={(k) => {setTabKey(k)}}
                 className="mb-3">
-                <Tab eventKey={VIEW_USER_LIST} title={VIEW_USER_LIST}>
-                    <DisplayDocuments results={userResults}
-                        css={USER_PAGE_TABLE_CSS}
-                        title={USER_TYPE}
-                        config={getUserConfig(userResults, onRowClick)}/>
+                <Tab eventKey={VIEW_LINK_LIST} title={VIEW_LINK_LIST}>
+                    <DisplayDocuments results={linkResults}
+                        css={LINK_PAGE_TABLE_CSS}
+                        title={LINK_TYPE}
+                        config={getUserConfig(linkResults, onRowClick)}/>
                 </Tab>
-                {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_USER} title={VIEW_CLICKED_USER}>
-                    {Array.isArray(traverseDocument.previous) &&
-                        <span className="col-md-1 ml-5">
+                {showDocument && !editDocument &&
+                    <Tab eventKey={VIEW_CLICKED_LINK} title={VIEW_CLICKED_LINK}>
+                        {Array.isArray(traverseDocument.previous) && <span className="col-md-1 ml-5">
                             <Button
                                 className="btn-sm"
                                 title={`Go to previous document ${traverseDocument.previous}`}
                                 onClick={goToPreviousLinkedDocument}>
                                     <BiArrowBack className="mr-2"/>Back
                             </Button>
-                        </span>
-                    }
-                    {
-                        traverseDocument && traverseDocument.hasOwnProperty("current") &&
+                        </span>}
+                        {
+                            traverseDocument && traverseDocument.hasOwnProperty("current") &&
+                                <ViewDocument frames={frames}
+                                    getDocumentToolBar={getDocumentToolBar}
+                                    handleSelect={handleSelect}
+                                    type={showDocument["@type"]}
+                                    onTraverse={handleTraverse}
+                                    showDocument={showDocument}
+                                />
+                        }
+                        {
+                            !traverseDocument &&
                             <ViewDocument frames={frames}
                                 getDocumentToolBar={getDocumentToolBar}
                                 handleSelect={handleSelect}
-                                type={showDocument["@type"]}
+                                type={LINK_TYPE}
                                 onTraverse={handleTraverse}
                                 showDocument={showDocument}
                             />
-                    }
-                    {
-                        !traverseDocument &&
-                            <ViewDocument frames={frames}
-                                getDocumentToolBar={getDocumentToolBar}
-                                handleSelect={handleSelect}
-                                type={USER_TYPE}
-                                onTraverse={handleTraverse}
-                                showDocument={showDocument}
-                            />
-                    }
+                        }
                     </Tab>
                 }
-                {editDocument && <Tab eventKey={EDIT_CLICKED_USER} title={EDIT_CLICKED_USER}>
+                {editDocument && <Tab eventKey={EDIT_CLICKED_LINK} title={EDIT_CLICKED_LINK}>
                     <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
-                        type={USER_TYPE}
+                        type={LINK_TYPE}
                         handleUpdate={handleUpdate}
                         editDocument={editDocument}/>
                     </Tab>
                 }
-                <Tab eventKey={CREATE_USER_TAB} title={CREATE_USER_TAB}>
+                <Tab eventKey={CREATE_LINK_TAB} title={CREATE_LINK_TAB}>
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
-                        type={USER_TYPE}
+                        type={LINK_TYPE}
                         handleSubmit={handleDocumentSubmit}/>}
                 </Tab>
             </Tabs>

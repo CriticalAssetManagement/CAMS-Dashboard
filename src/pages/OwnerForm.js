@@ -2,17 +2,17 @@ import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
 import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
-import {USER_TYPE, USER_PAGE_TABLE_CSS, EDIT_CLICKED_USER, CREATE_USER_TAB, VIEW_USER_LIST, VIEW_CLICKED_USER} from "./constants"
+import {OWNER_TYPE, OWNER_PAGE_TABLE_CSS, EDIT_CLICKED_OWNER, CREATE_OWNER_TAB, VIEW_OWNER_LIST, VIEW_CLICKED_OWNER} from "./constants"
 import {Alerts} from "../components/Alerts"
 import {DocumentHook, GetDocumentListHook, GetDocumentHook, DeleteDocumentHook, EditDocumentHook} from "../hooks/DocumentHook"
-import {getUserConfig} from "../components/Views"
+import {getOwnerConfig} from "../components/Views"
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
 import {BiArrowBack} from "react-icons/bi"
 
-export const UserForm = () => {
+export const OwnerForm = () => {
 
     const {
 		connectionError,
@@ -36,8 +36,8 @@ export const UserForm = () => {
         showDocument,
         setShowDocument,
         managePageTabs,
-        handleTraverse,
         handleDocumentSubmit,
+        handleTraverse,
         extracted,
         handleSelect,
         deleteDocument,
@@ -56,15 +56,15 @@ export const UserForm = () => {
 
 
     // create
-    let result=DocumentHook(woqlClient, extracted, VIEW_USER_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let result=DocumentHook(woqlClient, extracted, VIEW_OWNER_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     //view all document
-    let userResults=GetDocumentListHook(woqlClient, type, refresh, setLoading, setSuccessMsg, setErrorMsg)
+    let ownerResults=GetDocumentListHook(woqlClient, type, refresh, setLoading, setSuccessMsg, setErrorMsg)
     //get a document
     let documentResults=GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMsg, setErrorMsg)
     // delete a document
-    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, VIEW_USER_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, VIEW_OWNER_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     // edit a document
-    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_CLICKED_USER, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
+    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_CLICKED_OWNER, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
 
 
     useEffect(() => {
@@ -74,8 +74,8 @@ export const UserForm = () => {
 
 
     useEffect(() => {
-        setType(USER_TYPE)
-    }, []) // refresh user Results list on reload or change of tabs
+        setType(OWNER_TYPE)
+    }, []) // refresh owner Results list on reload or change of tabs
 
 
     useEffect(() => {
@@ -97,13 +97,13 @@ export const UserForm = () => {
                 activeKey={tabKey}
                 onSelect={(k) => {setTabKey(k)}}
                 className="mb-3">
-                <Tab eventKey={VIEW_USER_LIST} title={VIEW_USER_LIST}>
-                    <DisplayDocuments results={userResults}
-                        css={USER_PAGE_TABLE_CSS}
-                        title={USER_TYPE}
-                        config={getUserConfig(userResults, onRowClick)}/>
+                <Tab eventKey={VIEW_OWNER_LIST} title={VIEW_OWNER_LIST}>
+                    <DisplayDocuments results={ownerResults}
+                        css={OWNER_PAGE_TABLE_CSS}
+                        title={OWNER_TYPE}
+                        config={getOwnerConfig(ownerResults, onRowClick)}/>
                 </Tab>
-                {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_USER} title={VIEW_CLICKED_USER}>
+                {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_OWNER} title={VIEW_CLICKED_OWNER}>
                     {Array.isArray(traverseDocument.previous) &&
                         <span className="col-md-1 ml-5">
                             <Button
@@ -129,26 +129,26 @@ export const UserForm = () => {
                             <ViewDocument frames={frames}
                                 getDocumentToolBar={getDocumentToolBar}
                                 handleSelect={handleSelect}
-                                type={USER_TYPE}
                                 onTraverse={handleTraverse}
+                                type={OWNER_TYPE}
                                 showDocument={showDocument}
                             />
                     }
                     </Tab>
                 }
-                {editDocument && <Tab eventKey={EDIT_CLICKED_USER} title={EDIT_CLICKED_USER}>
+                {editDocument && <Tab eventKey={EDIT_CLICKED_OWNER} title={EDIT_CLICKED_OWNER}>
                     <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
-                        type={USER_TYPE}
+                        type={OWNER_TYPE}
                         handleUpdate={handleUpdate}
                         editDocument={editDocument}/>
                     </Tab>
                 }
-                <Tab eventKey={CREATE_USER_TAB} title={CREATE_USER_TAB}>
+                <Tab eventKey={CREATE_OWNER_TAB} title={CREATE_OWNER_TAB}>
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
-                        type={USER_TYPE}
+                        type={OWNER_TYPE}
                         handleSubmit={handleDocumentSubmit}/>}
                 </Tab>
             </Tabs>

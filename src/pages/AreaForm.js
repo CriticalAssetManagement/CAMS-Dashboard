@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
-import {Container, ProgressBar} from "react-bootstrap"
+import {ProgressBar} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
 import {AREA_TYPE, AREA_PAGE_TABLE_CSS, EDIT_CLICKED_AREA, CREATE_AREA_TAB, VIEW_AREA_LIST, VIEW_CLICKED_AREA} from "./constants"
 import {Alerts} from "../components/Alerts"
@@ -77,50 +77,53 @@ export const AreaForm = () => {
         }
     }, [documentResults])
 
-    return <Container fluid="lg" className="mt-5 mb-5">
+    return <div className="mb-5">
         <Layout/>
-        <Alerts errorMsg={connectionError}/>
-        {loading && <ProgressBar animated now={100} variant="info"/>}
+        <div className="px-3 content-container">
+            <Alerts errorMsg={connectionError}/>
+            {loading && <ProgressBar animated now={100} variant="info"/>}
 
-        <Tabs id="controlled-tab"
-            activeKey={tabKey}
-            onSelect={(k) => setTabKey(k)}
-            className="mb-3">
-            <Tab eventKey={VIEW_AREA_LIST} title={VIEW_AREA_LIST}>
-                <DisplayDocuments results={areaResults}
-                    css={AREA_PAGE_TABLE_CSS}
-                    config={getAreaConfig(areaResults, onRowClick)}
-                    title={AREA_TYPE}
-                    onRowClick={onRowClick}/>
-            </Tab>
-            {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_AREA} title={VIEW_CLICKED_AREA}>
+            <Tabs id="controlled-tab"
+                activeKey={tabKey}
+                onSelect={(k) => setTabKey(k)}
+                className="mb-3">
+                <Tab eventKey={VIEW_AREA_LIST} title={VIEW_AREA_LIST}>
+                    <DisplayDocuments results={areaResults}
+                        css={AREA_PAGE_TABLE_CSS}
+                        config={getAreaConfig(areaResults, onRowClick)}
+                        title={AREA_TYPE}
+                        onRowClick={onRowClick}/>
+                </Tab>
+                {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_AREA} title={VIEW_CLICKED_AREA}>
 
-                    <ViewDocument frames={frames}
+                        <ViewDocument frames={frames}
+                            getDocumentToolBar={getDocumentToolBar}
+                            handleSelect={handleSelect}
+                            type={AREA_TYPE}
+                            showDocument={showDocument}/>
+                    </Tab>
+                }
+                {editDocument && <Tab eventKey={EDIT_CLICKED_AREA} title={EDIT_CLICKED_AREA}>
+                    <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
                         type={AREA_TYPE}
-                        showDocument={showDocument}/>
+                        handleUpdate={handleUpdate}
+                        editDocument={editDocument}/>
+                    </Tab>
+                }
+                <Tab eventKey={CREATE_AREA_TAB} title={CREATE_AREA_TAB}>
+                    {frames && <CreateDocument frames={frames}
+                        handleSelect={handleSelect}
+                        type={AREA_TYPE}
+                        handleSubmit={handleDocumentSubmit}/>}
                 </Tab>
-            }
-            {editDocument && <Tab eventKey={EDIT_CLICKED_AREA} title={EDIT_CLICKED_AREA}>
-                <EditDocument frames={frames}
-                    getDocumentToolBar={getDocumentToolBar}
-                    handleSelect={handleSelect}
-                    type={AREA_TYPE}
-                    handleUpdate={handleUpdate}
-                    editDocument={editDocument}/>
-                </Tab>
-            }
-            <Tab eventKey={CREATE_AREA_TAB} title={CREATE_AREA_TAB}>
-                {frames && <CreateDocument frames={frames}
-                    handleSelect={handleSelect}
-                    type={AREA_TYPE}
-                    handleSubmit={handleDocumentSubmit}/>}
-            </Tab>
-        </Tabs>
+            </Tabs>
 
-        <Alerts successMsg={successMsg}/>
-        <Alerts errorMsg={errorMsg}/>
-    </Container>
+            <Alerts successMsg={successMsg}/>
+            <Alerts errorMsg={errorMsg}/>
+        </div>
+
+    </div>
 
 }
