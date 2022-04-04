@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+      contents: 'read'
     strategy:
       matrix:
         node-version: [16.x]
