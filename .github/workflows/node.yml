@@ -26,3 +26,18 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+      uses: 'google-github-actions/auth@v0.4.0'
+      with:
+        workload_identity_provider: 'projects/337086880157/locations/global/workloadIdentityPools/cams/providers/github'
+        service_account: 'github-actions-deploy@cams-346210.iam.gserviceaccount.com'
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v0'
+    - name: Upload to gcloud bucket dev
+      if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+      run: gsutil cp -r dist/* "gs://dashboard-dev.climateresilient.world/"
+    - name: Upload to gcloud bucket prod
+      if: github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v')
+      run: gsutil cp -r dist/* "gs://dashboard.climateresilient.world/"
