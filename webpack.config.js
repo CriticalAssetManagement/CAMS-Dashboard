@@ -49,6 +49,9 @@ module.exports = (env, argv) => ({
               ["@babel/preset-env"],
               "@babel/preset-react"
             ],
+            plugins: [
+              "@babel/plugin-transform-react-jsx"
+            ]
           }
         },
       },
