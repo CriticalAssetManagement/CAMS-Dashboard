@@ -1,7 +1,7 @@
 
 import React, {useState, useEffect} from "react"
 import {Button} from "react-bootstrap"
-import {BG_AMBER, BG_GOLD, BG_FIRE, BG_DIJON, BG_RED, BG_CHILI, BG_BURGUNDY, BG_SANGRIA} from "./maps/markers"
+import {BG_AMBER, BG_GOLD, BG_FIRE, BG_DIJON, BG_RED, BG_CHILI, BG_BURGUNDY, BG_SANGRIA} from "./Maps/markers"
 
 export const GradedButtons = ({setCurrentGrade, max}) => {
 
