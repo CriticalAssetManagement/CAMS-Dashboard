@@ -1,13 +1,16 @@
 import React from "react"
-import {HOME, USER_FORM, AREA_FORM, ASSET_FORM, ASSETS_LINK, REPORTS, BRAND_TITLE} from "./constants"
-import {USER_FORM_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE, ASSETS_LINK_PAGE} from "../routing/constants"
-import {Nav, Navbar, Container} from "react-bootstrap"
+import {HOME, USER_FORM, AREA_FORM, ASSET_FORM, ASSETS_LINK, REPORTS, USER_MANAGEMENT,PROFILE} from "./constants"
+import {PROFILE_PAGE,USER_FORM_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE, ASSETS_LINK_PAGE,USER_MANAGEMENT_PAGE} from "../routing/constants"
+import {Nav, Navbar, Button,Dropdown} from "react-bootstrap"
 import { NavLink as RouterNavLink } from "react-router-dom"
 import {WOQLClientObj} from '../init-woql-client'
 import {GoHome} from "react-icons/go"
 import {FiMap, FiMapPin, FiLink} from "react-icons/fi"
 import {BiBookReader} from "react-icons/bi"
 import {RiUserSmileLine} from "react-icons/ri"
+import {GrUserAdmin} from "react-icons/gr"
+import { useAuth0 } from "@auth0/auth0-react";
+import {AiOutlineUsergroupAdd,AiOutlineUser,AiOutlinePoweroff} from "react-icons/ai"
 
 const MenuIcon = ({icon, title}) => {
     return <div className="d-flex">
@@ -36,6 +39,21 @@ export const Menu = () => {
 		setPage
 	} = WOQLClientObj()
 
+    const {
+        user,
+        isAuthenticated,
+        loginWithRedirect,
+        logout,
+      } = useAuth0();
+
+      console.log("user",user)
+
+    const returnTo=`${window.location.origin}`
+
+    const logoutWithRedirect = () =>
+        logout({
+            returnTo:returnTo
+    })
     return <Navbar expand="lg" className={`p-3 navbar navbar-transparent bg-${"light"}`}>
         <Navbar.Brand href="https://climateresilient.world/"
             title="Visit GitHub repository for more info"
@@ -105,6 +123,60 @@ export const Menu = () => {
                     >
                             <MenuIcon icon={<BiBookReader/>} title={REPORTS}/>
                 </Nav.Link>
+              {!isAuthenticated && (
+                <Nav.Item>
+                  <Button
+                    id="qsLoginBtn"
+                    color="primary"
+                    className="btn-margin"
+                    onClick={() => loginWithRedirect({returnTo:returnTo})}
+                  >
+                    Log in
+                  </Button>
+                </Nav.Item>
+              )}
+              {isAuthenticated &&  <Dropdown className="mr-4">
+                 <Dropdown.Toggle nav caret id="profileDropDown">
+                    <img
+                      src={user.picture}
+                      alt="Profile"
+                      className="nav-user-profile rounded-circle"
+                      width="50"
+                    />
+                  </Dropdown.Toggle>
+                 <Dropdown.Menu>
+                     <Dropdown.Item>
+                        {/* <Nav.Link  as={RouterNavLink}
+                             title={PROFILE}  
+                             to={PROFILE_PAGE} 
+                             exact
+                             onClick={(e) => setPage(PROFILE)}
+                             id={"Profile"}>
+                                 <AiOutlineUser className="mr-3 mb-1" />Profile
+                            </Nav.Link>*/}
+                     </Dropdown.Item>
+                     <Dropdown.Item>
+                         <Nav.Link  as={RouterNavLink}
+                             title={USER_MANAGEMENT}  
+                             to={USER_MANAGEMENT_PAGE} 
+                             exact
+                             onClick={(e) => setPage(USER_MANAGEMENT)}
+                             id={USER_MANAGEMENT_PAGE}>
+                                 <GrUserAdmin  className="mr-3 mb-1" />User Manager
+                         </Nav.Link>
+                     </Dropdown.Item>
+                     <Dropdown.Divider />
+                     <Dropdown.Item>
+                         <Nav.Link  
+                             title={"Logout"}  
+                             exact
+                             onClick={(e) => logoutWithRedirect()}
+                             id={"Logout"}>
+                                 <AiOutlinePoweroff className="mr-3 mb-1" />Logout
+                         </Nav.Link>
+                     </Dropdown.Item>
+                 </Dropdown.Menu>
+             </Dropdown>}
             </Nav>
         </Navbar.Collapse>
   </Navbar>

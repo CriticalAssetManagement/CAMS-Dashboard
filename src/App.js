@@ -8,8 +8,8 @@ import {ManageArea} from "./routing/ManageArea"
 import {ManageAsset} from "./routing/ManageAsset"
 import {ManageLinks} from "./routing/ManageLinks"
 import history from "./routing/history"
-import {USER_FORM_PAGE, ASSETS_LINK_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE} from "./routing/constants"
-
+import { UserManagement } from "./pages/UserManagement"
+import {USER_FORM_PAGE, ASSETS_LINK_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE,USER_MANAGEMENT_PAGE} from "./routing/constants"
 
 export function App (props){
 
@@ -23,6 +23,7 @@ export function App (props){
 					<Route path={ASSET_FORM_PAGE} component = {ManageAsset} exact/>
 					<Route path={ASSETS_LINK_PAGE} component = {ManageLinks} exact/>
 					<Route path={REPORTS_PAGE} component = {Reports} exact/>
+					<Route path={USER_MANAGEMENT_PAGE} component={UserManagement} exact/>
 				</Switch>
 			</Router>
         </div>
