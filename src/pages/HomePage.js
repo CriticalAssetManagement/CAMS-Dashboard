@@ -13,11 +13,11 @@ import {SearchBar} from "../components/SearchBar"
 import {DisplayMarkerInfo} from "../components/DisplayMarkerInfo"
 import "leaflet-arrowheads"
 import {antPath} from 'leaflet-ant-path'
-import {LATITUDE, LONGITUDE, DASH_LINES_OPTIONS, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, BROWSER_PRINT_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH, POPUP_OPTIONS}  from "../components/Maps/constants"
-import {extractAndDrawVectors, gatherVectorLines, drawFailureChains, getMarkers, drawUpwardChainMarkers} from "../components/Maps/utils"
+import {LATITUDE, LONGITUDE, DASH_LINES_OPTIONS, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, BROWSER_PRINT_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH, POPUP_OPTIONS}  from "../components/maps/constants"
+import {extractAndDrawVectors, gatherVectorLines, drawFailureChains, getMarkers, drawUpwardChainMarkers} from "../components/maps/utils"
 import "leaflet.browser.print/dist/leaflet.browser.print.min.js"
 import "leaflet/dist/leaflet.css"
-import {getLegend} from "../components/Maps/legend"
+import {getLegend} from "../components/maps/legend"
 
 export const HomePage = () => {
     const [query, setQuery] = useState(false)
