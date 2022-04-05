@@ -51,6 +51,10 @@ module.exports = (env, argv) => ({
                 "runtime": "automatic",
               }]
             ],
+            plugins: [
+              "@babel/plugin-transform-regenerator",
+              ["@babel/plugin-transform-runtime"]
+            ],
           }
         },
       },
