@@ -19,7 +19,7 @@ module.exports = (env, argv) => ({
     new Dotenv({path: path.resolve(__dirname, '.env'), systemvars: true}),
     new HtmlWebPackPlugin({
         inject: true,
-        template: path.resolve(__dirname, './src/index.html'),
+        template: path.resolve(__dirname, './index.html'),
         bundleFileName:"tdb-dashboard.min.js"
       }),
      new MiniCssExtractPlugin({
@@ -47,7 +47,9 @@ module.exports = (env, argv) => ({
           options:{
             presets: [
               ["@babel/preset-env"],
-              "@babel/preset-react"
+              ["@babel/preset-react", {
+                "runtime": "automatic",
+              }]
             ],
           }
         },

@@ -20,7 +20,7 @@
   "scripts": {
     "build-es6": "rimraf es6 && cross-env NODE_ENV=es6 babel ./src -d es6 --extensions '.js'",
     "build": "webpack --mode production",
-    "start": "webpack serve --mode development  --open --progress --port 3036 --host localhost --config ./webpack_dev.config.js --history-api-fallback",
+    "start": "webpack serve --mode development  --open --progress --port 3036 --config ./webpack_dev.config.js --history-api-fallback",
     "test": "exit 0",
     "lint": "eslint src",
     "autofix": "eslint src --fix"
@@ -38,9 +38,9 @@
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.20.0",
-    "@terminusdb/terminusdb-client": "github:terminusdb/terminusdb-client-js#main",
-    "@terminusdb/terminusdb-documents-ui": "github:terminusdb/terminusdb-documents-ui#main",
-    "@terminusdb/terminusdb-react-table": "github:terminusdb/terminusdb-react-table#main",
+    "@terminusdb/terminusdb-client": "^10.0.7",
+    "@terminusdb/terminusdb-documents-ui": "^1.0.0",
+    "@terminusdb/terminusdb-react-table": "^0.0.5",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.2",
     "classnames": "^2.2.5",
