@@ -4,7 +4,7 @@ export const DocumentContextObj = () => useContext(DocumentContext)
 import {handleDocumentSelect} from "../components/utils"
 import {WOQLClientObj} from '../init-woql-client'
 import {Button, Row} from "react-bootstrap"
-import {VARIANT} from '../components/constants'
+import {SUCCESS_VARIANT} from '../components/constants'
 
 export const DocumentContextProvider = ({children, params}) => {
 
@@ -17,6 +17,9 @@ export const DocumentContextProvider = ({children, params}) => {
     const [tabKey, setTabKey] = useState(params.listTab)
     const [showDocument, setShowDocument] = useState(false)
 
+    // on traverse
+    const [traverseDocument, setTraverseDocument]= useState(false)
+
     const {
         setSuccessMsg,
         setErrorMsg,
@@ -27,6 +30,7 @@ export const DocumentContextProvider = ({children, params}) => {
 
     // on click of row in WOQLTable
     function onRowClick(row) {
+        console.log("row", row)
         if(row.hasOwnProperty("values") && row.values.hasOwnProperty("@id")) {
             setDocumentId(row.values["@id"])
             setTabKey(params.viewTab)
@@ -61,7 +65,7 @@ export const DocumentContextProvider = ({children, params}) => {
             setTabKey(params.editTab)
         }
         return <Button className="btn-sm mr-1"
-            variant={VARIANT}
+            variant={SUCCESS_VARIANT}
             title={`Edit ${document}`}
             onClick={(e) => handleEdit(document)}>
             Edit
@@ -95,6 +99,44 @@ export const DocumentContextProvider = ({children, params}) => {
         if(!data.hasOwnProperty("@type")) data["@type"] = params.type
         clearMessages()
         setExtractedUpdate(data)
+    }
+
+    function getNewPrevious(cur, traverseDocument) {
+        let newArr=traverseDocument.previous
+        if(Array.isArray(newArr)){
+            let index = newArr.indexOf(cur)
+            newArr.splice(index, 1)
+        }
+        return newArr
+    }
+
+    function goToPreviousLinkedDocument() {
+        if(!traverseDocument) return
+        let cur = traverseDocument.previous[traverseDocument.previous.length-1]
+        let newPrevious= getNewPrevious(cur, traverseDocument)
+        if(Array.isArray(newPrevious) && newPrevious.length === 0)
+            setTraverseDocument(false)
+        else {
+            setTraverseDocument({
+                current: cur,
+                previous: newPrevious
+            })
+        }
+        setDocumentId(cur) // set to previous document id
+    }
+
+    // function to handle traverse
+    function handleTraverse(clicked) {
+        var previous = []
+        if(Array.isArray(traverseDocument.previous)) {
+            previous = traverseDocument.previous
+        }
+        previous.push(documentId) // save document ids via traverse
+        setTraverseDocument({
+            current: clicked,
+            previous: previous
+        })
+        setDocumentId(clicked)
     }
 
     // function to handle select search
@@ -131,6 +173,7 @@ export const DocumentContextProvider = ({children, params}) => {
                 extracted,
                 setExtracted,
                 handleSelect,
+                handleTraverse,
                 getDeleteButton,
                 deleteDocument,
                 setDeleteDocument,
@@ -141,7 +184,9 @@ export const DocumentContextProvider = ({children, params}) => {
                 extractedUpdate,
                 setExtractedUpdate,
                 setType,
-                type
+                type,
+                traverseDocument,
+                goToPreviousLinkedDocument
             }}
         >
             {children}

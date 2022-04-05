@@ -1,6 +1,6 @@
 import React from "react"
 //import {MapViewer} from "@terminusdb/terminusdb-documents-ui"
-import {Viewer} from "./Maps/Viewer"
+import {Viewer} from "./maps/Viewer"
 
 export const Map = ({documents, display, setOnMarkerClick, polyLine, zoom, children}) => {
 

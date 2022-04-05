@@ -1,7 +1,7 @@
 import React from "react"
 import {FrameViewer} from "@terminusdb/terminusdb-documents-ui"
 
-export const Form = ({frames, type, mode, onSubmit, uiFrame, onSelect, formData, FieldTemplate, hideSubmit, onChange}) => {
+export const Form = ({frames, type, mode, onSubmit, onTraverse, uiFrame, onSelect, formData, FieldTemplate, hideSubmit, onChange}) => {
     return <FrameViewer frame={frames}
         uiFrame={uiFrame}
         type={type}
@@ -11,6 +11,8 @@ export const Form = ({frames, type, mode, onSubmit, uiFrame, onSelect, formData,
         formData={formData}
         FieldTemplate={FieldTemplate}
         hideSubmit={hideSubmit}
+        onTraverse={onTraverse}
         onChange={onChange}
+        //prefix={"terminusd//schma#"}
     />
 }

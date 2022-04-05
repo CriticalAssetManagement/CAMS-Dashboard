@@ -17,7 +17,8 @@ module.exports = {
   devServer: {
     compress: true,
     historyApiFallback: true,
-    port: 3030
+    port: 3030,
+    host: "0.0.0.0",
   },
   plugins: [
     new HtmlWebPackPlugin({

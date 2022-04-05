@@ -1,29 +1,22 @@
 
-import React, {useState, useLayoutEffect} from "react"
-import {Offcanvas, Nav, Button} from "react-bootstrap"
-import {ASSET_FORM, VAR_NAME, LAT, LNG, VAR_ASSET_IDENTIFIER, VAR_LAST_MAINTAINED, VAR_DESIGN_STANDARDS} from "./constants"
+import React, {useState, useEffect} from "react"
+import {Offcanvas, Button, Alert} from "react-bootstrap"
+import {VAR_NAME, LAT, LNG, EMPTY_DESCRIPTION, VAR_ASSET_IDENTIFIER, HIDE_OFFCANVAS_TITLE, VAR_DESCRIPTION, VAR_LAST_MAINTAINED, VAR_DESIGN_STANDARDS} from "./constants"
 import {ASSET_FORM_PAGE} from "../routing/constants"
-import {NavLink as RouterNavLink} from "react-router-dom"
-import {Status} from "./Status"
+import {InfoBar} from "./InfoBar"
 import {DependentStatus} from "./DependentStatus"
-import {WOQLClientObj} from '../init-woql-client'
 import {RiArrowGoBackFill} from "react-icons/ri"
-import {FiMoreHorizontal, FiCompass} from "react-icons/fi"
+import {FiCompass} from "react-icons/fi"
 import {AccordianSection} from "./AccordianSection"
 import {MdDesignServices} from "react-icons/md"
 import {FaMapMarkerAlt, FaGlasses} from "react-icons/fa"
 import {BsCalendarDate} from "react-icons/bs"
-import Badge from 'react-bootstrap/Badge'
+import {GoTriangleLeft} from "react-icons/go"
 
-const ClickedMarkerInfo = ({info}) => {
+
+export const ClickedMarkerInfo = ({info, dependencies}) => {
     if(!Object.keys(info).length) return <div/>
     let displayInfo = []
-
-    const {
-		setPage
-	} = WOQLClientObj()
-
-
 
     for(var key in info) {
         if(key === "refresh") continue
@@ -72,84 +65,77 @@ const ClickedMarkerInfo = ({info}) => {
         }
     }
 
-    function handleMoreInfo(e) {
-        setPage(ASSET_FORM_PAGE)
-    }
+    // if only info and no dependencies available
+    if(!Array.isArray(dependencies)) return <React.Fragment>{displayInfo}</React.Fragment>
 
     return <React.Fragment>
         {displayInfo}
-
-        <div class="text-right">
-            <Badge bg="transparent" pill className="mt-3 h6 go-to-asset-badge">
-                <Nav.Link
-                    as={RouterNavLink}
-                    title={ASSET_FORM}
-                    to={ASSET_FORM_PAGE}
-                    exact
-                    style={{padding: 0}}
-                    id={ASSET_FORM}
-                    onClick={(e) => handleMoreInfo(e)}
-                >
-                    <div className="d-flex justify-content-center">
-                        <label className="m-1 text-primary mt-2">More Info</label>
-                        <h5 className="text-primary "><FiMoreHorizontal/></h5>
-                    </div>
-                </Nav.Link>
-            </Badge>
-        </div>
-        <hr/>
+        <InfoBar documents = {dependencies} info={info}/>
         <AccordianSection asset = {info.id}/>
 
     </React.Fragment>
 }
 
+const NoDependents = ({info}) => {
+    return <Alert variant="warning">
+        <p>{`No dependencies available for Asset - ${info[VAR_NAME]}`}</p>
+    </Alert>
+}
+
 const DisplayLinks = ({dependencies, info}) => {
-    if (!Array.isArray(dependencies)) return <div/>
+    //if (!Array.isArray(dependencies)) return <div/>
 
     return <React.Fragment>
-        <ClickedMarkerInfo info={info}/>
-        <hr/>
-
-        <Status documents = {dependencies} info={info}/>
-        <hr/>
-        <DependentStatus documents = {dependencies}/>
+        <ClickedMarkerInfo info={info} dependencies={dependencies}/>
+        {Array.isArray(dependencies) && <DependentStatus documents = {dependencies}/>}
+        {!Array.isArray(dependencies) && <NoDependents info = {info}/>}
     </React.Fragment>
 }
 
 
-
 export const DisplayMarkerInfo = ({info, dependencies}) => {
-    const [sidebarOpen, setSideBarOpen] = useState(true)
+    const [sidebarOpen, setSideBarOpen] = useState(false)
     const [position, setPosition] = useState("end")
 
     const handleViewSidebar = () => {
-        setSideBarOpen(!sidebarOpen)
+        setSideBarOpen(false)
     }
-
 
     if(!info) return <div/>
 
+    //console.log("sidebarOpen", sidebarOpen)
+
+    function handleClickToggle() {
+        setSideBarOpen(true)
+    }
+
+    useEffect(() => {
+        setSideBarOpen(true)
+    }, [info.refresh]) // onchange of owner
+
     return <React.Fragment>
 
-        <Offcanvas show={sidebarOpen} scroll={true} onHide={handleViewSidebar} backdrop={false} placement={position} className="h-auto">
-            <Offcanvas.Header closeButton>
+        <Offcanvas show={sidebarOpen} scroll={true} restoreFocus={true} backdrop={false} placement={position} className="h-auto">
+            <Offcanvas.Header>
                 <Offcanvas.Title>{info[VAR_NAME]}</Offcanvas.Title>
+                <Button variant="light"  onClick={handleViewSidebar} title={HIDE_OFFCANVAS_TITLE}>
+                    <RiArrowGoBackFill/>
+                </Button>
             </Offcanvas.Header>
             <Offcanvas.Body>
-                {`Some text or description regarding chosen asset ${info[VAR_NAME]}. Can be generic
-                    status or deets on this asset - maybe a picture? `}
+                {info.hasOwnProperty(VAR_DESCRIPTION) && info[VAR_DESCRIPTION].length && info[VAR_DESCRIPTION]}
+                {!info.hasOwnProperty(VAR_DESCRIPTION) && EMPTY_DESCRIPTION }
                 <DisplayLinks dependencies={dependencies} info={info}/>
             </Offcanvas.Body>
         </Offcanvas>
 
 
 
-        {/*!sidebarOpen && <Offcanvas show={true} onHide={handleViewSidebar} backdrop={false} placement={position} className="offcanvas-show-button">
-            <Button onClick={handleViewSidebar} variant={"light"} className="sidebar-toggle">
-                TOGGLE
-                <MdOutlineDoubleArrow/>
+        {!sidebarOpen && <Offcanvas show={true} backdrop={false} placement={position} className="offcanvas-show-button">
+            <Button onClick={handleClickToggle} variant={"light"} className="sidebar-toggle">
+                <GoTriangleLeft/>
             </Button>
-        </Offcanvas>*/}
+        </Offcanvas>}
     </React.Fragment>
 }
 

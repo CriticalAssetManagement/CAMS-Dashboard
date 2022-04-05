@@ -1,14 +1,12 @@
 import {useEffect, useState} from 'react'
 import {QueryHook, executeQuery} from "./QueryHook"
-import {NON_CRITICAL_COLOR, CRITICAL_COLOR, CRITICAL_LINKS, NON_CRITICAL_LINKS, VAR_ASSET, VAR_LINKED_ASSET} from "../components/constants"
-import {getAssetFailureChain, getAssetsByEventsOrIDQuery, getAssetDependentOnQuery} from "./queries"
+import {NON_CRITICAL_COLOR, CRITICAL_COLOR, CRITICAL_LINKS, VAR_CRITICAL, VAR_LATITUDE, VAR_LONGITUDE, NON_CRITICAL_LINKS, VAR_ASSET, VAR_LINKED_ASSET} from "../components/constants"
+import {getAssetFailureChain, getAssetsByEventsOrIDQuery, getAssetDependentOnQuery, getAssetUpwardChain} from "./queries"
 import {DEPENDENT} from "../pages/constants"
-import {extractLocations, handleDocumentSelect, extractAssetLocations, extractNewAssetLocations} from "../components/utils"
+import {extractLocations, handleDocumentSelect, extractAssetLocations, getUpwardChainAssetLocation, extractNewAssetLocations, getFailureChainAssetLocation} from "../components/utils"
 import { arrayOf } from 'prop-types'
 
 export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
-
-    const [documentID, setDocumentID] = useState(false)
 
     // link constants
     const [polyLine, setPolyLine] = useState([])
@@ -31,21 +29,24 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
     const [displayFailureChains, setDisplayFailureChains] = useState([])
     let failureChainResults = QueryHook(woqlClient, failureChainPathQuery, setLoading, setSuccessMsg, setErrorMsg)
 
+    // upward chain constants
+    const [upwardChain, setUpwardChain]= useState(false)
+    const [upwardChainQuery, setUpwardChainQuery]= useState(false)
+    const [displayUpwardChains, setDisplayUpwardChains] = useState([])
+    let upwardChainResults = QueryHook(woqlClient, upwardChainQuery, setLoading, setSuccessMsg, setErrorMsg)
+
+
     // get document location on select of an Asset
     let queryResults = QueryHook(woqlClient, query, setLoading, setSuccessMsg, setErrorMsg)
 
     let filteredByAssetResults = QueryHook(woqlClient, filterAssetByEventOrIDQuery, setLoading, setSuccessMsg, setErrorMsg)
 
-    //console.log("filterAssetById", filterAssetById, filteredByAssetResults)
-    //console.log("onMarkerClick", onMarkerClick)
-    //console.log("**** failureChainResults", queryResults, failureChainResults)
+    // map layers and vector constants
+    const [vectorLayerGroup, setVectorLayerGroup] = useState(false)
+    const [layerGroup, setLayerGroup] = useState(false)
 
-    // on select of Asset
-    useEffect(() => { // get dependent on assets
-        if(!documentID) return
-        let q = getAssetDependentOnQuery(documentID)
-        setQuery(q)
-    }, [documentID])
+    //console.log("filteredByAssetResults", filteredByAssetResults)
+
 
     // on click of Asset
     useEffect(() => {
@@ -55,58 +56,57 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
             setPolyLine(false)
             setDependencies(false)
             setLoading(true)
-            setDocumentID(onMarkerClick.id)
+            let documentID = onMarkerClick["id"]
+            let q = getAssetDependentOnQuery(documentID)
+            setQuery(q)
         }
     }, [onMarkerClick])
 
-    useEffect(() => { //working
-        if(!Object.keys(queryResults).length) {
-            setLoading(false)
-            setPolyLine(false)
-            return
-        }
-        let locs = extractAssetLocations(queryResults)
-        setDependencies(locs)
+    useEffect(() => {
+        if(onMarkerClick && onMarkerClick.hasOwnProperty("id") && Array.isArray(queryResults) && queryResults.length > 0) {
+            let locs = extractAssetLocations(queryResults)
+            setDependencies(locs)
 
-        let gatherPolylines = [], json = {}
+            let gatherPolylines = []
 
-        locs.map(lcs => {
-            // link is array of dependant and dependant on info
-            let link = []
-            link.push(onMarkerClick)
-            link.push(lcs)
-            if(!gatherPolylines.length) {  //empty
-                gatherPolylines.push({
-                    color: lcs.critical === "true" ? CRITICAL_COLOR : NON_CRITICAL_COLOR,
-                    title: lcs.critical === "true" ? CRITICAL_LINKS : NON_CRITICAL_LINKS,
-                    data: [link]
-                })
-            }
-            else {
-                let colorExists = false
-                gatherPolylines.map(polys => {
-                    var color = NON_CRITICAL_COLOR
-                    if(lcs.critical === "true") color = CRITICAL_COLOR
-                    if(polys.color === color) { // color links exists to populate data array
-                        colorExists=true
-                        polys.data.push(link) // add on entries of links to same color
-                        return
-                    }
-                })
-                if(!colorExists) { // add a new entry color link to gatherPolylines
+            //console.log("locs", locs)
+            locs.map(lcs => {
+                // link is array of dependant and dependant on info
+                let link = []
+                link.push(onMarkerClick)
+                link.push(lcs)
+                if(!gatherPolylines.length) {  //empty
                     gatherPolylines.push({
-                        color: lcs.critical === "true" ? CRITICAL_COLOR : NON_CRITICAL_COLOR,
-                        title: lcs.critical === "true" ? CRITICAL_LINKS : NON_CRITICAL_LINKS,
+                        color: lcs[VAR_CRITICAL] === "true" ? CRITICAL_COLOR : NON_CRITICAL_COLOR,
+                        title: lcs[VAR_CRITICAL] === "true" ? CRITICAL_LINKS : NON_CRITICAL_LINKS,
                         data: [link]
                     })
                 }
-            }
-        })
-        //console.log("gatherPolylines", gatherPolylines)
-        setPolyLine(gatherPolylines)
-        setLoading(false)
+                else {
+                    let colorExists = false
+                    gatherPolylines.map(polys => {
+                        var color = NON_CRITICAL_COLOR
+                        if(lcs[VAR_CRITICAL] === "true") color = CRITICAL_COLOR
+                        if(polys.color === color) { // color links exists to populate data array
+                            colorExists=true
+                            polys.data.push(link) // add on entries of links to same color
+                            return
+                        }
+                    })
+                    if(!colorExists) { // add a new entry color link to gatherPolylines
+                        gatherPolylines.push({
+                            color: lcs[VAR_CRITICAL] === "true" ? CRITICAL_COLOR : NON_CRITICAL_COLOR,
+                            title: lcs[VAR_CRITICAL] === "true" ? CRITICAL_LINKS : NON_CRITICAL_LINKS,
+                            data: [link]
+                        })
+                    }
+                }
+            })
+            //console.log("gatherPolylines", gatherPolylines)
+            setPolyLine(gatherPolylines)
+            setLoading(false)
+        }
     }, [queryResults])
-
 
     // on results of filtering by asset
     useEffect(() => {
@@ -121,6 +121,8 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
 
     //filter by events/ Asset ID
     useEffect(() => {
+        //if(!filterAssetByEvent) return
+        //if(!filterAssetById) return
         setPolyLine(false)
         let q = getAssetsByEventsOrIDQuery(filterAssetByEvent, filterAssetById)
         setFilterAssetByEventOrIDQuery(q)
@@ -139,62 +141,55 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
     useEffect(() => {
         // get failure node
         if(Array.isArray(failureChainResults) && failureChainResults.length && onMarkerClick.hasOwnProperty("id")) {
-
-            //console.log("failureChainResults", extractNewAssetLocations(failureChainResults))
-
-            let locationResults = extractNewAssetLocations(failureChainResults), display=[]
-            let linkArray=[], doc = onMarkerClick.id // get links from whichever marker is clicked
-
-            function getAltered(lcs) {
-                let altered ={}
-                for(var key in lcs) {
-                    if(key === "LinkedAsset") continue
-                    if(key === "Asset") {
-                        altered[key]=lcs["LinkedAsset"]
-                    }
-                    else altered[key]=lcs[key]
-                }
-                return altered
-            }
-
-            function getOtherLinks (asset, results) {
-                results.map(lcs => {
-                    if(lcs.Asset === asset){
-                        let altered = getAltered(lcs)
-                        linkArray.push(altered)
-                        getOtherLinks(lcs.LinkedAsset, results)
-                    }
-                })
-            }
-
-            locationResults.map(res => {
-                linkArray=[]
-                if(res["Asset"] === doc) {
-                    let altered = getAltered(res)
-                    linkArray.push(altered)
-                    getOtherLinks(res["LinkedAsset"], locationResults)
-                }
-                if(linkArray.length) display.push(linkArray)
-            })
-
-           setDisplayFailureChains(display)
+            //console.log("failureChainResults ****", failureChainResults)
+            //console.log("polyline", polyLine)
+            let locationResults = getFailureChainAssetLocation(failureChainResults)
+            setDisplayFailureChains(locationResults)
 
         }
     }, [failureChainResults])
 
+    // if upward chain is checked
+    useEffect(() => {
+        if(upwardChain && Object.keys(onMarkerClick).length && onMarkerClick.hasOwnProperty("id")) {
+            let q = getAssetUpwardChain(onMarkerClick["id"])
+            setUpwardChainQuery(q)
+        }
+        else if(!failureChain) setDisplayFailureChains([])
+    }, [upwardChain])
+
+    useEffect(() => {
+        // get failure node
+        if(Array.isArray(upwardChainResults) && upwardChainResults.length && onMarkerClick.hasOwnProperty("id")) {
+            //console.log("polyline", polyLine)
+            let locationResults = getUpwardChainAssetLocation(upwardChainResults)
+            //console.log("locationResults", locationResults)
+            setDisplayUpwardChains(locationResults)
+
+        }
+    }, [upwardChainResults])
 
     return {
         setOnMarkerClick,
         polyLine,
         dependencies,
         onMarkerClick,
+        setOnMarkerClick,
         setPolyLine,
         filterAssetById,
         setFilterAssetById,
         setFilterAssetByEvent,
         setFailureChain,
+        setUpwardChain,
         filteredAssets,
-        displayFailureChains
+        displayFailureChains,
+        setVectorLayerGroup,
+        vectorLayerGroup,
+        layerGroup,
+        setLayerGroup,
+        setDisplayFailureChains,
+        setDisplayUpwardChains,
+        displayUpwardChains
     }
 }
 

@@ -1,8 +1,8 @@
 import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
-import {ProgressBar} from "react-bootstrap"
+import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
-import {ASSET_TYPE, AREA_PAGE_TABLE_CSS, EDIT_CLICKED_ASSET, CREATE_ASSET_TAB, VIEW_ASSET_LIST, VIEW_CLICKED_ASSET} from "./constants"
+import {ASSET_TYPE, ASSET_PAGE_TABLE_CSS, EDIT_CLICKED_ASSET, CREATE_ASSET_TAB, VIEW_ASSET_LIST, VIEW_CLICKED_ASSET} from "./constants"
 import {Alerts} from "../components/Alerts"
 import {DocumentHook, GetDocumentListHook, GetDocumentHook, DeleteDocumentHook, EditDocumentHook} from "../hooks/DocumentHook"
 import {getAssetConfig} from "../components/Views"
@@ -10,13 +10,14 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
-
+import {BiArrowBack} from "react-icons/bi"
 
 export const AssetForm = () => {
 
     const {
 		connectionError,
         frames,
+        prefix,
         successMsg,
         setSuccessMsg,
         errorMsg,
@@ -38,6 +39,7 @@ export const AssetForm = () => {
         handleDocumentSubmit,
         extracted,
         handleSelect,
+        handleTraverse,
         deleteDocument,
         handleUpdate,
         getDocumentToolBar,
@@ -46,7 +48,9 @@ export const AssetForm = () => {
         extractedUpdate,
         setDocumentId,
         setType,
-        type
+        type,
+        traverseDocument,
+        goToPreviousLinkedDocument
     } = DocumentContextObj()
 
     // create
@@ -77,11 +81,10 @@ export const AssetForm = () => {
         }
     }, [documentResults])
 
-
     return <div className="mb-5">
         <Layout/>
 
-        <div className="px-3">
+        <div className="px-3 content-container">
             <Alerts errorMsg={connectionError}/>
             {loading && <ProgressBar animated now={100} variant="info"/>}
 
@@ -91,18 +94,40 @@ export const AssetForm = () => {
                 className="mb-3">
                 <Tab eventKey={VIEW_ASSET_LIST} title={VIEW_ASSET_LIST}>
                     <DisplayDocuments results={assetResults}
-                        css={AREA_PAGE_TABLE_CSS}
+                        css={ASSET_PAGE_TABLE_CSS}
                         config={getAssetConfig(assetResults, onRowClick)}
                         title={ASSET_TYPE}
                         onRowClick={onRowClick}/>
                 </Tab>
                 {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_ASSET} title={VIEW_CLICKED_ASSET}>
 
-                        <ViewDocument frames={frames}
-                            getDocumentToolBar={getDocumentToolBar}
-                            handleSelect={handleSelect}
-                            type={ASSET_TYPE}
-                            showDocument={showDocument}/>
+                        {Array.isArray(traverseDocument.previous) && <span className="col-md-1 ml-5">
+                            <Button
+                                className="btn-sm"
+                                title={`Go to previous document ${traverseDocument.previous}`}
+                                onClick={goToPreviousLinkedDocument}>
+                                    <BiArrowBack className="mr-2"/>Back
+                            </Button>
+                        </span>}
+                        {
+                            traverseDocument && traverseDocument.hasOwnProperty("current") &&
+                                <ViewDocument frames={frames}
+                                    getDocumentToolBar={getDocumentToolBar}
+                                    handleSelect={handleSelect}
+                                    type={showDocument["@type"]}
+                                    onTraverse={handleTraverse}
+                                    showDocument={showDocument}
+                                />
+                        }
+                        {!traverseDocument &&
+                            <ViewDocument frames={frames}
+                                getDocumentToolBar={getDocumentToolBar}
+                                handleSelect={handleSelect}
+                                type={ASSET_TYPE}
+                                onTraverse={handleTraverse}
+                                showDocument={showDocument}
+                            />
+                        }
                     </Tab>
                 }
                 {editDocument && <Tab eventKey={EDIT_CLICKED_ASSET} title={EDIT_CLICKED_ASSET}>

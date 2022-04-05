@@ -1,7 +1,12 @@
 import React from "react"
-import {HOME, USER_FORM, AREA_FORM, ASSET_FORM, ASSETS_LINK, REPORTS, USER_MANAGEMENT,PROFILE} from "./constants"
+/*import {HOME, USER_FORM, AREA_FORM, ASSET_FORM, ASSETS_LINK, REPORTS, USER_MANAGEMENT,PROFILE} from "./constants"
 import {PROFILE_PAGE,USER_FORM_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE, ASSETS_LINK_PAGE,USER_MANAGEMENT_PAGE} from "../routing/constants"
-import {Nav, Navbar, Button,Dropdown} from "react-bootstrap"
+import {Nav, Navbar, Button,Dropdown} from "react-bootstrap"*/
+
+import {HOME, USER_FORM, OWNER_FORM, AREA_FORM, ASSET_FORM, ASSETS_LINK, REPORTS, BRAND_TITLE} from "./constants"
+import {USER_FORM_PAGE, OWNER_FORM_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE, ASSETS_LINK_PAGE} from "../routing/constants"
+import {Nav, Navbar, Container} from "react-bootstrap"
+
 import { NavLink as RouterNavLink } from "react-router-dom"
 import {WOQLClientObj} from '../init-woql-client'
 import {GoHome} from "react-icons/go"
@@ -11,6 +16,7 @@ import {RiUserSmileLine} from "react-icons/ri"
 import {GrUserAdmin} from "react-icons/gr"
 import { useAuth0 } from "@auth0/auth0-react";
 import {AiOutlineUsergroupAdd,AiOutlineUser,AiOutlinePoweroff} from "react-icons/ai"
+import {BsPerson, BsPersonBadge} from "react-icons/bs"
 
 const MenuIcon = ({icon, title}) => {
     return <div className="d-flex">
@@ -54,7 +60,7 @@ export const Menu = () => {
         logout({
             returnTo:returnTo
     })
-    return <Navbar expand="lg" className={`p-3 navbar navbar-transparent bg-${"light"}`}>
+    return <Navbar fixed="top" expand="lg" className={`px-3 navbar navbar-transparent bg-${"light"} nav-container`}>
         <Navbar.Brand href="https://climateresilient.world/"
             title="Visit GitHub repository for more info"
             target="_blank">
@@ -81,9 +87,19 @@ export const Menu = () => {
                     id={USER_FORM}
                     onClick={(e) => setPage(USER_FORM_PAGE)}
                     >
-                        <MenuIcon icon={<RiUserSmileLine/>} title={USER_FORM}/>
+                        <MenuIcon icon={<BsPerson/>} title={USER_FORM}/>
                 </Nav.Link>
                 <Nav.Link
+                    as={RouterNavLink}
+                    title={OWNER_FORM}
+                    to={OWNER_FORM_PAGE}
+                    exact
+                    id={OWNER_FORM}
+                    onClick={(e) => setPage(OWNER_FORM_PAGE)}
+                    >
+                        <MenuIcon icon={<BsPersonBadge/>} title={OWNER_FORM}/>
+                </Nav.Link>
+                {/*<Nav.Link // hide for now
                     as={RouterNavLink}
                     title={AREA_FORM}
                     to={AREA_FORM_PAGE}
@@ -92,7 +108,7 @@ export const Menu = () => {
                     onClick={(e) => setPage(AREA_FORM_PAGE)}
                     >
                         <MenuIcon icon={<FiMap/>} title={AREA_FORM}/>
-                </Nav.Link>
+                </Nav.Link> */}
                 <Nav.Link
                     as={RouterNavLink}
                     title={ASSET_FORM}
@@ -113,7 +129,7 @@ export const Menu = () => {
                     >
                             <MenuIcon icon={<FiLink/>} title={ASSETS_LINK}/>
                 </Nav.Link>
-                <Nav.Link
+                {/*<Nav.Link // hide for now
                     as={RouterNavLink}
                     title={REPORTS}
                     to={REPORTS_PAGE}
@@ -122,7 +138,7 @@ export const Menu = () => {
                     onClick={(e) => setPage(REPORTS_PAGE)}
                     >
                             <MenuIcon icon={<BiBookReader/>} title={REPORTS}/>
-                </Nav.Link>
+            </Nav.Link>*/}
               {!isAuthenticated && (
                 <Nav.Item>
                   <Button
@@ -145,16 +161,16 @@ export const Menu = () => {
                     />
                   </Dropdown.Toggle>
                  <Dropdown.Menu>
-                     <Dropdown.Item>
-                        {/* <Nav.Link  as={RouterNavLink}
+                     {/*<Dropdown.Item>
+                         <Nav.Link  as={RouterNavLink}
                              title={PROFILE}  
                              to={PROFILE_PAGE} 
                              exact
                              onClick={(e) => setPage(PROFILE)}
                              id={"Profile"}>
                                  <AiOutlineUser className="mr-3 mb-1" />Profile
-                            </Nav.Link>*/}
-                     </Dropdown.Item>
+                            </Nav.Link>
+                     </Dropdown.Item>*/}
                      <Dropdown.Item>
                          <Nav.Link  as={RouterNavLink}
                              title={USER_MANAGEMENT}  
