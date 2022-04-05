@@ -15,6 +15,7 @@ import {GoTriangleLeft} from "react-icons/go"
 
 
 export const ClickedMarkerInfo = ({info, dependencies}) => {
+
     if(!Object.keys(info).length) return <div/>
     let displayInfo = []
 

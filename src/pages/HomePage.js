@@ -14,7 +14,7 @@ import {DisplayMarkerInfo} from "../components/DisplayMarkerInfo"
 import "leaflet-arrowheads"
 import {antPath} from 'leaflet-ant-path'
 import {LATITUDE, LONGITUDE, DASH_LINES_OPTIONS, MAP_ID, ARROW_OPTIONS, MARKER_OPTIONS, MAP_OPTIONS, BROWSER_PRINT_OPTIONS, POINTS, POLYGON, LAT, LNG, REFRESH, POPUP_OPTIONS}  from "../components/maps/constants"
-import {extractAndDrawVectors, gatherVectorLines, drawFailureChains, getMarkers, drawUpwardChains, drawPolyLine} from "../components/maps/utils"
+import {extractAndDrawVectors, gatherVectorLines, drawFailureChains, getMarkers, drawUpwardChainMarkers} from "../components/maps/utils"
 import "leaflet.browser.print/dist/leaflet.browser.print.min.js"
 import "leaflet/dist/leaflet.css"
 import {getLegend} from "../components/maps/legend"
@@ -99,7 +99,7 @@ export const HomePage = () => {
         drawFailureChains (displayFailureChains, mg)
 
         // draw upward chain
-        drawUpwardChains (displayUpwardChains, mg)
+        drawUpwardChainMarkers (displayUpwardChains, mg)
 
         // get vector and add arrows
 		function getVector (vector) {

@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react'
 const TerminusDBClient = require("@terminusdb/terminusdb-client")
-import {getPrefix} from "@terminusdb/terminusdb-documents-ui"
+import {extractPrefix} from "@terminusdb/terminusdb-documents-ui"
 export const WOQLContext = React.createContext()
 export const WOQLClientObj = () => useContext(WOQLContext)
 import {DATA_PRODUCT} from "./constants"
@@ -45,7 +45,7 @@ export const WOQLClientProvider = ({children, params}) => {
     useEffect(() => {
         if(!woqlClient) return
         woqlClient.getSchemaFrame(null, DATA_PRODUCT).then((res) => {
-            let extractedPrefix = getPrefix(res)
+            let extractedPrefix = extractPrefix(res)
             setPrefix(extractedPrefix)
             setFrames(res)
         })

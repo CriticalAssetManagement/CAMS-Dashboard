@@ -42,21 +42,67 @@ import "leaflet-arrowheads"
 import "leaflet.browser.print/dist/leaflet.browser.print.js"
 import {getGradeIcons, getAssetTypeIcons} from "./icons"
 
-// modifying upwardChainArray to draw lines in leaflet map format
-function gatherUpwardChainLines (upwardChainArray, onMarkerClick) {
-    let modifiedUpwardChainArray=[]
-    // write a function here to check if all keys are available to display map
-    if(!onMarkerClick) return
-    upwardChainArray.map(uca => {
-        if(uca[VAR_ASSET] !== onMarkerClick.id) {
-            modifiedUpwardChainArray.push([
-                [ uca[ASSET_LAT], uca[ASSET_LNG] ],
-                [ uca[VAR_LINKED_ASSET_LAT], uca[VAR_LINKED_ASSET_LNG] ]
-            ])
+// get colored markers if grade and asset type avail
+function getMarkerOptions(asset) {
+    var options=MARKER_OPTIONS
+    if(asset.hasOwnProperty(VAR_ASSET_TYPE)) {
+        options=getAssetTypeIcons(asset, VAR_ASSET_TYPE)
+    }
+    if(asset.hasOwnProperty(VAR_GRADE)) {
+        let gradeColor=getGradeIcons(asset)
+        // create a new icon with the grade color
+        let icon = options.icon.options.icon
+        let gradedOptions = {
+            icon: L.ExtraMarkers.icon({
+                shape: 'circle',
+                markerColor: gradeColor,
+                prefix: 'fa',
+                icon: icon,
+                iconColor: "#fff",
+                iconRotate: 0,
+                extraClasses: 'fa-2x',
+                number: '',
+                svg: true,
+                shadowSize: [0, 0]
+            })
         }
+        return gradedOptions
+    }
+    return options
+}
+
+// get colored failure chain markers
+function getLinkedMarkerOptions (asset , key) {
+    let options=getAssetTypeIcons(asset, key)
+    return options
+}
+
+// get pop up content
+export function getPopContent (coord){
+    return `<div>
+        <div> name:  ${coord.name} </div>
+        <div> lat:   ${coord.lat} </div>
+        <div> lng:   ${coord.lng}</div>
+    </div>`
+}
+
+// draw marker
+function drawMarkers (asset, coord, options, setOnMarkerClick, layerGroup) {
+    // create a marker
+    let marker = L.marker(coord , options)
+        .bindPopup(getPopContent(coord), options)
+        .on('click', function(e) {
+            let cData = asset
+            cData[REFRESH] = Date.now()
+            //map.setView(e.latlng, 13)
+            if(setOnMarkerClick) setOnMarkerClick(cData)
+        })
+        .addTo(layerGroup)
+    // on hover
+    marker.on('mouseover',function(ev) {
+        marker.openPopup()
     })
-    //console.log("modifiedUpwardChainArray", modifiedUpwardChainArray)
-    return modifiedUpwardChainArray
+    return marker
 }
 
 // upward chains directly linked
@@ -247,7 +293,7 @@ export function  gatherVectorLines(vector, displayFailureChains, displayUpwardCh
 export function extractAndDrawVectors(polyLine, setOnMarkerClick, layerGorup) {
     let vectorJson = []
     if(polyLine && Array.isArray(polyLine)) {
-        drawPolyLine(polyLine, setOnMarkerClick, layerGorup)
+        drawPolyLineMarkers(polyLine, setOnMarkerClick, layerGorup)
         // extracting only lat lng
         polyLine.map(pl => {
             pl.data.map(arr => {
@@ -272,26 +318,13 @@ export function drawFailureChains (displayFailureChains, layerGroup) {
                 lng: link[VAR_LINKED_ASSET_LNG]
             }
             options = getLinkedMarkerOptions(link, VAR_LINKED_ASSET_TYPE)
-            let marker = L.marker(coord , options)
-                //.bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
-                .bindPopup(getPopContent(coord), POPUP_OPTIONS)
-                .on('click', function(e) {
-                    let cData = link //coord
-                    cData[REFRESH] = Date.now()
-                    //map.setView(e.latlng, 13)
-                    //if(setOnMarkerClick) setOnMarkerClick(cData)
-                })
-            marker.on('mouseover',function(ev) { // on hover
-                marker.openPopup()
-            })
-            marker.addTo(layerGroup)
+            let marker = drawMarkers(link, coord, options, null, layerGroup)
         })
     }
  }
 
  // draw upward chains
- export function drawUpwardChains (displayUpwardChains, layerGroup) {
-    // gather failure chain markers
+export function drawUpwardChainMarkers (displayUpwardChains, layerGroup) {
     //console.log("displayUpwardChains",displayUpwardChains)
     if(displayUpwardChains && Array.isArray(displayUpwardChains) && displayUpwardChains.length) {
         var options=MARKER_OPTIONS
@@ -303,46 +336,25 @@ export function drawFailureChains (displayFailureChains, layerGroup) {
                 lat: link[ASSET_LAT],
                 lng: link[ASSET_LNG]
             }
+            // Asset
             options = getLinkedMarkerOptions(link, VAR_ASSET_TYPE)
-            var marker = L.marker(coord , options)
-                //.bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
-                .bindPopup(getPopContent(coord), POPUP_OPTIONS)
-                .on('click', function(e) {
-                    let cData = link //coord
-                    cData[REFRESH] = Date.now()
-                    //map.setView(e.latlng, 13)
-                    //if(setOnMarkerClick) setOnMarkerClick(cData)
-                })
-            marker.on('mouseover',function(ev) { // on hover
-                marker.openPopup()
-            })
-            marker.addTo(layerGroup)
+            let marker = drawMarkers(link, coord, options, null, layerGroup)
+
             var coord = {
                 name:link[VAR_LINKED_ASSET_NAME],
                 lat: link[VAR_LINKED_ASSET_LAT],
                 lng: link[VAR_LINKED_ASSET_LNG]
             }
+            // Linked Asset
             options = getLinkedMarkerOptions(link, VAR_LINKED_ASSET_TYPE)
-            var marker = L.marker(coord , options)
-                //.bindPopup(`### name:${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
-                .bindPopup(getPopContent(coord), POPUP_OPTIONS)
-                .on('click', function(e) {
-                    let cData = link //coord
-                    cData[REFRESH] = Date.now()
-                    //map.setView(e.latlng, 13)
-                    //if(setOnMarkerClick) setOnMarkerClick(cData)
-                })
-            marker.on('mouseover',function(ev) { // on hover
-                marker.openPopup()
-            })
-            marker.addTo(layerGroup)
+            let linkedAssetMarker = drawMarkers(link, coord, options, null, layerGroup)
         })
     }
- }
+}
 
 
 // function to draw polyline markers
-export function drawPolyLine(polyLine, setOnMarkerClick, layerGroup) {
+export function drawPolyLineMarkers(polyLine, setOnMarkerClick, layerGroup) {
     polyLine.map(pl => {
         if(!pl.hasOwnProperty("data")) return
         var options=MARKER_OPTIONS
@@ -352,67 +364,10 @@ export function drawPolyLine(polyLine, setOnMarkerClick, layerGroup) {
                 // get marker lat lng
                 let coord = {name: la[VAR_NAME], lat: la[VAR_LATITUDE], lng: la[VAR_LONGITUDE]}
                 options = getMarkerOptions(la)
-                let marker = L.marker(coord , options)
-                    //.bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
-                    .bindPopup(getPopContent(coord), POPUP_OPTIONS)
-                    .on('click', function(e) {
-                        let cData = la //coord
-                        cData[REFRESH] = Date.now()
-                        //mapComponent.setView(e.latlng, 13) // zoom in on click
-                        if(setOnMarkerClick) setOnMarkerClick(cData)
-                    })
-                marker.on('mouseover',function(ev) { // on hover
-                    marker.openPopup()
-                })
-                marker.addTo(layerGroup)
+                let marker = drawMarkers(la, coord, options, setOnMarkerClick, layerGroup)
             })
         })
     })
-}
-
-
-// get pop up content
-export function getPopContent (coord){
-    return `<div>
-        <div> name:  ${coord.name} </div>
-        <div> lat:   ${coord.lat} </div>
-        <div> lng:   ${coord.lng}</div>
-    </div>`
-}
-
-// get colored markers if grade and asset type avail
-function getMarkerOptions(asset) {
-    var options=MARKER_OPTIONS
-    if(asset.hasOwnProperty(VAR_ASSET_TYPE)) {
-        options=getAssetTypeIcons(asset, VAR_ASSET_TYPE)
-    }
-    if(asset.hasOwnProperty(VAR_GRADE)) {
-        let gradeColor=getGradeIcons(asset)
-        // create a new icon with the grade color
-        let icon = options.icon.options.icon
-        let gradedOptions = {
-            icon: L.ExtraMarkers.icon({
-                shape: 'circle',
-                markerColor: gradeColor,
-                prefix: 'fa',
-                icon: icon,
-                iconColor: "#fff",
-                iconRotate: 0,
-                extraClasses: 'fa-2x',
-                number: '',
-                svg: true,
-                shadowSize: [0, 0]
-            })
-        }
-        return gradedOptions
-    }
-    return options
-}
-
-// get colored failure chain markers
-function getLinkedMarkerOptions (asset , key) {
-    let options=getAssetTypeIcons(asset, key)
-    return options
 }
 
 // get all markers
@@ -421,21 +376,7 @@ export function getMarkers (assets, layerGroup, setOnMarkerClick) {
     assets.map(asset => {
         // get marker lat lng
         let coord = {name:asset[VAR_NAME], lat: asset[VAR_LATITUDE], lng: asset[VAR_LONGITUDE]}
-
         let options = getMarkerOptions(asset)
-        let marker = L.marker(coord , options)
-            //.bindPopup(`### name: ${coord.name} lat: ${coord.lat} lng: ${coord.lng}`)
-            .bindPopup(getPopContent(coord), POPUP_OPTIONS)
-            .on('click', function(e) {
-                let cData = asset //coord
-                cData[REFRESH] = Date.now()
-                //map.setView(e.latlng, 13)
-                if(setOnMarkerClick) setOnMarkerClick(cData)
-            })
-            .addTo(layerGroup)
-
-        marker.on('mouseover',function(ev) { // on hover
-            marker.openPopup()
-        })
+        let marker = drawMarkers(asset, coord, options, setOnMarkerClick, layerGroup)
     })
 }

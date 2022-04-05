@@ -157,9 +157,11 @@ export const SELECT_STYLES = {
     singleValue:(styles) => {
         return {
             ...styles,
-            color: '#000'
+            color: '#000',
+            width: "500px"
         }
-    }
+    },
+    mode: "light"
 }
 
 // ui frames for changing styles for react-select in terminusdb-documents-ui
