@@ -11,7 +11,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    permissions:
+      id-token: write
+      contents: 'read'
     strategy:
       matrix:
         node-version: [16.x]
@@ -24,5 +26,29 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - name: set dev envs
+      if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+      run: |
+        echo '
+        TERMINUSDB_SERVER=https://cloud-dev.terminusdb.com/
+        AUTH0_DOMAIN=signup-dev.terminusdb.com
+        AUTH0_CLIENT_ID=s6iYFJzoSedUHGUUaRYCGGWXWEPHkd02
+        AUTH0_AUDIENCE=https://terminuscloud/users
+        MY_TEAM=CAMSDemo
+        DATA_PRODUCT=CAMS' > .env
     - run: npm ci
     - run: npm run build
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v0'
+    - name: Upload to gcloud bucket dev
+      if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+      run: gsutil cp -r dist/* "gs://dashboard-dev.climateresilient.world/"
+    - name: Upload to gcloud bucket prod
+      if: github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v')
+      run: gsutil cp -r dist/* "gs://dashboard.climateresilient.world/"

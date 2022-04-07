@@ -1,18 +1,51 @@
 import React, {useState, useEffect} from "react"
-import {Form, Card} from "react-bootstrap"
-import {BsSearch} from "react-icons/bs"
+import AsyncSelect from 'react-select/async'
+import {handleDocumentSelect} from "../components/utils"
+import {SELECT_STYLES} from "./constants"
 
-export const SearchBar = ({placeholder, setFilterAssetById}) => {
+export const SearchBar = ({woqlClient, type, placeholder, setFilterAssetById, resetMap}) => {
 
-    function handleInput(e) {
-        //e.preventDefault()
-        if(setFilterAssetById) setFilterAssetById(e.target.value)
+    const [inputValue, setInputValue]=useState(null) // select value
+    const [value, setValue]=useState(null) // select value
+
+
+    const loadOptions = async (inputValue, callback) => {
+        //let opts = await onSelect(inputValue, frame[item])
+        let opts = await handleDocumentSelect(woqlClient, inputValue, type)
+        callback(opts)
+        return opts
     }
 
+    const handleInputChange = (newValue) => {
+        const inp = newValue.replace(/\W/g, '')
+        //console.log("inp", inp)
+        setInputValue(inp)
+        return inp
+    }
+
+    function onChange(e) {
+        //props.onChange(e.value)
+        if(setFilterAssetById) setFilterAssetById(e.value)
+        setValue({value:e.value, label: e.label})
+    }
+
+    useEffect(() => {
+        if(resetMap) setValue(null)
+    }, [resetMap])
+
     return <React.Fragment>
-        <Form className="col-md-3 search-bar d-flex">
-            <Form.Control type="text" placeholder={placeholder} className="border-0" onBlur={handleInput}/>
-            <BsSearch className="col-md-1 m-3"/>
-        </Form>
+        <div className="search-bar d-flex">
+            <AsyncSelect
+                //cacheOptions
+                classNames="tdb__input search-asset-input"
+                styles={SELECT_STYLES}
+                placeholder={placeholder}
+                value={value}
+                onChange={onChange}
+                loadOptions={loadOptions}
+                //inputValue={inputValue}
+                onInputChange={handleInputChange}
+            />
+        </div>
     </React.Fragment>
 }

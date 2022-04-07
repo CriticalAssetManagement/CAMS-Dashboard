@@ -1,6 +1,19 @@
 body {
     background-color: #f8f9fa !important;
+}
 
+/**nav bar and content spacing */
+.content-container {
+    margin-top: 110px !important;
+}
+
+.nav-container{
+    padding-bottom: 0 !important;
+}
+
+
+.table-word-break {
+    word-break: break-all !important;
 }
 
 table > thead > tr:first-child {
@@ -71,12 +84,36 @@ and (max-device-width: 1024px)  {
     span.homePageTableCss > span > table > tbody > tr >td:nth-of-type(4):before { content: "Longitude"; }
     span.homePageTableCss > span > table > tbody > tr >td:nth-of-type(5):before { content: "Latitude"; }
 
+    span.criticalAssetTableCss > span > table > tbody > tr > td:nth-of-type(1):before { content: "ID"; }
+    span.criticalAssetTableCss > span > table > tbody > tr >td:nth-of-type(2):before { content: "Name"; }
+
     span.userPageTableCss > span > table > tbody > tr > td:nth-of-type(1):before { content: "Person"; }
     span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(2):before { content: "Email"; }
     span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(3):before { content: "First Name"; }
-    span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(4):before { content: "Last Name"; }
-    span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(5):before { content: "Organization"; }
-    span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(5):before { content: "Phone Number"; }
+    span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(4):before { content: "Job Title"; }
+    span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(5):before { content: "Last Name"; }
+    span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(6):before { content: "Organization"; }
+    span.userPageTableCss > span > table > tbody > tr >td:nth-of-type(7):before { content: "Phone Number"; }
+
+    span.ownerPageTableCss > span > table > tbody > tr > td:nth-of-type(1):before { content: "Owner"; }
+    span.ownerPageTableCss > span > table > tbody > tr >td:nth-of-type(2):before { content: "Contact Person"; }
+    span.ownerPageTableCss > span > table > tbody > tr >td:nth-of-type(3):before { content: "Name"; }
+
+    span.assetPageTableCss > span > table > tbody > tr > td:nth-of-type(1):before { content: "Asset"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(2):before { content: "Asset Identifier"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(3):before { content: "Commisioning Date"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(4):before { content: "Design Standards"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(5):before { content: "Last Maintained"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(6):before { content: "Last Modified"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(7):before { content: "Location"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(8):before { content: "Name"; }
+    span.assetPageTableCss > span > table > tbody > tr >td:nth-of-type(9):before { content: "Owner"; }
+
+    span.linkPageTableCss > span > table > tbody > tr > td:nth-of-type(1):before { content: "Link"; }
+    span.linkPageTableCss > span > table > tbody > tr >td:nth-of-type(2):before { content: "Comment"; }
+    span.linkPageTableCss > span > table > tbody > tr >td:nth-of-type(3):before { content: ""; }
+    span.linkPageTableCss > span > table > tbody > tr >td:nth-of-type(4):before { content: "Dependent"; }
+    span.linkPageTableCss > span > table > tbody > tr >td:nth-of-type(5):before { content: "Depends On"; }
 
     span.areaPageTableCss > span > table > tbody > tr > td:nth-of-type(1):before { content: "ID"; }
     span.areaPageTableCss > span > table > tbody > tr >td:nth-of-type(2):before { content: "Name"; }
@@ -101,6 +138,13 @@ button.tdb__toolbar__base__button {
     width: 500px !important;
 }
 
+.contact-off-canvas {
+    /*right: 500px !important;
+    height: 500px !important;
+    top: 50% !important; */
+    width: 200px;
+}
+
 /** css to change look and feel  **/
 form.rjsf > div > fieldset {
     width: 100% !important;
@@ -112,39 +156,136 @@ form.rjsf > div > fieldset > div.form-group > div.checkbox > label > span {
     color: #3459e6 !important;
 }
 
-/** search bar css to come over map **/
-/*.search-bar {
-    position: absolute;
-    z-index: 999;
-    left: 70px;
-    top: 110px;
-    height: fit-content;
-    bottom: 20px;
-    border-radius: 5px;
-    overflow: auto;
-    background-color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 0 5px 0 rgb(0 0 0 / 30%);
-}*/
 
-div.hazard-select-button > div > button {
-    border: 1px solid #2fb380 !important;
-    color: #2fb380  !important;
-    border-radius: 4px  !important;
-    width: 200px  !important;
+
+div.search-bar{
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 500px !important;
 }
 
-button.failure-chain-button:hover {
-    background-color: transparent !important;
-    cursor: auto;
+
+div.search-bar > div{
+    width: 100% !important;
 }
+
+.search-button:hover {
+    color: #fff !important;
+}
+
+.hazard-select-button  {
+    width: 300px;
+}
+
 
 input.failure-chain-checkbox {
     cursor: pointer;
 }
 
+.go-to-asset-badge {
+    background-color: transparent !important;
+    border: 1px solid #3459e6 !important;
+}
 
 
+/** custom offcanvas toggle button */
+.offcanvas-show-button {
+    height: 60px !important;
+    width: 50px !important;
+    top: 50% !important;
+    border-radius: 6px !important;
+}
+
+.sidebar-toggle {
+    height: 60px !important;
+}
+
+.map-container{
+    column-count: 1;
+}
+
+.leaflet-container{
+    height: 1045px !important;
+    width: 100%;
+    margin: 50 auto;
+}
+
+.map-leaflet-popup .leaflet-popup-content-wrapper {
+    background: #f8f9fa;
+    color: #212529;
+    font-size: 12px;
+    line-height: 24px;
+    border-radius: 4px;
+}
+
+.map-leaflet-popup .leaflet-popup-tip {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
 
 
+.empty-result-toast {
+    z-index: 300 !important;
+}
 
 
+select > option {
+    background-color: transparent !important;
+    color: #444 !important;
+}
+
+
+a.leaflet-browser-print{
+    margin-left: 50px !important;
+    height: 50px !important;
+}
+
+.subDocumentCard{
+    background-color: #f4f6fe !important;
+    border-color: transparent !important;
+    border: 1px solid #ced4da !important;
+}
+
+.tdb__input > input, .tdb__input > select, .tdb__view__enum__input > select {
+    border-color: transparent !important;
+    border: 1px solid #ced4da !important;
+    color: #000 !important;
+}
+
+/** Map legend css **/
+.info {
+    padding: 6px 8px;
+    background: white;
+    /*background: rgba(255, 255, 255, 0.8);*/
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+.legend {
+    text-align: left;
+    line-height: 18px;
+    color: #555;
+}
+
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
+.legend-icon-color {
+    /*color: #013220;*/
+    color: #00008b;
+    font-size: 14px;
+}
+
+.leaflet-control {
+    background: rgba(255, 255, 255, 0.8) !important;
+}

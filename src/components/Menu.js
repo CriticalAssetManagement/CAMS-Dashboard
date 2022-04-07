@@ -1,6 +1,6 @@
 import React from "react"
-import {HOME, USER_FORM, AREA_FORM, ASSET_FORM, ASSETS_LINK, REPORTS, BRAND_TITLE,USER_MANAGMENT} from "./constants"
-import {USER_FORM_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE, ASSETS_LINK_PAGE, USER_MANAGMENT_PAGE} from "../routing/constants"
+import {HOME, USER_FORM, OWNER_FORM, AREA_FORM, ASSET_FORM, ASSETS_LINK, REPORTS, BRAND_TITLE} from "./constants"
+import {USER_FORM_PAGE, OWNER_FORM_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE, ASSETS_LINK_PAGE} from "../routing/constants"
 import {Nav, Navbar, Container} from "react-bootstrap"
 import { NavLink as RouterNavLink } from "react-router-dom"
 import {WOQLClientObj} from '../init-woql-client'
@@ -8,6 +8,7 @@ import {GoHome} from "react-icons/go"
 import {FiMap, FiMapPin, FiLink} from "react-icons/fi"
 import {BiBookReader} from "react-icons/bi"
 import {RiUserSmileLine} from "react-icons/ri"
+import {BsPerson, BsPersonBadge} from "react-icons/bs"
 
 const MenuIcon = ({icon, title}) => {
     return <div className="d-flex">
@@ -20,7 +21,8 @@ const BrandIcon = () => {
     return <div className="bg-success p-2 rounded">
         <img
             //src="https://avatars.githubusercontent.com/u/93081083?s=200&v=4"
-            src="https://climateresilient.world/wp-content/uploads/2022/03/cams-logo-simple-light.png"
+            //src="https://climateresilient.world/wp-content/uploads/2022/03/cams-logo-simple-light.png"
+            src="https://climateresilient.world/wp-content/uploads/2022/03/CAMS-Logo-Light-Simple-200px.png"
             width="auto"
             height="auto"
             className="d-inline-block align-top"
@@ -35,7 +37,7 @@ export const Menu = () => {
 		setPage
 	} = WOQLClientObj()
 
-    return <Navbar expand="lg" className={`p-3 navbar navbar-transparent bg-${"light"}`}>
+    return <Navbar fixed="top" expand="lg" className={`px-3 navbar navbar-transparent bg-${"light"} nav-container`}>
         <Navbar.Brand href="https://climateresilient.world/"
             title="Visit GitHub repository for more info"
             target="_blank">
@@ -62,9 +64,19 @@ export const Menu = () => {
                     id={USER_FORM}
                     onClick={(e) => setPage(USER_FORM_PAGE)}
                     >
-                        <MenuIcon icon={<RiUserSmileLine/>} title={USER_FORM}/>
+                        <MenuIcon icon={<BsPerson/>} title={USER_FORM}/>
                 </Nav.Link>
                 <Nav.Link
+                    as={RouterNavLink}
+                    title={OWNER_FORM}
+                    to={OWNER_FORM_PAGE}
+                    exact
+                    id={OWNER_FORM}
+                    onClick={(e) => setPage(OWNER_FORM_PAGE)}
+                    >
+                        <MenuIcon icon={<BsPersonBadge/>} title={OWNER_FORM}/>
+                </Nav.Link>
+                {/*<Nav.Link // hide for now
                     as={RouterNavLink}
                     title={AREA_FORM}
                     to={AREA_FORM_PAGE}
@@ -73,7 +85,7 @@ export const Menu = () => {
                     onClick={(e) => setPage(AREA_FORM_PAGE)}
                     >
                         <MenuIcon icon={<FiMap/>} title={AREA_FORM}/>
-                </Nav.Link>
+                </Nav.Link> */}
                 <Nav.Link
                     as={RouterNavLink}
                     title={ASSET_FORM}
@@ -94,7 +106,7 @@ export const Menu = () => {
                     >
                             <MenuIcon icon={<FiLink/>} title={ASSETS_LINK}/>
                 </Nav.Link>
-                <Nav.Link
+                {/*<Nav.Link // hide for now
                     as={RouterNavLink}
                     title={REPORTS}
                     to={REPORTS_PAGE}
@@ -103,17 +115,7 @@ export const Menu = () => {
                     onClick={(e) => setPage(REPORTS_PAGE)}
                     >
                             <MenuIcon icon={<BiBookReader/>} title={REPORTS}/>
-                </Nav.Link>
-                <Nav.Link
-                    as={RouterNavLink}
-                    title={USER_MANAGMENT}
-                    to={USER_MANAGMENT_PAGE}
-                    exact
-                    id={USER_MANAGMENT}
-                    onClick={(e) => setPage(USER_MANAGMENT_PAGE)}
-                    >
-                      <MenuIcon icon={<BiBookReader/>} title={USER_MANAGMENT}/>
-                </Nav.Link>
+                </Nav.Link> */}
             </Nav>
         </Navbar.Collapse>
   </Navbar>

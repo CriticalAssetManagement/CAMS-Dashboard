@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
-import {ProgressBar, Container} from "react-bootstrap"
+import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
 import {USER_TYPE, USER_PAGE_TABLE_CSS, EDIT_CLICKED_USER, CREATE_USER_TAB, VIEW_USER_LIST, VIEW_CLICKED_USER} from "./constants"
 import {Alerts} from "../components/Alerts"
@@ -10,7 +10,7 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
-
+import {BiArrowBack} from "react-icons/bi"
 
 export const UserForm = () => {
 
@@ -36,6 +36,7 @@ export const UserForm = () => {
         showDocument,
         setShowDocument,
         managePageTabs,
+        handleTraverse,
         handleDocumentSubmit,
         extracted,
         handleSelect,
@@ -47,7 +48,9 @@ export const UserForm = () => {
         extractedUpdate,
         setDocumentId,
         setType,
-        type
+        type,
+        traverseDocument,
+        goToPreviousLinkedDocument
     } = DocumentContextObj()
 
 
@@ -86,7 +89,7 @@ export const UserForm = () => {
     return <div className="mb-5">
         <Layout/>
 
-        <div className="px-3">
+        <div className="px-3 content-container">
             <Alerts errorMsg={connectionError}/>
             {loading && <ProgressBar animated now={100} variant="info"/>}
 
@@ -101,12 +104,36 @@ export const UserForm = () => {
                         config={getUserConfig(userResults, onRowClick)}/>
                 </Tab>
                 {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_USER} title={VIEW_CLICKED_USER}>
-
-                        <ViewDocument frames={frames}
-                            getDocumentToolBar={getDocumentToolBar}
-                            handleSelect={handleSelect}
-                            type={USER_TYPE}
-                            showDocument={showDocument}/>
+                    {Array.isArray(traverseDocument.previous) &&
+                        <span className="col-md-1 ml-5">
+                            <Button
+                                className="btn-sm"
+                                title={`Go to previous document ${traverseDocument.previous}`}
+                                onClick={goToPreviousLinkedDocument}>
+                                    <BiArrowBack className="mr-2"/>Back
+                            </Button>
+                        </span>
+                    }
+                    {
+                        traverseDocument && traverseDocument.hasOwnProperty("current") &&
+                            <ViewDocument frames={frames}
+                                getDocumentToolBar={getDocumentToolBar}
+                                handleSelect={handleSelect}
+                                type={showDocument["@type"]}
+                                onTraverse={handleTraverse}
+                                showDocument={showDocument}
+                            />
+                    }
+                    {
+                        !traverseDocument &&
+                            <ViewDocument frames={frames}
+                                getDocumentToolBar={getDocumentToolBar}
+                                handleSelect={handleSelect}
+                                type={USER_TYPE}
+                                onTraverse={handleTraverse}
+                                showDocument={showDocument}
+                            />
+                    }
                     </Tab>
                 }
                 {editDocument && <Tab eventKey={EDIT_CLICKED_USER} title={EDIT_CLICKED_USER}>

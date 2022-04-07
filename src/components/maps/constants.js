@@ -1,15 +1,4 @@
-// map icon component
-import L from "leaflet"
-
-
-// map icons
-export const icon = L.icon({
-    iconSize: [25, 41],
-    iconAnchor: [10, 41],
-    popupAnchor: [2, -40],
-    iconUrl: "https://unpkg.com/leaflet@1.6/dist/images/marker-icon.png",
-    shadowUrl: "https://unpkg.com/leaflet@1.6/dist/images/marker-shadow.png"
-})
+import {ICON} from "./markers"
 
 // MAP id for ref
 export const MAP_ID = "map-leaflet-id-polylines"
@@ -33,7 +22,7 @@ export const MAP_OPTIONS = {
 // Options for the marker
 export const MARKER_OPTIONS = {
 	clickable: true,
-	icon: icon
+	icon: ICON
 }
 
 export const ARROW_OPTIONS = {
@@ -51,9 +40,39 @@ export const DASH_LINES_OPTIONS = {
 	  20
 	],
 	"weight": 5,
-	"color": "#842029",
-	"pulseColor": "#FFFFFF",
+	"color": "#ffff",
+	"pulseColor": "#800000",
 	"paused": false,
 	"reverse": false,
 	"hardwareAccelerated": true
-  }
+}
+
+export const UPWARD_DASH_LINES_OPTIONS = {
+	"delay": 800,
+	"dashArray": [
+	  10,
+	  20
+	],
+	"weight": 5,
+	"color": "#ffff",
+	"pulseColor": "#133333",
+	"paused": false,
+	"reverse": false,
+	"hardwareAccelerated": true
+}
+
+export const POPUP_OPTIONS = {
+	maxWidth: '500',
+	className : 'map-leaflet-popup'
+}
+
+export const BROWSER_PRINT_OPTIONS = {
+	title: "Print Map",
+	documentTitle: "Map printed using leaflet.browser.print plugin",
+	closePopupsOnPrint: false,
+	manualMode: false,
+	printModes: [ "Portrait", "Landscape"]
+}
+
+
+
