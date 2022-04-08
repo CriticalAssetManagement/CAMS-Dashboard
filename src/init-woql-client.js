@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react'
 const TerminusDBClient = require("@terminusdb/terminusdb-client")
-import {getPrefix} from "@terminusdb/terminusdb-documents-ui"
+import {extractPrefix} from "@terminusdb/terminusdb-documents-ui"
 export const WOQLContext = React.createContext()
 export const WOQLClientObj = () => useContext(WOQLContext)
 import {DATA_PRODUCT} from "./constants"
@@ -29,14 +29,26 @@ export const WOQLClientProvider = ({children, params}) => {
     const [errorMsg, setErrorMsg] = useState(false)
     const [accessControlDashboard,setAccessControlDash] = useState(false)
 
-    const initAccessControl = async()=>{
-        const accessControlDash = new AccessControlDashboard(clientAccessControl)
+    const initAccessControlAndClient = async()=>{
         const jwtoken = await getAccessTokenSilently()
+
+        const client = new TerminusDBClient.WOQLClient(`${server}${team}/`, {
+            user: user.email,
+            organization: team
+        })
+
+        let hubcreds = {type: "jwt", key: jwtoken, user: user.email}
+        client.localAuth(hubcreds)
+        client.db(DATA_PRODUCT)
+        setWoqlClient(client)
+
+        const accessControlDash = new AccessControlDashboard(clientAccessControl)
+       
         clientAccessControl.setJwtToken(jwtoken)
         await accessControlDash.callGetRolesList()
+        // get team role
         await accessControlDash.callGetUserTeamRole(team,user.email)
-        setAccessControlDash(accessControlDash)
-        //get role for team ... 
+        setAccessControlDash(accessControlDash) 
     }
 
     /* Initialize client */
@@ -44,15 +56,19 @@ export const WOQLClientProvider = ({children, params}) => {
         try{          
             //client.setApiKey(token)
             if(user){
-                const client = new TerminusDBClient.WOQLClient(`${server}${team}/`, {
+               
+                /*const client = new TerminusDBClient.WOQLClient(`${server}${team}/`, {
                     user: user.email,
                     organization: team
                 })
-    
                 
-                client.db(DATA_PRODUCT)
-                initAccessControl()          
-                setWoqlClient(client)
+                
+                let hubcreds = {type: "jwt", key: jwtoken, user: user.email}
+                client.localAuth(hubcreds)
+
+                client.db(DATA_PRODUCT)*/
+                initAccessControlAndClient()
+                //initAccessControl()
                 setLoading(false)
             }
         }
@@ -63,25 +79,15 @@ export const WOQLClientProvider = ({children, params}) => {
 
     useEffect(() => {
         if(!woqlClient) return
-        async function getFrame(){
-            const jwtoken = await getAccessTokenSilently()
-            //set the jwt token credential
-            let hubcreds = {type: "jwt", key: jwtoken, user: user.email}
-            woqlClient.localAuth(hubcreds)
-             //set the jwt token credential
-            
-            woqlClient.getSchemaFrame(null, DATA_PRODUCT).then((res) => {
-                let extractedPrefix = getPrefix(res)
-                setPrefix(extractedPrefix)
-                setFrames(res)
-            })
-            .catch((err) =>  {
-                setConnectionError(`Error in init woql while fetching schema frames - ${err.message}`)
-            })
+        woqlClient.getSchemaFrame(null, DATA_PRODUCT).then((res) => {
+            let extractedPrefix = extractPrefix(res)
+            setPrefix(extractedPrefix)
+            setFrames(res)
+        })
+        .catch((err) =>  {
+            setConnectionError(`Error in init woql while fetching schema frames - ${err.message}`)
+        })
 
-        }
-        getFrame()
-       
     }, [woqlClient])
 
     function clearMessages() {

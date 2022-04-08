@@ -79,7 +79,7 @@ export const AreaForm = () => {
 
     return <div className="mb-5">
         <Layout/>
-        <div className="px-3">
+        <div className="px-3 content-container">
             <Alerts errorMsg={connectionError}/>
             {loading && <ProgressBar animated now={100} variant="info"/>}
 
