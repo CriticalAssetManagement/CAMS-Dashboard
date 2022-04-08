@@ -13,6 +13,9 @@ export const AREA_FORM="AREAS"
 export const ASSET_FORM="ASSETS"
 export const REPORTS="REPORTS"
 export const ASSETS_LINK = "LINKS"
+export const USER_MANAGEMENT = "User Management"
+export const PROFILE = "Profile"
+
 
 //query variables
 export const VAR_DEPENDENT="Dependent"

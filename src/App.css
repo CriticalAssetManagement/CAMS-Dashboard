@@ -186,7 +186,20 @@ input.failure-chain-checkbox {
     background-color: transparent !important;
     border: 1px solid #3459e6 !important;
 }
+.show > .btn-primary.dropdown-toggle {
+    background-color: transparent;
+    border-color: transparent;
+}
+.dropdown .btn-primary{
+    background-color: transparent;
+    border-color: transparent;
+    border: 0px solid;
+  }
 
+  .dropdown-toggle::after{
+    color: #252b42;
+    font-size: 20px;
+  }
 
 /** custom offcanvas toggle button */
 .offcanvas-show-button {

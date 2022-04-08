@@ -6,7 +6,6 @@ import {Alert} from "react-bootstrap"
 import {SECONDARY_VARIANT} from "./constants"
 import {displayResults} from "./utils"
 
-
 export const Table = ({documents, config, title, css}) => {
 
     const {
