@@ -1,7 +1,7 @@
 import React, {useState, useLayoutEffect, useEffect} from "react"
 import {ButtonToolbar, Badge, ButtonGroup, Button, Row, Col, ListGroup} from "react-bootstrap"
 import {AiFillAlert, AiOutlineAlert} from "react-icons/ai"
-import {CRITICAL_LINKS, NON_CRITICAL_LINKS, EMPTY_PLACEHOLDER, VAR_NAME, VAR_CRITICAL} from "./constants"
+import {CRITICAL_LINKS, NON_CRITICAL_LINKS, EMPTY_PLACEHOLDER, VAR_NAME, VAR_CRITICAL, CRITICAL_LINK_TITLE, NON_CRITICAL_LINK_TITLE, CRITICAL_LINKS_TITLE} from "./constants"
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import {getCriticalAssetConfig} from "./Views"
@@ -29,7 +29,7 @@ const ShowCriticalList = ({documents, setCurrentAsset, ownerResults}) => {
 
     return <span className="table-word-break">
         <Table documents = {criticalList}
-            title={CRITICAL_LINKS}
+            title={CRITICAL_LINK_TITLE}
             css={CRITCAL_LIST_TABLE_CSS}
             config={getCriticalAssetConfig(criticalList, onRowClick)}
         />
@@ -49,7 +49,7 @@ const ShowNonCriticalList = ({documents}) => {
 
     return <span className="table-word-break">
         <Table documents = {nonCriticalList}
-            title={NON_CRITICAL_LINKS}
+            title={NON_CRITICAL_LINK_TITLE}
             css={CRITCAL_LIST_TABLE_CSS}
             config={getCriticalAssetConfig(nonCriticalList)}
         />
@@ -87,10 +87,10 @@ export const DependentStatus = ({documents}) => {
             activeKey={key}
             onSelect={(k) => setKey(k)}
             transition={true}>
-            <Tab tabClassName="text-gray" eventKey={CRITICAL_LINKS} title={CRITICAL_LINKS}>
+            <Tab tabClassName="text-gray" eventKey={CRITICAL_LINKS} title={CRITICAL_LINK_TITLE}>
                 <ShowCriticalList documents={documents} setCurrentAsset={setCurrentAsset} ownerResults={ownerResults}/>
             </Tab>
-            <Tab tabClassName="text-gray" eventKey={NON_CRITICAL_LINKS} title={NON_CRITICAL_LINKS}>
+            <Tab tabClassName="text-gray" eventKey={NON_CRITICAL_LINKS} title={NON_CRITICAL_LINK_TITLE}>
                 <ShowNonCriticalList documents={documents}/>
             </Tab>
         </Tabs>

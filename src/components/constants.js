@@ -66,6 +66,8 @@ export const ALERT_SUCCESS = "success"
 
 
 // map tool bar
+export const CRITICAL_LINK_TITLE="Critical Links"
+export const NON_CRITICAL_LINK_TITLE="Non Critical Links"
 export const CRITICAL_LINKS="Downward Critical Links"
 export const NON_CRITICAL_LINKS="Downward Non Critical Links"
 export const FAILURE_CHAIN_LINKS="Downward Failure Chain"

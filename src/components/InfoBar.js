@@ -1,7 +1,7 @@
 
 import React, {useState, useEffect} from "react"
 import Badge from 'react-bootstrap/Badge'
-import {CRITICAL_LINKS, NON_CRITICAL_LINKS, VAR_NAME, ASSET_FORM, VAR_CRITICAL, MORE_INFO_TITLE} from "./constants"
+import {CRITICAL_LINKS, NON_CRITICAL_LINKS, VAR_NAME, ASSET_FORM, VAR_CRITICAL, MORE_INFO_TITLE, CRITICAL_LINK_TITLE, NON_CRITICAL_LINK_TITLE} from "./constants"
 import {NavLink as RouterNavLink} from "react-router-dom"
 import {FiMoreHorizontal} from "react-icons/fi"
 import {ASSET_FORM_PAGE} from "../routing/constants"
@@ -37,14 +37,14 @@ export const InfoBar = ({documents, info}) => {
     return <div className="text-center">
         <Badge bg="danger" pill className="mt-3 h6 ">
             <div className="d-flex justify-content-center mb-2" title={`${critical} ${CRITICAL_LINKS}`}>
-                <label className="m-1 text-white mt-2">{CRITICAL_LINKS}</label> {` `}
+                <label className="m-1 text-white mt-2">{CRITICAL_LINK_TITLE}</label> {` `}
                 <label className="m-1 text-white mt-2 fw-bold">{critical}</label>
             </div>
         </Badge>
         {' '}
         <Badge bg="success" pill className="mt-3 h6 ">
             <div className="d-flex justify-content-center mb-2" title={`${nonCritical} ${NON_CRITICAL_LINKS}`}>
-                <label className=" m-1 text-white mt-2">{NON_CRITICAL_LINKS}</label> {` `}
+                <label className=" m-1 text-white mt-2">{NON_CRITICAL_LINK_TITLE}</label> {` `}
                 <label className="m-1 text-white mt-2 fw-bold">{nonCritical}</label>
             </div>
         </Badge>
