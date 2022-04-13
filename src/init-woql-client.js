@@ -43,26 +43,26 @@ export const WOQLClientProvider = ({children, params}) => {
         setWoqlClient(client)
 
         const accessControlDash = new AccessControlDashboard(clientAccessControl)
-       
+
         clientAccessControl.setJwtToken(jwtoken)
         await accessControlDash.callGetRolesList()
         // get team role
         await accessControlDash.callGetUserTeamRole(team,user.email)
-        setAccessControlDash(accessControlDash) 
+        setAccessControlDash(accessControlDash)
     }
 
     /* Initialize client */
     useEffect(() => {
-        try{          
+        try{
             //client.setApiKey(token)
             if(user){
-               
+
                 /*const client = new TerminusDBClient.WOQLClient(`${server}${team}/`, {
                     user: user.email,
                     organization: team
                 })
-                
-                
+
+
                 let hubcreds = {type: "jwt", key: jwtoken, user: user.email}
                 client.localAuth(hubcreds)
 

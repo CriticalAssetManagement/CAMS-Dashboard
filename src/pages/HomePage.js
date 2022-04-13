@@ -18,6 +18,9 @@ import {extractAndDrawVectors, gatherVectorLines, drawFailureChains, getMarkers,
 import "leaflet.browser.print/dist/leaflet.browser.print.min.js"
 import "leaflet/dist/leaflet.css"
 import {getLegend} from "../components/maps/legend"
+import { useAuth0 } from "@auth0/auth0-react"
+import {Login} from "./Login"
+
 
 export const HomePage = () => {
     const [query, setQuery] = useState(false)
@@ -149,9 +152,13 @@ export const HomePage = () => {
         displayUpwardChains
     } = MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg)
 
-    console.log("displayFailureChains", displayFailureChains)
-    console.log("polyLine", polyLine)
-    console.log("showAssets", showAssets)
+    const {
+        isAuthenticated
+    } = useAuth0()
+
+    //console.log("displayFailureChains", displayFailureChains)
+    //console.log("polyLine", polyLine)
+    //console.log("showAssets", showAssets)
 
     let queryResults = QueryHook(woqlClient, query, setLoading, setSuccessMsg, setErrorMsg)
 
@@ -218,11 +225,10 @@ export const HomePage = () => {
         return <ProgressBar animated now={100} variant="info"/>
 
 
-
     return <React.Fragment>
         <Layout/>
-
-        <div className="content-container">
+        {!isAuthenticated &&  <Login/>}
+        {isAuthenticated && <div className="content-container">
             <MapToolBar setResetMap={setResetMap}
                 resetMap={resetMap}
                 setDisplayFailureChains={setDisplayFailureChains}
@@ -245,7 +251,7 @@ export const HomePage = () => {
                 {loading && <ProgressBar animated now={100} variant="info"/>}
 
             </React.Fragment>}
-        </div>
+        </div>}
 
     </React.Fragment>
 }

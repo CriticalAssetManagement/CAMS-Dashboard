@@ -11,6 +11,8 @@ import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
 import {BiArrowBack} from "react-icons/bi"
+import { useAuth0 } from "@auth0/auth0-react"
+import {Login} from "./Login"
 
 export const AssetForm = () => {
 
@@ -53,6 +55,10 @@ export const AssetForm = () => {
         goToPreviousLinkedDocument
     } = DocumentContextObj()
 
+    const {
+        isAuthenticated
+    } = useAuth0()
+
     // create
     let result=DocumentHook(woqlClient, extracted, VIEW_ASSET_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     //view all document
@@ -84,7 +90,9 @@ export const AssetForm = () => {
     return <div className="mb-5">
         <Layout/>
 
-        <div className="px-3 content-container">
+        {!isAuthenticated &&  <Login/>}
+
+        {isAuthenticated && <div className="px-3 content-container">
             <Alerts errorMsg={connectionError}/>
             {loading && <ProgressBar animated now={100} variant="info"/>}
 
@@ -149,7 +157,7 @@ export const AssetForm = () => {
 
             <Alerts successMsg={successMsg}/>
             <Alerts errorMsg={errorMsg}/>
-        </div>
+        </div>}
 
     </div>
 

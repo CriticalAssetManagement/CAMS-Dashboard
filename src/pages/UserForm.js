@@ -11,6 +11,8 @@ import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
 import {BiArrowBack} from "react-icons/bi"
+import { useAuth0 } from "@auth0/auth0-react"
+import {Login} from "./Login"
 
 export const UserForm = () => {
 
@@ -53,6 +55,9 @@ export const UserForm = () => {
         goToPreviousLinkedDocument
     } = DocumentContextObj()
 
+    const {
+        isAuthenticated
+    } = useAuth0()
 
 
     // create
@@ -89,7 +94,9 @@ export const UserForm = () => {
     return <div className="mb-5">
         <Layout/>
 
-        <div className="px-3 content-container">
+        {!isAuthenticated &&  <Login/>}
+
+        {isAuthenticated && <div className="px-3 content-container">
             <Alerts errorMsg={connectionError}/>
             {loading && <ProgressBar animated now={100} variant="info"/>}
 
@@ -155,7 +162,7 @@ export const UserForm = () => {
 
             <Alerts successMsg={successMsg}/>
             <Alerts errorMsg={errorMsg}/>
-        </div>
+        </div>}
 
     </div>
 
