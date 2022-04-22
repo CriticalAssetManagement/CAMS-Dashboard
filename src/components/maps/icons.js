@@ -30,7 +30,11 @@ import {
     HEALTH_AND_MEDICAL_ICON,
     TRANSPORTATION,
     TRANSPORTATION_ICON,
-    OTHERS_ICON
+    OTHERS_ICON,
+    GOVERNMENT_BUILDINGS,
+    GOVERNMENT_BUILDINGS_ICON,
+    MARINE_PORTS,
+    MARINE_PORTS_ICON
 } from "./markerTypes"
 
 function getEnumTypeFromFrames(type) {
@@ -81,6 +85,16 @@ export function getAssetTypeIcons(asset, key) {
     else if(asset[key] === getEnumTypeFromFrames(AIRPORT)) {
         options = {
             icon: AIRPORT_ICON
+        }
+    }
+    else if(asset[key] === getEnumTypeFromFrames(GOVERNMENT_BUILDINGS)) {
+        options = {
+            icon: GOVERNMENT_BUILDINGS_ICON
+        }
+    }
+    else if(asset[key] === getEnumTypeFromFrames(MARINE_PORTS)) {
+        options = {
+            icon: MARINE_PORTS_ICON
         }
     }
     else {

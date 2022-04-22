@@ -74,7 +74,7 @@ export const HomePage = () => {
         map.addLayer(layerGroup)
         setLayerGroup(layerGroup)
     }
-
+ 
     function clearMap() {
         if(!layerGroup) return
         layerGroup.clearLayers()

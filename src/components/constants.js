@@ -105,8 +105,8 @@ export const HIDE_OFFCANVAS_TITLE="Click to go back"
 
 // Dropdown
 export const HAZARD_DROPDOWN_TITLE="Filter by Events"
-export const FAILURE_CHAIN_TITLE="Failure Path"
-export const UPWARD_CHAIN_TITLE="Upward Links"
+export const FAILURE_CHAIN_TITLE="Downstream"
+export const UPWARD_CHAIN_TITLE="Upstream"
 
 //types
 export const HAZARD_TYPE = "Hazard"

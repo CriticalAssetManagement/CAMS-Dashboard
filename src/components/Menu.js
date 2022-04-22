@@ -125,7 +125,7 @@ export const Menu = () => {
                     >
                             <MenuIcon icon={<FiLink/>} title={ASSETS_LINK}/>
                 </Nav.Link>
-                {/*<Nav.Link // hide for now
+                <Nav.Link
                     as={RouterNavLink}
                     title={REPORTS}
                     to={REPORTS_PAGE}
@@ -133,10 +133,8 @@ export const Menu = () => {
                     id={REPORTS}
                     onClick={(e) => setPage(REPORTS_PAGE)}
                     >
-                            <MenuIcon icon={<BiBookReader/>} title={REPORTS}/>
-
-                    </Nav.Link>*/}
-
+                        <MenuIcon icon={<BiBookReader/>} title={REPORTS}/>
+                    </Nav.Link>
             </Nav>
             <div className="d-flex">
                 {!isAuthenticated && (

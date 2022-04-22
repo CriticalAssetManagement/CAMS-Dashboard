@@ -1,6 +1,7 @@
 const TerminusDBClient = require("@terminusdb/terminusdb-client")
 import {getCriticalButtons} from "./utils"
 import {LNG, LAT, VAR_ASSET_IDENTIFIER, VAR_DESIGN_STANDARDS, VAR_LAST_MAINTAINED, VAR_DESCRIPTION} from "./constants"
+import {CRITICAL_LIMIT} from "../pages/constants"
 
 function getColumnsFromResults (documents) {
     let columns = []
@@ -101,6 +102,22 @@ export function getAssetConfig(documents, onRowClick) {
         tConf.column("@type").hidden(true)
 
         if(onRowClick) tConf.row().click(onRowClick)
+        return tConf
+    }
+}
+
+
+// get table config for reports in report page
+export function getReportsConfig (documents) {
+    if(documents.length){
+        const tConf= TerminusDBClient.View.table()
+        tConf.pager("remote")
+        tConf.pagesize(20)
+
+        let columns = getColumnsFromResults(documents)
+        tConf.column_order(...columns)
+        tConf.column("Critical").header("Dependencies")
+
         return tConf
     }
 }

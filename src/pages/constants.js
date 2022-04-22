@@ -56,3 +56,6 @@ export const EDIT_CLICKED_LINK = "Edit Link"
 
 //Search constants
 export const SEARCH_ASSET="Search for an Asset by identifier"
+
+// threshold limit to set max dependant assets
+export const CRITICAL_LIMIT=3
