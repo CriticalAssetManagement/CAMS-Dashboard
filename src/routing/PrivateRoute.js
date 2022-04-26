@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Route , useParams } from "react-router-dom";
-import { useAuth0 } from "../react-auth0-spa";
-import {INVITE_PAGE} from "./constants";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const PrivateRoute = ({ component: Component, path, ...rest }) => {
 const { isAuthenticated, loginWithRedirect } = useAuth0();
@@ -18,17 +17,11 @@ let {refid,teamid} = useParams()
           appState: { targetUrl: path }
 
         }
-        if(path===INVITE_PAGE){
-          const returnTo=`${window.location.origin}?refid=${refid}&team=${teamid}`
-          const targetUrl=`/invite/${teamid}/${refid}`
-          loginConf['returnTo'] = returnTo
-          loginConf['appState'] = { targetUrl: targetUrl }
-        }
        await loginWithRedirect(loginConf)
       }
     };
     fn();
-  }, [isAuthenticated, loginWithRedirect, path]);
+  }, [isAuthenticated]);
 
   const render = props =>
     isAuthenticated === true ? <Component {...props} /> : null;
