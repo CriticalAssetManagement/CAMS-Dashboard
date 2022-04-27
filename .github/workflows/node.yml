@@ -34,8 +34,18 @@ jobs:
         AUTH0_DOMAIN=signup-dev.terminusdb.com
         AUTH0_CLIENT_ID=s6iYFJzoSedUHGUUaRYCGGWXWEPHkd02
         AUTH0_AUDIENCE=https://terminuscloud/users
-        MY_TEAM=CAMSDemo
-        DATA_PRODUCT=CAMS' > .env
+        MY_TEAM=HelloKitty001
+        DATA_PRODUCT=CAMS-WAICF' > .env
+    - name: set prod envs
+      if: github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v')
+      run: |
+        echo '
+        TERMINUSDB_SERVER=https://cloud.terminusdb.com/
+        AUTH0_DOMAIN=signup.terminusdb.com
+        AUTH0_CLIENT_ID=365PsB0AmUmB2odSFwezWkX31BZv6PoH
+        AUTH0_AUDIENCE=https://terminuscloud/users
+        MY_TEAM=TerminatorsX
+        DATA_PRODUCT=CAMSDemo' > .env
     - run: npm ci
     - run: npm run build
     - id: 'auth'

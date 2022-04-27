@@ -220,6 +220,15 @@ export const getAssetUpwardChain = (asset) => {
     .triple("v:AssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
 }
 
+// query to get all dependancy links and get number of links from an asset
+export const getAssetLinks = () => {
+    let WOQL=TerminusDBClient.WOQL
+    return WOQL.triple("v:DependencyRelation", "rdf:type","@schema:DependencyRelation")
+        .triple("v:DependencyRelation", "@schema:critical", "v:Critical")
+        .triple("v:DependencyRelation", "@schema:depends_on", "v:Asset")
+        .triple("v:Asset", "@schema:name", "v:Name")
+        .triple("v:Asset", "@schema:asset_identifier", "v:AssetIdentifier")
+}
 
 
 // query to get assets filtered by hazard events - ARRAY OF EVENTS

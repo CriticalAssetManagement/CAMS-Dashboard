@@ -11,9 +11,12 @@ export const LAT="lat"
 export const REFRESH="refresh"
 export const POINTS="Points"
 
+//const CENTER=[15.2999988, -61.3833318] // Domanica
+const CENTER=[25.7617, -80.1918] // Miami
+
 // Map configs
 export const MAP_OPTIONS = {
-	center: [15.2999988, -61.3833318],
+	center: CENTER,
 	zoom: 11,
 	zoomDelta: 0.5,
 	zoomSnap: 0,
@@ -27,7 +30,7 @@ export const MARKER_OPTIONS = {
 
 export const ARROW_OPTIONS = {
 	yawn: 50, 				// width of the opening of the arrowhead
-	size: '4%', 			// size of the arrowhead.
+	size: '1%', 			// size of the arrowhead.
 	frequency: 2,			// How many arrowheads are rendered on a polyline.
 	fill: 2,
 	offsets: { end: "15px" }

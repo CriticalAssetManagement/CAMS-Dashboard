@@ -13,6 +13,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname,  'dev'),
     filename: 'bundle.js',
+    publicPath: '/'
   },
   devServer: {
     compress: true,

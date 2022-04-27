@@ -69,6 +69,8 @@ export const ALERT_SUCCESS = "success"
 
 
 // map tool bar
+export const CRITICAL_LINK_TITLE="Critical Links"
+export const NON_CRITICAL_LINK_TITLE="Non Critical Links"
 export const CRITICAL_LINKS="Downward Critical Links"
 export const NON_CRITICAL_LINKS="Downward Non Critical Links"
 export const FAILURE_CHAIN_LINKS="Downward Failure Chain"
@@ -103,8 +105,8 @@ export const HIDE_OFFCANVAS_TITLE="Click to go back"
 
 // Dropdown
 export const HAZARD_DROPDOWN_TITLE="Filter by Events"
-export const FAILURE_CHAIN_TITLE="Failure Path"
-export const UPWARD_CHAIN_TITLE="Upward Links"
+export const FAILURE_CHAIN_TITLE="Downstream"
+export const UPWARD_CHAIN_TITLE="Upstream"
 
 //types
 export const HAZARD_TYPE = "Hazard"
