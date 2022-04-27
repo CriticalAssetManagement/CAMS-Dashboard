@@ -12,6 +12,7 @@ import {GrUserAdmin} from "react-icons/gr"
 import { useAuth0 } from "@auth0/auth0-react"
 import {AiOutlineUsergroupAdd,AiOutlineUser,AiOutlinePoweroff} from "react-icons/ai"
 import {BsPerson, BsPersonBadge} from "react-icons/bs"
+import {loginConf} from "../utils/auth0LoginConf"
 
 const MenuIcon = ({icon, title}) => {
     return <div className="d-flex">
@@ -37,7 +38,7 @@ const BrandIcon = () => {
 export const Menu = () => {
 
     const {
-		setPage
+		setPage,team,
 	} = WOQLClientObj()
 
     const {
@@ -52,9 +53,7 @@ export const Menu = () => {
     const returnTo=`${window.location.origin}`
 
     const logoutWithRedirect = () =>
-        logout({
-            returnTo:returnTo
-    })
+        logout(loginConf)
 
     return <Navbar fixed="top" expand="lg" className={`px-3 navbar navbar-transparent bg-${"light"} nav-container`}>
         <Navbar.Brand href="https://climateresilient.world/"
@@ -68,7 +67,7 @@ export const Menu = () => {
                 <Nav.Link
                     as={RouterNavLink}
                     title={HOME}
-                    to={HOME_PAGE}
+                    to={HOME_PAGE.replace(":teamid",team)}
                     exact
                     id={HOME}
                     onClick={(e) => setPage(HOME_PAGE)}
@@ -78,7 +77,7 @@ export const Menu = () => {
                 <Nav.Link
                     as={RouterNavLink}
                     title={USER_FORM}
-                    to={USER_FORM_PAGE}
+                    to={USER_FORM_PAGE.replace(":teamid",team)}
                     exact
                     id={USER_FORM}
                     onClick={(e) => setPage(USER_FORM_PAGE)}
@@ -88,7 +87,7 @@ export const Menu = () => {
                 <Nav.Link
                     as={RouterNavLink}
                     title={OWNER_FORM}
-                    to={OWNER_FORM_PAGE}
+                    to={OWNER_FORM_PAGE.replace(":teamid",team)}
                     exact
                     id={OWNER_FORM}
                     onClick={(e) => setPage(OWNER_FORM_PAGE)}
@@ -108,7 +107,7 @@ export const Menu = () => {
                 <Nav.Link
                     as={RouterNavLink}
                     title={ASSET_FORM}
-                    to={ASSET_FORM_PAGE}
+                    to={ASSET_FORM_PAGE.replace(":teamid",team)}
                     exact
                     id={ASSET_FORM}
                     onClick={(e) => setPage(ASSET_FORM_PAGE)}
@@ -118,7 +117,7 @@ export const Menu = () => {
                 <Nav.Link
                     as={RouterNavLink}
                     title={ASSETS_LINK}
-                    to={ASSETS_LINK_PAGE}
+                    to={ASSETS_LINK_PAGE.replace(":teamid",team)}
                     exact
                     id={ASSETS_LINK}
                     onClick={(e) => setPage(ASSETS_LINK_PAGE)}
@@ -128,7 +127,7 @@ export const Menu = () => {
                 <Nav.Link
                     as={RouterNavLink}
                     title={REPORTS}
-                    to={REPORTS_PAGE}
+                    to={REPORTS_PAGE.replace(":teamid",team)}
                     exact
                     id={REPORTS}
                     onClick={(e) => setPage(REPORTS_PAGE)}
@@ -143,7 +142,7 @@ export const Menu = () => {
                         id="qsLoginBtn"
                         color="primary"
                         className="btn-margin"
-                        onClick={() => loginWithRedirect({returnTo:returnTo})}
+                        onClick={() => loginWithRedirect(loginConf)}
                     >
                         Log in
                     </Button>
@@ -172,7 +171,7 @@ export const Menu = () => {
                         <Dropdown.Item>
                             <Nav.Link  as={RouterNavLink}
                                 title={USER_MANAGEMENT}
-                                to={USER_MANAGEMENT_PAGE}
+                                to={USER_MANAGEMENT_PAGE.replace(":teamid",team)}
                                 exact
                                 onClick={(e) => setPage(USER_MANAGEMENT)}
                                 id={USER_MANAGEMENT_PAGE}>
@@ -184,7 +183,7 @@ export const Menu = () => {
                             <Nav.Link
                                 title={"Logout"}
                                 exact
-                                onClick={(e) => logoutWithRedirect()}
+                                onClick={(e) => logoutWithRedirect(loginConf)}
                                 id={"Logout"}>
                                     <AiOutlinePoweroff className="mr-3 mb-1" />Logout
                             </Nav.Link>

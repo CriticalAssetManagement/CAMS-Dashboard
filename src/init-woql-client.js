@@ -9,10 +9,10 @@ import {AccessControlDashboard} from "@terminusdb/terminusdb-access-control-comp
 import {clientAccessControl} from "./utils/clientAccessControl"
 import { useAuth0 } from "@auth0/auth0-react";
 //profiles_test
-export const WOQLClientProvider = ({children, params}) => {
+export const WOQLClientProvider = ({children, team}) => {
     const {user,getAccessTokenSilently } = useAuth0();
 
-    let team = process.env.MY_TEAM
+    //let team = process.env.MY_TEAM
     let token = process.env.MY_TOKEN
     //let user = process.env.MY_USER
     let server = process.env.TERMINUSDB_SERVER
@@ -55,7 +55,7 @@ export const WOQLClientProvider = ({children, params}) => {
     useEffect(() => {
         try{
             //client.setApiKey(token)
-            if(user){
+            if(user && team){
 
                 /*const client = new TerminusDBClient.WOQLClient(`${server}${team}/`, {
                     user: user.email,
@@ -105,6 +105,7 @@ export const WOQLClientProvider = ({children, params}) => {
     return (
         <WOQLContext.Provider
             value={{
+                team,
                 woqlClient,
                 frames,
                 connectionError,
