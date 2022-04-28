@@ -67,7 +67,7 @@ export const Menu = () => {
                 <Nav.Link
                     as={RouterNavLink}
                     title={HOME}
-                    to={HOME_PAGE.replace(":teamid",team)}
+                    to={HOME_PAGE.replace(":teamid", team)}   
                     exact
                     id={HOME}
                     onClick={(e) => setPage(HOME_PAGE)}

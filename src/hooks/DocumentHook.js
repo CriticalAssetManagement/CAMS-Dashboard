@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react'
 // create a new document
 export function DocumentHook(woqlClient, document, onRefreshTab, handleRefresh, setLoading, setSuccessMsg, setErrorMsg) {
     const [result, setResult] = useState(false)
-
+ 
     async function addDocument() {
         try{
             setLoading(true)
@@ -46,8 +46,8 @@ export function GetDocumentListHook(woqlClient, type, refresh, setLoading, setSu
     }
 
     useEffect(() => {
-        if (type) getDocumentLists()
-    }, [type, refresh])
+        if (type && woqlClient) getDocumentLists()
+    }, [type, refresh, woqlClient])
 
     return result
 }
