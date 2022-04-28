@@ -58,7 +58,7 @@ jobs:
       uses: 'google-github-actions/setup-gcloud@v0'
     - name: Upload to gcloud bucket dev
       if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-      run: gsutil cp -r dist/* "gs://dashboard-dev.climateresilient.world/"
+      run: gsutil -h "Cache-Control:public, max-age=60" cp -r dist/* "gs://dashboard-dev.climateresilient.world/"
     - name: Upload to gcloud bucket prod
       if: github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v')
-      run: gsutil cp -r dist/* "gs://dashboard.climateresilient.world/"
+      run: gsutil -h "Cache-Control:public, max-age=60" cp -r dist/* "gs://dashboard.climateresilient.world/"
