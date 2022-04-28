@@ -69,7 +69,7 @@ export const LinkForm = () => {
     // delete a document
     let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, VIEW_LINK_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     // edit a document
-    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_CLICKED_LINK, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
+    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_LINK_LIST, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
 
 
     useEffect(() => {

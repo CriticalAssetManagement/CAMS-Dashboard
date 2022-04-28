@@ -11,8 +11,8 @@ export const LAT="lat"
 export const REFRESH="refresh"
 export const POINTS="Points"
 
-//const CENTER=[15.2999988, -61.3833318] // Domanica
-const CENTER=[25.7617, -80.1918] // Miami
+const CENTER=[15.2999988, -61.3833318] // Domanica
+//const CENTER=[25.7617, -80.1918] // Miami
 
 // Map configs
 export const MAP_OPTIONS = {

@@ -68,7 +68,7 @@ export const OwnerForm = () => {
     // delete a document
     let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, VIEW_OWNER_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     // edit a document
-    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_CLICKED_OWNER, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
+    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_OWNER_LIST, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
 
 
     useEffect(() => {
