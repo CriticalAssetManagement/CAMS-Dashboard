@@ -1,6 +1,7 @@
 import React from "react"
 import {Button, Alert, Card} from "react-bootstrap"
 import { useAuth0 } from "@auth0/auth0-react"
+import {loginConf} from "../utils/auth0LoginConf"
 
 export const Login = () => {
 
@@ -8,10 +9,7 @@ export const Login = () => {
         user,
         isAuthenticated,
         loginWithRedirect,
-        logout,
     } = useAuth0()
-
-    const returnTo=`${window.location.origin}`
 
     return <Card  className="login mx-5 bg-success p-5" style={{ width: '18rem' }}>
         <Card.Img variant="top" src="https://climateresilient.world/wp-content/uploads/2022/03/CAMS-Logo-Light-Simple-200px.png" />
@@ -21,7 +19,7 @@ export const Login = () => {
                 <Button
                     id="qsLoginBtn"
                     color="primary"
-                    onClick={() => loginWithRedirect({returnTo:returnTo})}
+                    onClick={() => loginWithRedirect(loginConf)}
                     className="btn-lg">
                     Log in
                 </Button>
