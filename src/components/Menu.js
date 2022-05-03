@@ -2,7 +2,8 @@ import React from "react"
 import {HOME, USER_FORM, OWNER_FORM, AREA_FORM, ASSET_FORM, ASSETS_LINK, REPORTS, BRAND_TITLE,USER_MANAGEMENT} from "./constants"
 import {USER_FORM_PAGE, OWNER_FORM_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE, ASSETS_LINK_PAGE,USER_MANAGEMENT_PAGE} from "../routing/constants"
 import {Nav, Navbar,Button,Dropdown} from "react-bootstrap"
-import { NavLink as RouterNavLink } from "react-router-dom"
+//import { NavLink as RouterNavLink } from "react-router-dom"
+import {NavLink as RouterNavLink, useResolvedPath,useMatch} from "react-router-dom" 
 import {WOQLClientObj} from '../init-woql-client'
 import {GoHome} from "react-icons/go"
 import {FiMap, FiMapPin, FiLink} from "react-icons/fi"
@@ -49,12 +50,26 @@ export const Menu = () => {
     } = useAuth0()
 
     //console.log("user",user)
+    const login = () =>{
+        const loginConfObj = loginConf()
+        loginWithRedirect(loginConfObj)
+    }
 
-    const returnTo=`${window.location.origin}`
+    const logoutWithRedirect = () =>{   
+        const config = { returnTo : `${window.location.origin}/${team}`}
+        logout(config)
+    }
+    
+     
+    const toHomeTeam = HOME_PAGE.replace(":teamid",team) 
+    let resolved = useResolvedPath(toHomeTeam);
+    let match = useMatch({ path: resolved.pathname, end: true });
 
-    const logoutWithRedirect = () =>
-        logout(loginConf)
-
+    function getActive (){
+        return match ? 'nav-link active' : 'nav-link'
+    }
+  
+    
     return <Navbar fixed="top" expand="lg" className={`px-3 navbar navbar-transparent bg-${"light"} nav-container`}>
         <Navbar.Brand href="https://climateresilient.world/"
             title="Visit GitHub repository for more info"
@@ -64,23 +79,21 @@ export const Menu = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
             <Nav className="me-auto m-3">
-                <Nav.Link
-                    as={RouterNavLink}
-                    title={HOME}
-                    to={HOME_PAGE.replace(":teamid",team)}
-                    exact
-                    id={HOME}
-                    onClick={(e) => setPage(HOME_PAGE)}
-                >
-                    <MenuIcon icon={<GoHome/>} title={HOME}/>
-                </Nav.Link>
-                <Nav.Link
+            <RouterNavLink
+                to={toHomeTeam} 
+                className={getActive} 
+                id={HOME}
+                onClick={(e) => setPage(HOME_PAGE)}>
+                <MenuIcon icon={<GoHome/>} title={HOME}/>
+            </RouterNavLink>  
+             <Nav.Link
                     as={RouterNavLink}
                     title={USER_FORM}
                     to={USER_FORM_PAGE.replace(":teamid",team)}
                     exact
                     id={USER_FORM}
                     onClick={(e) => setPage(USER_FORM_PAGE)}
+                    className="nav-link"
                     >
                     <MenuIcon icon={<BsPerson/>} title={USER_FORM}/>
                 </Nav.Link>
@@ -142,7 +155,7 @@ export const Menu = () => {
                         id="qsLoginBtn"
                         color="primary"
                         className="btn-margin"
-                        onClick={() => loginWithRedirect(loginConf)}
+                        onClick={() => login()}
                     >
                         Log in
                     </Button>
@@ -183,7 +196,7 @@ export const Menu = () => {
                             <Nav.Link
                                 title={"Logout"}
                                 exact
-                                onClick={(e) => logoutWithRedirect(loginConf)}
+                                onClick={(e) => logoutWithRedirect()}
                                 id={"Logout"}>
                                     <AiOutlinePoweroff className="mr-3 mb-1" />Logout
                             </Nav.Link>
