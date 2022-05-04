@@ -1,5 +1,4 @@
 
-
 export const HOME_PAGE = "/:teamid"
 export const USER_FORM_PAGE = "/:teamid/person_form"
 export const OWNER_FORM_PAGE = "/:teamid/owner_form"

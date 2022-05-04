@@ -11,6 +11,11 @@ export const Login = () => {
         loginWithRedirect,
     } = useAuth0()
 
+    const login = () =>{
+        const loginConfObj = loginConf()
+        loginWithRedirect(loginConfObj)
+    }
+
     return <Card  className="login mx-5 bg-success p-5" style={{ width: '18rem' }}>
         <Card.Img variant="top" src="https://climateresilient.world/wp-content/uploads/2022/03/CAMS-Logo-Light-Simple-200px.png" />
         <Card.Body>
@@ -19,7 +24,7 @@ export const Login = () => {
                 <Button
                     id="qsLoginBtn"
                     color="primary"
-                    onClick={() => loginWithRedirect(loginConf)}
+                    onClick={() => login()}
                     className="btn-lg">
                     Log in
                 </Button>
