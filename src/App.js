@@ -11,6 +11,7 @@ import {ManageAsset} from "./routing/ManageAsset"
 import {ManageLinks} from "./routing/ManageLinks"
 //import history from "./routing/history"
 import { UserManagement } from "./pages/UserManagement"
+import {HelpPage} from "./pages/HelpPage"
 import {USER_FORM_PAGE, OWNER_FORM_PAGE, ASSETS_LINK_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE,USER_MANAGEMENT_PAGE} from "./routing/constants"
 //import {USER_FORM_PAGE, OWNER_FORM_PAGE, ASSETS_LINK_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE} from "./routing/constants"
 
@@ -19,33 +20,17 @@ export function App (props){
 			<div className="container-fluid container-background h-100">			
 				<Routes >	
 						<Route path={HOME_PAGE} element = {<HomePage/>}/>	
-						<Route path={USER_FORM_PAGE} element = {<ManageUser/>} exact/>
-						<Route path={OWNER_FORM_PAGE} element = {<ManageOwner/>} exact/>
-						<Route path={AREA_FORM_PAGE} element = {<ManageArea/>} exact/>
-						<Route path={ASSET_FORM_PAGE} element = {<ManageAsset/>} exact/>
-						<Route path={ASSETS_LINK_PAGE} element = {<ManageLinks/>} exact/>
-						<Route path={REPORTS_PAGE} element = {<Reports/>} exact/>
-						<Route path={USER_MANAGEMENT_PAGE} element={<UserManagement/>} exact/>
-						<Route path="/" element = {<h1 className="text-center">404 NOT FOUND</h1>} />
+						<Route path={USER_FORM_PAGE} element = {<ManageUser/>} />
+						<Route path={OWNER_FORM_PAGE} element = {<ManageOwner/>} />
+						<Route path={AREA_FORM_PAGE} element = {<ManageArea/>} />
+						<Route path={ASSET_FORM_PAGE} element = {<ManageAsset/>} />
+						<Route path={ASSETS_LINK_PAGE} element = {<ManageLinks/>} />
+						<Route path={REPORTS_PAGE} element = {<Reports/>} />
+						<Route path={USER_MANAGEMENT_PAGE} element={<UserManagement/>} />
+						<Route path="/" element = {<HelpPage/>} />
 				</Routes>
 			
         </div>
 
     </React.Fragment>
 }
-
-/*
-<div className="container-fluid container-background h-100">			
-				<Routes >				
-					<Route path={HOME_PAGE} element = {<HomePage/>} exact/>
-					<Route path={USER_FORM_PAGE} element = {<ManageUser/>} exact/>
-					<Route path={OWNER_FORM_PAGE} element = {<ManageOwner/>} exact/>
-					<Route path={AREA_FORM_PAGE} element = {<ManageArea/>} exact/>
-					<Route path={ASSET_FORM_PAGE} element = {<ManageAsset/>} exact/>
-					<Route path={ASSETS_LINK_PAGE} element = {<ManageLinks/>} exact/>
-					<Route path={REPORTS_PAGE} element = {<Reports/>} exact/>
-					<Route path={USER_MANAGEMENT_PAGE} element={<UserManagement/>} exact/>
-					<Route path="/" element = {<h1 className="text-center">404 NOT FOUND</h1>} />
-				</Routes>
-			
-        </div>*/

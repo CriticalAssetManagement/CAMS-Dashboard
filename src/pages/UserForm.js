@@ -69,7 +69,7 @@ export const UserForm = () => {
     // delete a document
     let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, VIEW_USER_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     // edit a document
-    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_CLICKED_USER, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
+    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_USER_LIST, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
 
 
     useEffect(() => {

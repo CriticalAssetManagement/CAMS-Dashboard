@@ -312,3 +312,16 @@ a.leaflet-browser-print{
 .leaflet-control {
     background: rgba(255, 255, 255, 0.8) !important;
 }
+
+/** classnames to centralise help page card **/
+.centralize-container { 
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.centralize-help-card {
+    width: 43rem;
+    margin-left: auto;
+    margin-right: auto;
+}

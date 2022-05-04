@@ -81,7 +81,7 @@ export const Menu = () => {
             <Nav className="me-auto m-3">
             <RouterNavLink
                 to={toHomeTeam} 
-                className={getActive} 
+                className={getActive}
                 id={HOME}
                 onClick={(e) => setPage(HOME_PAGE)}>
                 <MenuIcon icon={<GoHome/>} title={HOME}/>

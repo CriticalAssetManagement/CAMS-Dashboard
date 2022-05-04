@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import {Layout} from "../components/Layout"
 import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
@@ -42,7 +42,7 @@ export const AssetForm = () => {
         extracted,
         handleSelect,
         handleTraverse,
-        deleteDocument,
+        deleteDocument, 
         handleUpdate,
         getDocumentToolBar,
         handleRefresh,
@@ -68,7 +68,7 @@ export const AssetForm = () => {
     // delete a document
     let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, VIEW_ASSET_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     // edit a document
-    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_CLICKED_ASSET, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
+    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_ASSET_LIST, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
 
 
     useEffect(() => {
