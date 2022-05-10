@@ -6,15 +6,11 @@ export const WOQLClientObj = () => useContext(WOQLContext)
 import {DATA_PRODUCT} from "./constants"
 import {HOME_PAGE} from './routing/constants'
 import {AccessControlDashboard} from "@terminusdb/terminusdb-access-control-component"
-import {clientAccessControl} from "./utils/clientAccessControl"
+import {getClientAccessControl} from "./utils/clientAccessControl"
 import { useAuth0 } from "@auth0/auth0-react";
 //profiles_test
 export const WOQLClientProvider = ({children, team}) => {
     const {user,getAccessTokenSilently } = useAuth0();
-
-    //let team = process.env.MY_TEAM
-    let token = process.env.MY_TOKEN
-    //let user = process.env.MY_USER
     let server = process.env.TERMINUSDB_SERVER
 
     const [woqlClient, setWoqlClient] = useState(false)
@@ -42,6 +38,7 @@ export const WOQLClientProvider = ({children, team}) => {
         client.db(DATA_PRODUCT)
         setWoqlClient(client)
 
+        const clientAccessControl = getClientAccessControl(team)
         const accessControlDash = new AccessControlDashboard(clientAccessControl)
 
         clientAccessControl.setJwtToken(jwtoken)
