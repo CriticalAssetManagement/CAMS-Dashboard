@@ -7,10 +7,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 export const UserManagement = (props) =>{
     const {user} = useAuth0();
     const {
-        accessControlDashboard
+        accessControlDashboard, team
     } = WOQLClientObj()
-
-    let team = process.env.MY_TEAM
 
 
     const setting ={
