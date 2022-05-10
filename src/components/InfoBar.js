@@ -13,13 +13,13 @@ export const InfoBar = ({documents, info}) => {
     const [nonCritical, setNonCritical]=useState(false)
 
     const {
-		setPage
+		setPage,team
 	} = WOQLClientObj()
 
     let documentId = info.hasOwnProperty(VAR_NAME) ? info[VAR_NAME] : ""
 
     function handleMoreInfo(e) {
-        setPage(ASSET_FORM_PAGE)
+        setPage(ASSET_FORM_PAGE.replace(":teamid",team))
     }
 
     useEffect(() => {
