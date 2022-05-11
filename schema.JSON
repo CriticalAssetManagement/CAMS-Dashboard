@@ -1,0 +1,625 @@
+{
+  "@context": {
+    "@base": "iri://CAMS/",
+    "@schema": "iri://CAMS#",
+    "@type": "Context"
+  },
+  "iri://CAMS#Area": {
+    "@type": "Class",
+    "extent": {
+      "@class": {
+        "@class": "AreaExtent",
+        "@subdocument": []
+      },
+      "@type": "Optional"
+    },
+    "hazard_history": {
+      "@class": {
+        "@class": "HazardEvent",
+        "@subdocument": []
+      },
+      "@type": "Set"
+    },
+    "hazards": {
+      "@class": {
+        "@id": "Hazard",
+        "@type": "Enum",
+        "@values": [
+          "Volcanos (incl. lahars, pyroclastic flows, volcanic activity)",
+          "Landslides (incl. post wildfire landslides) and Avalanches",
+          "Hurricanes, Typhoons, or Cyclones",
+          "Tropical/Extra Tropical of other extreme storms",
+          "Coast Storm Surge",
+          "Pluvial and Fluvial Flooding",
+          "\"Sunny Day\" Tidal Flooding",
+          "Tornadoes, Derechos, Micro-Bursts",
+          "Lightning Strikes",
+          "Wildfires",
+          "Drought",
+          "Geologic Sink Holes",
+          "Pest Infestations",
+          "Famine",
+          "High Temperature Event",
+          "Low Temperature Event",
+          "Cyber Attack or Failure",
+          "Other Terrorism",
+          "Industrial Accident (Emissions, Releases, Spills, Ect.)",
+          "Earthquakes"
+        ]
+      },
+      "@type": "Set"
+    },
+    "name": "xsd:string",
+    "population": {
+      "@class": "xsd:integer",
+      "@type": "Optional"
+    }
+  },
+  "iri://CAMS#AreaExtent": {
+    "@key": {
+      "@type": "ValueHash"
+    },
+    "@subdocument": [],
+    "@type": "Class",
+    "perimeter": {
+      "@class": "xsd:integer",
+      "@type": "Optional"
+    }
+  },
+  "iri://CAMS#Asset": {
+    "@key": {
+      "@fields": [
+        "asset_identifier"
+      ],
+      "@type": "Lexical"
+    },
+    "@type": "Class",
+    "applicable_hazards": {
+      "@class": {
+        "@class": "GradedHazard",
+        "@subdocument": []
+      },
+      "@type": "Set"
+    },
+    "assetType": {
+      "@class": {
+        "@id": "AssetEnum",
+        "@type": "Enum",
+        "@values": [
+          "Government Buildings",
+          "Marine Ports",
+          "Airport",
+          "Electrical Power Generating Plants",
+          "Water System",
+          "Desalinization Plant",
+          "Desalination Plant",
+          "Water Distribution System",
+          "Safety and Security",
+          "Food, Water, Shelter",
+          "Health and Medical",
+          "Energy",
+          "Communications",
+          "Transportation",
+          "Hazardous Material",
+          "Others"
+        ]
+      },
+      "@type": "Optional"
+    },
+    "asset_history": {
+      "@class": [
+        {
+          "@class": "HazardEvent",
+          "@subdocument": []
+        },
+        {
+          "@class": "UpdateEvent",
+          "@subdocument": []
+        }
+      ],
+      "@type": "Set"
+    },
+    "asset_identifier": "xsd:string",
+    "asset_update_history": {
+      "@class": {
+        "@class": "UpdateEvent",
+        "@subdocument": []
+      },
+      "@type": "Set"
+    },
+    "commisioning_date": "xsd:dateTime",
+    "description": {
+      "@class": "xsd:string",
+      "@type": "Set"
+    },
+    "design_standards": "xsd:string",
+    "last_maintained": "xsd:dateTime",
+    "last_modified": "xsd:dateTime",
+    "location": {
+      "@class": "Location",
+      "@subdocument": []
+    },
+    "name": "xsd:string",
+    "owner": {
+      "@class": "Owner",
+      "@type": "Set"
+    },
+    "spatial_web_identifier": {
+      "@class": "SpatialWebIdentifier",
+      "@type": "Optional"
+    }
+  },
+  "iri://CAMS#AssetEnum": {
+    "@type": "Enum",
+    "@values": [
+      "Government Buildings",
+      "Marine Ports",
+      "Airport",
+      "Electrical Power Generating Plants",
+      "Water System",
+      "Desalinization Plant",
+      "Desalination Plant",
+      "Water Distribution System",
+      "Safety and Security",
+      "Food, Water, Shelter",
+      "Health and Medical",
+      "Energy",
+      "Communications",
+      "Transportation",
+      "Hazardous Material",
+      "Others"
+    ]
+  },
+  "iri://CAMS#AssetType": {
+    "@abstract": [],
+    "@type": "Class",
+    "name": "xsd:string"
+  },
+  "iri://CAMS#CRS84": {
+    "@type": "Class",
+    "name": {
+      "@id": "CRS84_Type",
+      "@type": "Enum",
+      "@values": [
+        "urn:ogc:def:crs:OGC:1.3:CRS84"
+      ]
+    }
+  },
+  "iri://CAMS#CRS84_Type": {
+    "@type": "Enum",
+    "@values": [
+      "urn:ogc:def:crs:OGC:1.3:CRS84"
+    ]
+  },
+  "iri://CAMS#DependencyRelation": {
+    "@type": "Class",
+    "comment": "xsd:string",
+    "critical": "xsd:boolean",
+    "dependent": "Asset",
+    "depends_on": "Asset"
+  },
+  "iri://CAMS#Event": {
+    "@abstract": [],
+    "@subdocument": [],
+    "@type": "Class",
+    "date": "xsd:dateTime"
+  },
+  "iri://CAMS#Feature": {
+    "@type": "Class",
+    "bbox": {
+      "@class": "xsd:string",
+      "@dimensions": 1,
+      "@type": "Array"
+    },
+    "centerline": {
+      "@class": [
+        {
+          "@class": "Point",
+          "@subdocument": []
+        }
+      ],
+      "@type": "Optional"
+    },
+    "geometry": [
+      {
+        "@class": "Point",
+        "@subdocument": []
+      }
+    ],
+    "id": {
+      "@class": "xsd:string",
+      "@type": "Optional"
+    },
+    "properties": [
+      "CRS84",
+      "OSiProperties"
+    ],
+    "title": {
+      "@class": "xsd:string",
+      "@type": "Optional"
+    },
+    "type": {
+      "@id": "Feature_Type",
+      "@type": "Enum",
+      "@values": [
+        "Feature"
+      ]
+    }
+  },
+  "iri://CAMS#FeatureCollection": {
+    "@type": "Class",
+    "crs": {
+      "@class": "name",
+      "@type": "Optional"
+    },
+    "features": {
+      "@class": "Feature",
+      "@type": "Set"
+    },
+    "name": {
+      "@class": "xsd:string",
+      "@type": "Optional"
+    },
+    "type": {
+      "@id": "FeatureCollection_Type",
+      "@type": "Enum",
+      "@values": [
+        "FeatureCollection"
+      ]
+    }
+  },
+  "iri://CAMS#FeatureCollection_Type": {
+    "@type": "Enum",
+    "@values": [
+      "FeatureCollection"
+    ]
+  },
+  "iri://CAMS#Feature_Type": {
+    "@type": "Enum",
+    "@values": [
+      "Feature"
+    ]
+  },
+  "iri://CAMS#FundingSource": {
+    "@abstract": [],
+    "@type": "Class"
+  },
+  "iri://CAMS#GeoCoordinate": {
+    "@key": {
+      "@fields": [
+        "latitude",
+        "longitude"
+      ],
+      "@type": "Lexical"
+    },
+    "@subdocument": [],
+    "@type": "Class",
+    "latitude": "xsd:decimal",
+    "longitude": "xsd:decimal"
+  },
+  "iri://CAMS#GeoPerimeter": {
+    "@key": {
+      "@fields": [
+        "perimeter"
+      ],
+      "@type": "Lexical"
+    },
+    "@subdocument": [],
+    "@type": "Class",
+    "perimeter": {
+      "@class": {
+        "@class": "GeoCoordinate",
+        "@subdocument": []
+      },
+      "@type": "List"
+    }
+  },
+  "iri://CAMS#Geometry": {
+    "@abstract": [],
+    "@key": {
+      "@type": "Random"
+    },
+    "@subdocument": [],
+    "@type": "Class"
+  },
+  "iri://CAMS#GeometryCollection_Type": {
+    "@type": "Enum",
+    "@values": [
+      "GeometryCollection"
+    ]
+  },
+  "iri://CAMS#GradedHazard": {
+    "@key": {
+      "@type": "Random"
+    },
+    "@subdocument": [],
+    "@type": "Class",
+    "Grade": {
+      "@class": "xsd:decimal",
+      "@type": "Optional"
+    },
+    "hazard": {
+      "@class": {
+        "@id": "Hazard",
+        "@type": "Enum",
+        "@values": [
+          "Volcanos (incl. lahars, pyroclastic flows, volcanic activity)",
+          "Landslides (incl. post wildfire landslides) and Avalanches",
+          "Hurricanes, Typhoons, or Cyclones",
+          "Tropical/Extra Tropical of other extreme storms",
+          "Coast Storm Surge",
+          "Pluvial and Fluvial Flooding",
+          "\"Sunny Day\" Tidal Flooding",
+          "Tornadoes, Derechos, Micro-Bursts",
+          "Lightning Strikes",
+          "Wildfires",
+          "Drought",
+          "Geologic Sink Holes",
+          "Pest Infestations",
+          "Famine",
+          "High Temperature Event",
+          "Low Temperature Event",
+          "Cyber Attack or Failure",
+          "Other Terrorism",
+          "Industrial Accident (Emissions, Releases, Spills, Ect.)",
+          "Earthquakes"
+        ]
+      },
+      "@type": "Optional"
+    }
+  },
+  "iri://CAMS#Hazard": {
+    "@type": "Enum",
+    "@values": [
+      "Volcanos (incl. lahars, pyroclastic flows, volcanic activity)",
+      "Landslides (incl. post wildfire landslides) and Avalanches",
+      "Hurricanes, Typhoons, or Cyclones",
+      "Tropical/Extra Tropical of other extreme storms",
+      "Coast Storm Surge",
+      "Pluvial and Fluvial Flooding",
+      "\"Sunny Day\" Tidal Flooding",
+      "Tornadoes, Derechos, Micro-Bursts",
+      "Lightning Strikes",
+      "Wildfires",
+      "Drought",
+      "Geologic Sink Holes",
+      "Pest Infestations",
+      "Famine",
+      "High Temperature Event",
+      "Low Temperature Event",
+      "Cyber Attack or Failure",
+      "Other Terrorism",
+      "Industrial Accident (Emissions, Releases, Spills, Ect.)",
+      "Earthquakes"
+    ]
+  },
+  "iri://CAMS#HazardEvent": {
+    "@documentation": {
+      "@comment": "Historical hazard",
+      "@properties": {
+        "comment": "A comment relating to an historic hazard incident.",
+        "date": "The date at which the incident occurred."
+      }
+    },
+    "@key": {
+      "@fields": [
+        "hazard",
+        "date"
+      ],
+      "@type": "Lexical"
+    },
+    "@subdocument": [],
+    "@type": "Class",
+    "comment": "xsd:string",
+    "date": "xsd:dateTime",
+    "hazard": {
+      "@id": "Hazard",
+      "@type": "Enum",
+      "@values": [
+        "Volcanos (incl. lahars, pyroclastic flows, volcanic activity)",
+        "Landslides (incl. post wildfire landslides) and Avalanches",
+        "Hurricanes, Typhoons, or Cyclones",
+        "Tropical/Extra Tropical of other extreme storms",
+        "Coast Storm Surge",
+        "Pluvial and Fluvial Flooding",
+        "\"Sunny Day\" Tidal Flooding",
+        "Tornadoes, Derechos, Micro-Bursts",
+        "Lightning Strikes",
+        "Wildfires",
+        "Drought",
+        "Geologic Sink Holes",
+        "Pest Infestations",
+        "Famine",
+        "High Temperature Event",
+        "Low Temperature Event",
+        "Cyber Attack or Failure",
+        "Other Terrorism",
+        "Industrial Accident (Emissions, Releases, Spills, Ect.)",
+        "Earthquakes"
+      ]
+    }
+  },
+  "iri://CAMS#HazardScale": {
+    "@key": {
+      "@type": "Random"
+    },
+    "@type": "Class",
+    "hazard": {
+      "@id": "Hazard",
+      "@type": "Enum",
+      "@values": [
+        "Volcanos (incl. lahars, pyroclastic flows, volcanic activity)",
+        "Landslides (incl. post wildfire landslides) and Avalanches",
+        "Hurricanes, Typhoons, or Cyclones",
+        "Tropical/Extra Tropical of other extreme storms",
+        "Coast Storm Surge",
+        "Pluvial and Fluvial Flooding",
+        "\"Sunny Day\" Tidal Flooding",
+        "Tornadoes, Derechos, Micro-Bursts",
+        "Lightning Strikes",
+        "Wildfires",
+        "Drought",
+        "Geologic Sink Holes",
+        "Pest Infestations",
+        "Famine",
+        "High Temperature Event",
+        "Low Temperature Event",
+        "Cyber Attack or Failure",
+        "Other Terrorism",
+        "Industrial Accident (Emissions, Releases, Spills, Ect.)",
+        "Earthquakes"
+      ]
+    },
+    "max": "xsd:decimal",
+    "min": "xsd:decimal"
+  },
+  "iri://CAMS#LineString_Type": {
+    "@type": "Enum",
+    "@values": [
+      "LineString"
+    ]
+  },
+  "iri://CAMS#Location": {
+    "@key": {
+      "@type": "Random"
+    },
+    "@subdocument": [],
+    "@type": "Class",
+    "city": "xsd:string",
+    "geometry_location": {
+      "@class": [
+        {
+          "@class": "Point",
+          "@subdocument": []
+        }
+      ],
+      "@type": "Optional"
+    },
+    "postal_code": {
+      "@class": "xsd:string",
+      "@type": "Optional"
+    },
+    "state": "xsd:string",
+    "street": "xsd:string"
+  },
+  "iri://CAMS#MultiPolygon_Type": {
+    "@type": "Enum",
+    "@values": [
+      "MultiPolygon"
+    ]
+  },
+  "iri://CAMS#Name_Type": {
+    "@type": "Enum",
+    "@values": [
+      "name"
+    ]
+  },
+  "iri://CAMS#OSiProperties": {
+    "@type": "Class",
+    "NAMN1": "xsd:string",
+    "OBJECTID": "xsd:integer"
+  },
+  "iri://CAMS#Owner": {
+    "@type": "Class",
+    "contact_person": "Person",
+    "name": "xsd:string"
+  },
+  "iri://CAMS#Person": {
+    "@type": "Class",
+    "email_address": {
+      "@class": "xsd:string",
+      "@type": "Optional"
+    },
+    "first_name": "xsd:string",
+    "job_title": {
+      "@class": "xsd:string",
+      "@type": "Optional"
+    },
+    "last_name": "xsd:string",
+    "organization": {
+      "@class": "xsd:string",
+      "@type": "Optional"
+    },
+    "phone_number": {
+      "@class": "xsd:string",
+      "@type": "Optional"
+    }
+  },
+  "iri://CAMS#Point": {
+    "@key": {
+      "@type": "Random"
+    },
+    "@subdocument": [],
+    "@type": "Class",
+    "coordinates": {
+      "@class": "xsd:decimal",
+      "@dimensions": 1,
+      "@type": "Array"
+    },
+    "type": {
+      "@id": "Point_Type",
+      "@type": "Enum",
+      "@values": [
+        "Point"
+      ]
+    }
+  },
+  "iri://CAMS#Point_Type": {
+    "@type": "Enum",
+    "@values": [
+      "Point"
+    ]
+  },
+  "iri://CAMS#Polygon_Type": {
+    "@type": "Enum",
+    "@values": [
+      "Polygon"
+    ]
+  },
+  "iri://CAMS#Properties": {
+    "@abstract": [],
+    "@type": "Class"
+  },
+  "iri://CAMS#Source": {
+    "@abstract": [],
+    "@type": "Class"
+  },
+  "iri://CAMS#SpatialWebIdentifier": {
+    "@type": "Class",
+    "id": "xsd:string"
+  },
+  "iri://CAMS#UpdateEvent": {
+    "@documentation": {
+      "@comment": "Update history",
+      "@properties": {
+        "comment": "A comment relating to an historic hazard incident.",
+        "date": "The date at which the update occurred."
+      }
+    },
+    "@key": {
+      "@fields": [
+        "comment",
+        "date"
+      ],
+      "@type": "Lexical"
+    },
+    "@subdocument": [],
+    "@type": "Class",
+    "comment": "xsd:string",
+    "date": "xsd:dateTime"
+  },
+  "iri://CAMS#name": {
+    "@type": "Class",
+    "properties": [
+      "CRS84",
+      "OSiProperties"
+    ],
+    "type": {
+      "@id": "Name_Type",
+      "@type": "Enum",
+      "@values": [
+        "name"
+      ]
+    }
+  }
+}
