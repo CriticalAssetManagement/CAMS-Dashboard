@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from "react"
 import {Offcanvas, Button, Alert} from "react-bootstrap"
 import {VAR_NAME, LAT, LNG, EMPTY_DESCRIPTION, VAR_ASSET_IDENTIFIER, HIDE_OFFCANVAS_TITLE, VAR_DESCRIPTION, VAR_LAST_MAINTAINED, VAR_DESIGN_STANDARDS} from "./constants"
-import {ASSET_FORM_PAGE} from "../routing/constants"
+//import {ASSET_FORM_PAGE} from "../routing/constants"
 import {InfoBar} from "./InfoBar"
 import {DependentStatus} from "./DependentStatus"
 import {RiArrowGoBackFill} from "react-icons/ri"
