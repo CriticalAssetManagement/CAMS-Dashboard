@@ -1,3 +1,4 @@
+import React from "react"
 import {
     LATITUDE,
     LONGITUDE,
@@ -36,7 +37,8 @@ import {
     VAR_ASSET_NAME,
     UPWARD_TITLE,
     UPWARD_FAILURE_CHAIN_TITLE,
-    UPWARD_LINKS_COLOR
+    UPWARD_LINKS_COLOR,
+    VAR_OWNER
 } from "../constants"
 import "leaflet-arrowheads"
 import "leaflet.browser.print/dist/leaflet.browser.print.js"
@@ -79,6 +81,34 @@ function getLinkedMarkerOptions (asset , key) {
 
 // get pop up content
 export function getPopContent (coord){
+    console.log("coord",  coord)
+    let element = [], ownerElement = []
+
+    // Owner info available
+    if(coord.hasOwnProperty("owner")) {
+        if(Array.isArray(coord["owner"]) && coord["owner"].length > 0) {
+            coord["owner"].map(owner => {
+                if(Array.isArray(owner) && owner.length > 0) {
+                    owner.map(item => {
+                        if(typeof item === "object") {
+                            if(item.hasOwnProperty("@value")) {
+                                ownerElement.push(`<span>${item["@value"]}</span>`)
+                            }
+                        }
+                    })
+                }
+            })
+        }
+    }
+    
+
+    element.push(`<div>
+        <div> name:  ${coord.name} </div>
+        <div>owners: ${ownerElement} </div>
+    </div>`)
+
+    return `${element}`
+
     return `<div>
         <div> name:  ${coord.name} </div>
         <div> lat:   ${coord.lat} </div>
@@ -281,7 +311,7 @@ export function  gatherVectorLines(vector, displayFailureChains, displayUpwardCh
                     opacity: 0.5;
                     margin-right: 8px;
                     margin-top: 3px;'/>`
-            ] = antPolyline.addTo(layerGorup)
+            ] = antPolyline.addTo(layerGorup) 
 
         }
 
@@ -375,7 +405,12 @@ export function getMarkers (assets, layerGroup, setOnMarkerClick) {
     //console.log("assets", assets)
     assets.map(asset => {
         // get marker lat lng
-        let coord = {name:asset[VAR_NAME], lat: asset[VAR_LATITUDE], lng: asset[VAR_LONGITUDE]}
+        let coord = {
+            name:asset[VAR_NAME], 
+            lat: asset[VAR_LATITUDE], 
+            lng: asset[VAR_LONGITUDE], 
+            owner: asset[VAR_OWNER]
+        }
         let options = getMarkerOptions(asset)
         let marker = drawMarkers(asset, coord, options, setOnMarkerClick, layerGroup)
     })

@@ -27,6 +27,7 @@ export const getAssetDependentOnQuery = (documentID) =>{
 //query to get all assets
 export const getAvailableAssets = () => {
     let WOQL= TerminusDBClient.WOQL
+
     return WOQL.triple("v:Asset", "rdf:type","@schema:Asset")
         .triple("v:Asset", "@schema:name", "v:Name")
         .opt(WOQL.triple("v:Asset", "@schema:description", "v:Description"))
@@ -39,7 +40,30 @@ export const getAvailableAssets = () => {
         .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesX")
         .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesY")
         .triple("v:AssetCoordinatesX", "sys:value", "v:AssetX")
-        .triple("v:AssetCoordinatesX", "sys:index", "v:X_AssetX")
+        .triple("v:AssetCoordinatesX", "sys:index", "v:X_AssetX") 
+        .eq("v:X_AssetX", 0)
+        .triple("v:AssetCoordinatesY", "sys:value", "v:AssetY")
+        .triple("v:AssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
+        .opt(WOQL.group_by("v:Asset", ["v:Owner", "v:person", "v:PersonName"], "v:Owner_group")
+            .triple("v:Asset", "owner", "v:Owner")
+            .triple("v:Owner", "contact_person", "v:person") 
+            .triple("v:person", "first_name", "v:PersonName")
+            .triple("v:person", "job_title", "v:PersonJob")
+        )
+
+    return WOQL.triple("v:Asset", "rdf:type","@schema:Asset")
+        .triple("v:Asset", "@schema:name", "v:Name")
+        .opt(WOQL.triple("v:Asset", "@schema:description", "v:Description"))
+        .triple("v:Asset", "@schema:asset_identifier", "v:AssetIdentifier")
+        .opt(WOQL.triple("v:Asset", "@schema:assetType", "v:AssetType"))
+        .triple("v:Asset", "@schema:design_standards", "v:DesignStandards")
+        .triple("v:Asset", "@schema:last_maintained", "v:LastMaintained")
+        .triple("v:Asset", "@schema:location", "v:Location")
+        .triple("v:Location", "@schema:geometry_location", "v:Point")
+        .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesX")
+        .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesY")
+        .triple("v:AssetCoordinatesX", "sys:value", "v:AssetX")
+        .triple("v:AssetCoordinatesX", "sys:index", "v:X_AssetX") 
         .eq("v:X_AssetX", 0)
         .triple("v:AssetCoordinatesY", "sys:value", "v:AssetY")
         .triple("v:AssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
@@ -229,6 +253,84 @@ export const getAssetLinks = () => {
         .triple("v:Asset", "@schema:name", "v:Name")
         .triple("v:Asset", "@schema:asset_identifier", "v:AssetIdentifier")
 }
+
+
+
+// correct query - gav
+/*triple("v:Asset", "rdf:type","@schema:Asset")
+        .triple("v:Asset", "@schema:name", "v:Name")
+        .opt(WOQL.triple("v:Asset", "@schema:description", "v:Description"))
+        .triple("v:Asset", "@schema:asset_identifier", "v:AssetIdentifier")
+        .opt(WOQL.triple("v:Asset", "@schema:assetType", "v:AssetType"))
+        .triple("v:Asset", "@schema:design_standards", "v:DesignStandards")
+        .triple("v:Asset", "@schema:last_maintained", "v:LastMaintained")
+        .triple("v:Asset", "@schema:location", "v:Location")
+        .triple("v:Location", "@schema:geometry_location", "v:Point")
+        .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesX")
+        .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesY")
+        .triple("v:AssetCoordinatesX", "sys:value", "v:AssetX")
+        .triple("v:AssetCoordinatesX", "sys:index", "v:X_AssetX") 
+        .eq("v:X_AssetX", 0)
+        .triple("v:AssetCoordinatesY", "sys:value", "v:AssetY")
+        .triple("v:AssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
+        .opt(group_by("v:Asset", ["v:Owner", "v:person", "v:PersonName"], "v:Owner_group")
+ 
+            .triple("v:Asset", "owner", "v:Owner")
+            .triple("v:Owner", "contact_person", "v:person")
+            .triple("v:person", "first_name", "v:PersonName")
+        )
+*/
+
+/*** francecsa correct query 
+ * 
+ * triple("v:Asset", "rdf:type","@schema:Asset")
+        .triple("v:Asset", "@schema:name", "v:Name")
+        .opt(WOQL.triple("v:Asset", "@schema:description", "v:Description"))
+        .triple("v:Asset", "@schema:asset_identifier", "v:AssetIdentifier")
+        .opt(WOQL.triple("v:Asset", "@schema:assetType", "v:AssetType"))
+        .triple("v:Asset", "@schema:design_standards", "v:DesignStandards")
+        .triple("v:Asset", "@schema:last_maintained", "v:LastMaintained")
+        .triple("v:Asset", "@schema:location", "v:Location")
+        .triple("v:Location", "@schema:geometry_location", "v:Point")
+        .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesX")
+        .triple("v:Point", "@schema:coordinates", "v:AssetCoordinatesY")
+        .triple("v:AssetCoordinatesX", "sys:value", "v:AssetX")
+        .triple("v:AssetCoordinatesX", "sys:index", "v:X_AssetX") 
+        .eq("v:X_AssetX", 0)
+        .triple("v:AssetCoordinatesY", "sys:value", "v:AssetY")
+        .triple("v:AssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
+        .group_by("v:Asset", ["v:Owner", "v:person", "v:PersonName"], "v:Owner_group")
+        .opt(
+            triple("v:Asset", "owner", "v:Owner")
+            .triple("v:Owner", "contact_person", "v:person")
+            .triple("v:person", "first_name", "v:PersonName")
+        )
+ * 
+ * 
+ * 
+let docName = "Asset/Communication%20tower%20near%20Good%20Hope%20"
+
+group_by(docName, ["v:Owner", "v:person", "v:PersonName"], "v:Owner_group")
+//.triple(docName, "name","v:B")
+.triple(docName, "owner", "v:Owner")
+.triple("v:Owner", "contact_person", "v:person")
+.triple("v:person", "first_name", "v:PersonName")
+
+
+// if null owner 
+
+
+
+let docName = "Asset/newAsset"
+
+group_by(docName, ["v:Owner", "v:person", "v:PersonName"], "v:Owner_group")
+//.triple(docName, "name","v:B")
+.opt(triple(docName, "owner", "v:Owner"))
+.opt(triple("v:Owner", "contact_person", "v:person"))
+.opt(triple("v:person", "first_name", "v:PersonName"))
+       	
+       	
+ */
 
 
 // query to get assets filtered by hazard events - ARRAY OF EVENTS

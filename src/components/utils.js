@@ -7,6 +7,7 @@ import {
     VAR_ASSET_Y,
     VAR_GRADE,
     VAR_LAST_MAINTAINED,
+    VAR_OWNER,
     LAT,
     VAR_DESCRIPTION,
     LNG,
@@ -167,6 +168,9 @@ export function extractAssetLocations(results) {
         }
         if(item.hasOwnProperty(VAR_ASSET_TYPE)) {
             json[VAR_ASSET_TYPE] = item[VAR_ASSET_TYPE]
+        }
+        if(item.hasOwnProperty("Owner_group")) { 
+            json[VAR_OWNER] = item["Owner_group"]
         }
         docs.push(json)
      })

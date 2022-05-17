@@ -48,6 +48,7 @@ export const VAR_LINKED_ASSET_NAME ="LinkedAssetName"
 export const VAR_LINKED_ASSET_DESCRIPTION ="LinkedAssetDescription"
 export const VAR_ASSET_TYPE="AssetType"
 export const VAR_LINKED_ASSET_TYPE="LinkedAssetType"
+export const VAR_OWNER="Owner"
 
 // color constants
 export const CRITICAL_COLOR="#bf0a30"//"#dc3545"

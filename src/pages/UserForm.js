@@ -119,7 +119,7 @@ export const UserForm = () => {
                                 onClick={goToPreviousLinkedDocument}>
                                     <BiArrowBack className="mr-2"/>Back
                             </Button>
-                        </span>
+                        </span> 
                     }
                     {
                         traverseDocument && traverseDocument.hasOwnProperty("current") &&

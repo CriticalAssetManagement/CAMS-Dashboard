@@ -34,7 +34,7 @@ export const HomePage = () => {
     const mapRef = useRef(MAP_ID)
 
     useEffect(() => {
-        if(!showAssets) return
+        if(!showAssets) return 
 		map()
 	}, [showAssets])
 
@@ -52,6 +52,7 @@ export const HomePage = () => {
 
         // layer group
         var mg = L.layerGroup()
+        //console.log("showAssets", showAssets)
         loadMarkers (showAssets, mg, map)
 
         // add print control
@@ -60,7 +61,7 @@ export const HomePage = () => {
 
         // get icon legends and add to map
         let legend=getLegend(L)
-        legend.addTo(map)
+        legend.addTo(map) 
 
 		window.map = map
 
