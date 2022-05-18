@@ -117,7 +117,8 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
     useEffect(() => {
         // get all hazard event names
         if(Object.keys(frames).length) {
-            let type = `${prefix}${HAZARD_TYPE}`
+            //let type = `${prefix}${HAZARD_TYPE}`
+            let type = `${HAZARD_TYPE}`
             let list = frames[type]["@values"], options=[]
             list.map(lst => {
                 options.push({label: lst, value: lst})

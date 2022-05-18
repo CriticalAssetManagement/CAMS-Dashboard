@@ -43,6 +43,10 @@ import {
 import "leaflet-arrowheads"
 import "leaflet.browser.print/dist/leaflet.browser.print.js"
 import {getGradeIcons, getAssetTypeIcons} from "./icons"
+import {antPath} from 'leaflet-ant-path'
+
+import "leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css";
+import "leaflet-extra-markers/dist/js/leaflet.extra-markers.js";
 
 // get colored markers if grade and asset type avail
 function getMarkerOptions(asset) {
@@ -50,9 +54,25 @@ function getMarkerOptions(asset) {
     if(asset.hasOwnProperty(VAR_ASSET_TYPE)) {
         options=getAssetTypeIcons(asset, VAR_ASSET_TYPE)
     }
+
     if(asset.hasOwnProperty(VAR_GRADE)) {
         let gradeColor=getGradeIcons(asset)
         // create a new icon with the grade color
+        /*var  antPolyline = antPath(gatherLinkedChains, DASH_LINES_OPTIONS)
+            layerJson[
+                `<span class='my-layer-item'>${FAILURE_CHAIN_LINKS}</span>
+                <i style='display: inline-block;
+                    border-top: 10px solid #ffffffff;
+                    border-right: 10px solid #800000;
+                    width: 10px;
+                    height: 10px;
+                    float: left;
+                    opacity: 0.5;
+                    margin-right: 8px;
+                    margin-top: 3px;'/>`
+            ] = antPolyline.addTo(layerGorup) */
+
+
         let icon = options.icon.options.icon
         let gradedOptions = {
             icon: L.ExtraMarkers.icon({
@@ -81,7 +101,7 @@ function getLinkedMarkerOptions (asset , key) {
 
 // get pop up content
 export function getPopContent (coord){
-    console.log("coord",  coord)
+    //console.log("coord",  coord)
     let element = [], ownerElement = []
 
     // Owner info available
@@ -249,10 +269,10 @@ export function  gatherVectorLines(vector, displayFailureChains, displayUpwardCh
     if(displayFailureChains && Array.isArray(displayFailureChains) && displayFailureChains.length>0) {
         let gatherLinkedChains=[]
         gatherLinkedChains=gatherFailureLines(displayFailureChains, onMarkerClick)
+
         if (Array.isArray(gatherLinkedChains) ) {
             // add dashed lines to map to show indirect links
-            var  antPolyline = L.polyline.antPath(gatherLinkedChains, DASH_LINES_OPTIONS)
-
+            var  antPolyline = antPath(gatherLinkedChains, DASH_LINES_OPTIONS)
             layerJson[
                 `<span class='my-layer-item'>${FAILURE_CHAIN_LINKS}</span>
                 <i style='display: inline-block;
@@ -267,7 +287,6 @@ export function  gatherVectorLines(vector, displayFailureChains, displayUpwardCh
             ] = antPolyline.addTo(layerGorup)
 
         }
-
     }
 
     // display upward chains
@@ -298,7 +317,8 @@ export function  gatherVectorLines(vector, displayFailureChains, displayUpwardCh
         gatherUpwardFailureLinked=gatherLinkedUpwardFailureChain(displayUpwardChains, onMarkerClick)
         if (Array.isArray(gatherUpwardFailureLinked) ) {
             // add dashed lines to map to show indirect links
-            var  antPolyline = L.polyline.antPath(gatherUpwardFailureLinked, UPWARD_DASH_LINES_OPTIONS)
+            //var  antPolyline = L.polyline.antPath(gatherUpwardFailureLinked, UPWARD_DASH_LINES_OPTIONS)
+            var  antPolyline = antPath(gatherUpwardFailureLinked, UPWARD_DASH_LINES_OPTIONS)
 
             layerJson[
                 `<span class='my-layer-item'>${UPWARD_FAILURE_CHAIN_TITLE}</span>
@@ -415,3 +435,25 @@ export function getMarkers (assets, layerGroup, setOnMarkerClick) {
         let marker = drawMarkers(asset, coord, options, setOnMarkerClick, layerGroup)
     })
 }
+
+
+
+/*if (Array.isArray(gatherLinkedChains) ) { // es5 ant path code 
+    // add dashed lines to map to show indirect links
+    var  antPolyline = L.polyline.antPath(gatherLinkedChains, DASH_LINES_OPTIONS)
+
+    layerJson[
+        `<span class='my-layer-item'>${FAILURE_CHAIN_LINKS}</span>
+        <i style='display: inline-block;
+            border-top: 10px solid #ffffffff;
+            border-right: 10px solid #800000;
+            width: 10px;
+            height: 10px;
+            float: left;
+            opacity: 0.5;
+            margin-right: 8px;
+            margin-top: 3px;'/>`
+    ] = antPolyline.addTo(layerGorup)
+
+}*/
+
