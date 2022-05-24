@@ -49,6 +49,7 @@ export const VAR_LINKED_ASSET_DESCRIPTION ="LinkedAssetDescription"
 export const VAR_ASSET_TYPE="AssetType"
 export const VAR_LINKED_ASSET_TYPE="LinkedAssetType"
 export const VAR_OWNER="Owner"
+export const VAR_ASSET_ENUM_SCHEMA_REF="@schema:AssetEnum/"
 
 // color constants
 export const CRITICAL_COLOR="#bf0a30"//"#dc3545"

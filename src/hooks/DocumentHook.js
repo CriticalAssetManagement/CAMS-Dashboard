@@ -13,7 +13,7 @@ export function DocumentHook(woqlClient, document, onRefreshTab, handleRefresh, 
             setSuccessMsg(`Successfully added`)
             setLoading(false)
         }
-        catch(err){
+        catch(err){ 
            setErrorMsg(err.message)
        }
     }

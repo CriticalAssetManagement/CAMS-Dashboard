@@ -27,7 +27,8 @@ export const UserForm = () => {
         loading,
         setLoading,
         refresh,
-        setRefresh
+        setRefresh,
+        accessControlDashboard
 	} = WOQLClientObj()
 
     const {
@@ -59,6 +60,10 @@ export const UserForm = () => {
         isAuthenticated
     } = useAuth0()
 
+    console.log("accessControlDashboard", 
+        accessControlDashboard.instanceRead(),
+        accessControlDashboard.instanceWrite(),
+        accessControlDashboard.classFrame())
 
     // create
     let result=DocumentHook(woqlClient, extracted, VIEW_USER_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)

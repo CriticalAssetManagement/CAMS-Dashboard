@@ -123,7 +123,7 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
     useEffect(() => {
         //if(!filterAssetByEvent) return
         //if(!filterAssetById) return
-        setPolyLine(false)
+        setPolyLine(false) 
         let q = getAssetsByEventsOrIDQuery(filterAssetByEvent, filterAssetById)
         setFilterAssetByEventOrIDQuery(q)
     }, [filterAssetByEvent, filterAssetById])

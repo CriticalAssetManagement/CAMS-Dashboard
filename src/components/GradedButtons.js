@@ -4,7 +4,7 @@ import {Button} from "react-bootstrap"
 import {BG_AMBER, BG_GOLD, BG_FIRE, BG_DIJON, BG_RED, BG_CHILI, BG_BURGUNDY, BG_SANGRIA} from "./maps/markers"
 
 export const GradedButtons = ({setCurrentGrade, max}) => {
-
+ 
     function handleGrade(e) {
         if(setCurrentGrade) setCurrentGrade(e.target.id)
     }

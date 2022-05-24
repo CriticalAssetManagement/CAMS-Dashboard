@@ -12,7 +12,7 @@ import {
     BG_DIJON,
     BG_BURGUNDY
 } from "./markers"
-import {VAR_GRADE} from "../constants"
+import {VAR_GRADE, VAR_ASSET_ENUM_SCHEMA_REF} from "../constants"
 import {
     ENERGY_ICON,
     ENERGY,
@@ -38,7 +38,7 @@ import {
 } from "./markerTypes"
 
 function getEnumTypeFromFrames(type) {
-    return "@schema:AssetEnum/"+encodeURI(type.trim())
+    return VAR_ASSET_ENUM_SCHEMA_REF+encodeURI(type.trim())
 }
 
 

@@ -49,7 +49,7 @@ export const InfoBar = ({documents, info}) => {
             </div>
         </Badge>
         {' '}
-        <Badge bg="transparent" pill className="mt-3 h6 go-to-asset-badge">
+        {/*<Badge bg="transparent" pill className="mt-3 h6 go-to-asset-badge">
             <Nav.Link
                 as={RouterNavLink}
                 title={ASSET_FORM}
@@ -64,7 +64,7 @@ export const InfoBar = ({documents, info}) => {
                     <h5 className="text-primary "><FiMoreHorizontal/></h5>
                 </div>
             </Nav.Link>
-        </Badge>
+        </Badge>*/}
     </div>
 
 
