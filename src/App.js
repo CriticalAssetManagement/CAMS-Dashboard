@@ -14,8 +14,15 @@ import { UserManagement } from "./pages/UserManagement"
 import {HelpPage} from "./pages/HelpPage"
 import {USER_FORM_PAGE, OWNER_FORM_PAGE, ASSETS_LINK_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE,USER_MANAGEMENT_PAGE} from "./routing/constants"
 //import {USER_FORM_PAGE, OWNER_FORM_PAGE, ASSETS_LINK_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE} from "./routing/constants"
+import {WOQLClientObj} from './init-woql-client'
 
 export function App (props){
+	const {
+		accessControlDashboard
+	} = WOQLClientObj()
+	
+	const isAdmin = accessControlDashboard && accessControlDashboard.isAdmin() ? true : false
+   
     return <React.Fragment>
 			<div className="container-fluid container-background h-100">			
 				<Routes >	
@@ -26,7 +33,7 @@ export function App (props){
 						<Route path={ASSET_FORM_PAGE} element = {<ManageAsset/>} />
 						<Route path={ASSETS_LINK_PAGE} element = {<ManageLinks/>} />
 						<Route path={REPORTS_PAGE} element = {<Reports/>} />
-						<Route path={USER_MANAGEMENT_PAGE} element={<UserManagement/>} />
+						{isAdmin && <Route path={USER_MANAGEMENT_PAGE} element={<UserManagement/>} />}
 						<Route path="/" element = {<HelpPage/>} />
 				</Routes>
 			

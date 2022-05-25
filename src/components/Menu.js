@@ -39,7 +39,7 @@ const BrandIcon = () => {
 export const Menu = () => {
 
     const {
-		setPage,team,
+		setPage,team, accessControlDashboard
 	} = WOQLClientObj()
 
     const {
@@ -60,6 +60,7 @@ export const Menu = () => {
         logout(config)
     }
     
+    const isAdmin = accessControlDashboard && accessControlDashboard.isAdmin() ? true : false
      
     const toHomeTeam = HOME_PAGE.replace(":teamid",team) 
     let resolved = useResolvedPath(toHomeTeam);
@@ -181,7 +182,8 @@ export const Menu = () => {
                                     <AiOutlineUser className="mr-3 mb-1" />Profile
                                 </Nav.Link>*/}
                         </Dropdown.Item>
-                        <Dropdown.Item>
+                        
+                        {isAdmin && <React.Fragment><Dropdown.Item>
                             <Nav.Link  as={RouterNavLink}
                                 title={USER_MANAGEMENT}
                                 to={USER_MANAGEMENT_PAGE.replace(":teamid",team)}
@@ -190,8 +192,9 @@ export const Menu = () => {
                                 id={USER_MANAGEMENT_PAGE}>
                                     <GrUserAdmin  className="mr-3 mb-1" />User Manager
                             </Nav.Link>
-                        </Dropdown.Item>
-                        <Dropdown.Divider />
+                        </Dropdown.Item> 
+
+                        <Dropdown.Divider /> </React.Fragment>}
                         <Dropdown.Item>
                             <Nav.Link
                                 title={"Logout"}
