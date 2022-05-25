@@ -29,6 +29,10 @@ export const Reports = () => {
         isAuthenticated
     } = useAuth0()
 
+    const {
+        tabControl
+    } = DocumentContextObj()
+
     const [query, setQuery] = useState(false)
     const [assets, setAssets] = useState(false)
     let results = QueryHook(woqlClient, query, setLoading)
@@ -78,14 +82,14 @@ export const Reports = () => {
         }
     }, [results])
 
-    console.log("assets",assets)
+    //console.log("assets",assets)
 
     return <div className="mb-5">
         <Layout/>
 
         {!isAuthenticated &&  <Login/>}
 
-        {isAuthenticated  && <div className="px-3 content-container">
+        {tabControl.read && isAuthenticated  && <div className="px-3 content-container">
             <span className="table-word-break">
                 <Table documents = {assets}
                     //css={CRITCAL_LIST_TABLE_CSS}

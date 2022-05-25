@@ -1,7 +1,7 @@
 import React, {useState, useLayoutEffect, useEffect} from "react"
 import {ButtonToolbar, Badge, ButtonGroup, Button, Row, Col, ListGroup} from "react-bootstrap"
 import {AiFillAlert, AiOutlineAlert} from "react-icons/ai"
-import {CRITICAL_LINKS, NON_CRITICAL_LINKS, EMPTY_PLACEHOLDER, VAR_NAME, VAR_CRITICAL, CRITICAL_LINK_TITLE, NON_CRITICAL_LINK_TITLE, CRITICAL_LINKS_TITLE} from "./constants"
+import {CRITICAL_LINKS, NON_CRITICAL_LINKS, EMPTY_PLACEHOLDER, VAR_NAME, VAR_CRITICAL, CRITICAL_LINK_TITLE, NON_CRITICAL_LINK_TITLE, CRITICAL_LINKS_TITLE, VAR_ASSET_ENUM_SCHEMA_REF, VAR_ASSET_TYPE} from "./constants"
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import {getCriticalAssetConfig} from "./Views"
@@ -27,11 +27,19 @@ const ShowCriticalList = ({documents, setCurrentAsset, ownerResults}) => {
         }
     })
 
+    function renderAssetType(row) {
+        let value = row.value
+        const ref = VAR_ASSET_ENUM_SCHEMA_REF
+        let decoded=decodeURI(value)
+        let extracted=decoded.substring(ref.length, decoded.length)
+        return <>{extracted}</>
+    }
+
     return <span className="table-word-break">
         <Table documents = {criticalList}
             title={CRITICAL_LINK_TITLE}
             css={CRITCAL_LIST_TABLE_CSS}
-            config={getCriticalAssetConfig(criticalList, onRowClick)}
+            config={getCriticalAssetConfig(criticalList, onRowClick, renderAssetType)}
         />
     </span>
 }

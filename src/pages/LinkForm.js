@@ -52,7 +52,8 @@ export const LinkForm = () => {
         setType,
         type,
         traverseDocument,
-        goToPreviousLinkedDocument
+        goToPreviousLinkedDocument,
+        tabControl
     } = DocumentContextObj()
 
     const {
@@ -104,13 +105,13 @@ export const LinkForm = () => {
                 activeKey={tabKey}
                 onSelect={(k) => {setTabKey(k)}}
                 className="mb-3">
-                <Tab eventKey={VIEW_LINK_LIST} title={VIEW_LINK_LIST}>
+               {tabControl.read && <Tab eventKey={VIEW_LINK_LIST} title={VIEW_LINK_LIST}>
                     <DisplayDocuments results={linkResults}
                         css={LINK_PAGE_TABLE_CSS}
                         title={LINK_TYPE}
                         config={getUserConfig(linkResults, onRowClick)}/>
-                </Tab>
-                {showDocument && !editDocument &&
+                </Tab>}
+                {tabControl.read && showDocument && !editDocument &&
                     <Tab eventKey={VIEW_CLICKED_LINK} title={VIEW_CLICKED_LINK}>
                         {Array.isArray(traverseDocument.previous) && <span className="col-md-1 ml-5">
                             <Button
@@ -142,7 +143,7 @@ export const LinkForm = () => {
                         }
                     </Tab>
                 }
-                {editDocument && <Tab eventKey={EDIT_CLICKED_LINK} title={EDIT_CLICKED_LINK}>
+                {tabControl.write && editDocument && <Tab eventKey={EDIT_CLICKED_LINK} title={EDIT_CLICKED_LINK}>
                     <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
@@ -151,12 +152,12 @@ export const LinkForm = () => {
                         editDocument={editDocument}/>
                     </Tab>
                 }
-                <Tab eventKey={CREATE_LINK_TAB} title={CREATE_LINK_TAB}>
+                {tabControl.write && <Tab eventKey={CREATE_LINK_TAB} title={CREATE_LINK_TAB}>
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
                         type={LINK_TYPE}
                         handleSubmit={handleDocumentSubmit}/>}
-                </Tab>
+                </Tab>}
             </Tabs>
 
             <Alerts successMsg={successMsg}/>

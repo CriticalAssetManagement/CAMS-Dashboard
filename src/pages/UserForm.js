@@ -27,8 +27,7 @@ export const UserForm = () => {
         loading,
         setLoading,
         refresh,
-        setRefresh,
-        accessControlDashboard
+        setRefresh
 	} = WOQLClientObj()
 
     const {
@@ -53,17 +52,14 @@ export const UserForm = () => {
         setType,
         type,
         traverseDocument,
-        goToPreviousLinkedDocument
+        goToPreviousLinkedDocument,
+        tabControl
     } = DocumentContextObj()
+
 
     const {
         isAuthenticated
     } = useAuth0()
-
-    console.log("accessControlDashboard", 
-        accessControlDashboard.instanceRead(),
-        accessControlDashboard.instanceWrite(),
-        accessControlDashboard.classFrame())
 
     // create
     let result=DocumentHook(woqlClient, extracted, VIEW_USER_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
@@ -94,6 +90,7 @@ export const UserForm = () => {
             setShowDocument(documentResults)
         }
     }, [documentResults])
+    
 
 
     return <div className="mb-5">
@@ -109,13 +106,13 @@ export const UserForm = () => {
                 activeKey={tabKey}
                 onSelect={(k) => {setTabKey(k)}}
                 className="mb-3">
-                <Tab eventKey={VIEW_USER_LIST} title={VIEW_USER_LIST}>
+                {tabControl.read && <Tab eventKey={VIEW_USER_LIST} title={VIEW_USER_LIST}>
                     <DisplayDocuments results={userResults}
                         css={USER_PAGE_TABLE_CSS}
                         title={USER_TYPE}
                         config={getUserConfig(userResults, onRowClick)}/>
-                </Tab>
-                {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_USER} title={VIEW_CLICKED_USER}>
+                </Tab>}
+                {tabControl.read && showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_USER} title={VIEW_CLICKED_USER}>
                     {Array.isArray(traverseDocument.previous) &&
                         <span className="col-md-1 ml-5">
                             <Button
@@ -148,7 +145,7 @@ export const UserForm = () => {
                     }
                     </Tab>
                 }
-                {editDocument && <Tab eventKey={EDIT_CLICKED_USER} title={EDIT_CLICKED_USER}>
+                {tabControl.write && editDocument && <Tab eventKey={EDIT_CLICKED_USER} title={EDIT_CLICKED_USER}>
                     <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
@@ -157,12 +154,13 @@ export const UserForm = () => {
                         editDocument={editDocument}/>
                     </Tab>
                 }
-                <Tab eventKey={CREATE_USER_TAB} title={CREATE_USER_TAB}>
+                {tabControl.write && <Tab eventKey={CREATE_USER_TAB} title={CREATE_USER_TAB}>
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
                         type={USER_TYPE}
                         handleSubmit={handleDocumentSubmit}/>}
-                </Tab>
+                </Tab>}
+
             </Tabs>
 
             <Alerts successMsg={successMsg}/>

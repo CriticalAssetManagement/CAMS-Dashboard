@@ -39,7 +39,8 @@ const BrandIcon = () => {
 export const Menu = () => {
 
     const {
-		setPage,team,
+		setPage,
+        team
 	} = WOQLClientObj()
 
     const {

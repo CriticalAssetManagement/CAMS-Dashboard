@@ -31,8 +31,7 @@ import {
     VAR_LINKED_ASSET_DESCRIPTION,
     VAR_ASSET_TYPE,
     VAR_LINKED_ASSET_TYPE,
-    VAR_ASSET_NAME,
-    VAR_ASSET_ENUM_SCHEMA_REF
+    VAR_ASSET_NAME
 } from "./constants"
 import {MdAddAlert} from "react-icons/md"
 import { ASSET_TYPE } from '../pages/constants'
@@ -168,12 +167,7 @@ export function extractAssetLocations(results) {
             json[VAR_GRADE] = item[VAR_GRADE]["@value"]
         }
         if(item.hasOwnProperty(VAR_ASSET_TYPE)) {
-            const ref = VAR_ASSET_ENUM_SCHEMA_REF
-            let decoded=decodeURI(item[VAR_ASSET_TYPE])
-            let extracted=decoded.substring(ref.length, decoded.length)
-            console.log("*** extracted asset tyep", extracted)
             json[VAR_ASSET_TYPE] = item[VAR_ASSET_TYPE]
-            //json[VAR_ASSET_TYPE] = item[VAR_ASSET_TYPE]
         }
         if(item.hasOwnProperty("Owner_group")) { 
             json[VAR_OWNER] = item["Owner_group"]
@@ -322,6 +316,29 @@ export function getAssetSelectOptions(list) {
     return opts
 }
 
+
+Date.prototype.toShortFormat = function() {
+
+    let monthNames =["Jan","Feb","Mar","Apr",
+                      "May","Jun","Jul","Aug",
+                      "Sep", "Oct","Nov","Dec"]
+    
+    let day = this.getDate()
+    
+    let monthIndex = this.getMonth()
+    let monthName = monthNames[monthIndex]
+    
+    let year = this.getFullYear()
+    
+    return `${day}-${monthName}-${year}` 
+}
+
+
+export function renderDates(row) {
+    let value = row.value
+    let displayDate=new Date(value).toShortFormat()
+    return <>{displayDate}</>
+}
 
 
 

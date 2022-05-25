@@ -13,6 +13,7 @@ import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../c
 import {BiArrowBack} from "react-icons/bi"
 import { useAuth0 } from "@auth0/auth0-react"
 import {Login} from "./Login"
+import {renderDates} from "../components/utils"
 
 export const AssetForm = () => {
 
@@ -52,7 +53,8 @@ export const AssetForm = () => {
         setType,
         type,
         traverseDocument,
-        goToPreviousLinkedDocument
+        goToPreviousLinkedDocument,
+        tabControl
     } = DocumentContextObj()
 
     const {
@@ -87,6 +89,8 @@ export const AssetForm = () => {
         }
     }, [documentResults])
 
+    
+
     return <div className="mb-5">
         <Layout/>
 
@@ -100,14 +104,14 @@ export const AssetForm = () => {
                 activeKey={tabKey}
                 onSelect={(k) => setTabKey(k)}
                 className="mb-3">
-                <Tab eventKey={VIEW_ASSET_LIST} title={VIEW_ASSET_LIST}>
+                {tabControl.read && <Tab eventKey={VIEW_ASSET_LIST} title={VIEW_ASSET_LIST}>
                     <DisplayDocuments results={assetResults}
                         css={ASSET_PAGE_TABLE_CSS}
-                        config={getAssetConfig(assetResults, onRowClick)}
+                        config={getAssetConfig(assetResults, onRowClick, renderDates)}
                         title={ASSET_TYPE}
                         onRowClick={onRowClick}/>
-                </Tab>
-                {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_ASSET} title={VIEW_CLICKED_ASSET}>
+                </Tab>}
+                {tabControl.read && showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_ASSET} title={VIEW_CLICKED_ASSET}>
 
                         {Array.isArray(traverseDocument.previous) && <span className="col-md-1 ml-5">
                             <Button
@@ -138,7 +142,7 @@ export const AssetForm = () => {
                         }
                     </Tab>
                 }
-                {editDocument && <Tab eventKey={EDIT_CLICKED_ASSET} title={EDIT_CLICKED_ASSET}>
+                {tabControl.write && editDocument && <Tab eventKey={EDIT_CLICKED_ASSET} title={EDIT_CLICKED_ASSET}>
                     <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
@@ -147,12 +151,12 @@ export const AssetForm = () => {
                         editDocument={editDocument}/>
                     </Tab>
                 }
-                <Tab eventKey={CREATE_ASSET_TAB} title={CREATE_ASSET_TAB}>
+                {tabControl.write && <Tab eventKey={CREATE_ASSET_TAB} title={CREATE_ASSET_TAB}>
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
                         type={ASSET_TYPE}
                         handleSubmit={handleDocumentSubmit}/>}
-                </Tab>
+                </Tab>}
             </Tabs>
 
             <Alerts successMsg={successMsg}/>
