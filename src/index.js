@@ -18,7 +18,8 @@ const pathNameArr = window.location.pathname.split('/')
 if(pathNameArr.length>0 && pathNameArr[1].length > 0){
 	teamName=pathNameArr[1]
 	if(teamIdList.indexOf(teamName) === -1){
-		history.push("/")
+		teamName = undefined
+		window.location.replace(window.location.origin)		
 	}
 }
 // https://auth0.github.io/auth0-react/interfaces/auth0_provider.auth0provideroptions.html
