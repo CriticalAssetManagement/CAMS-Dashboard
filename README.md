@@ -19,7 +19,7 @@ TerminusX is used as our database back-end to store the critical assets.
 
 - Create a new Data Product by the ID ```CAMSDemo```
 
-- Add the CAMS schema which you will find https://github.com/CriticalAssetManagement/CAMS-Dashboard/schema.json
+- Add the the CAMS schema from https://github.com/CriticalAssetManagement/CAMS-Dashboard/blob/main/schema.JSON
 
 ### Step 2 - Clone CAMS Dashboard repo ```CAMS-Dashboard```
 
