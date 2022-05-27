@@ -40,16 +40,16 @@ export const ViewDocument = ({frames, type, getDocumentToolBar, onTraverse, Fiel
 }
 
 
-export const CreateDocument = ({frames, type, handleSelect, handleSubmit}) => {
+export const CreateDocument = ({frames, type, handleSelect, handleSubmit, formData}) => {
 
     return <Card className="text-break p-4">
         <Form frames={frames}
             uiFrame={UI_FRAMES}
             type={type}
-            mode={CREATE_MODE}
+            mode={CREATE_MODE} 
             onSubmit={handleSubmit}
             onSelect={handleSelect}
-            formData={{}}
+            formData={formData}
         />
     </Card>
 }

@@ -171,7 +171,7 @@ export const Menu = () => {
                         width="50"
                         />
                     </Dropdown.Toggle>
-                    <Dropdown.Menu>
+                    <Dropdown.Menu drop="start">
                         <Dropdown.Item>
                             {/* <Nav.Link  as={RouterNavLink}
                                 title={PROFILE}

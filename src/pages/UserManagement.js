@@ -1,8 +1,9 @@
 import React  from 'react';
-import { TeamMembers } from '@terminusdb/terminusdb-access-control-component';
+import { TeamMembers } from '@terminusdb/terminusdb-access-control-component'
 import {Layout} from "../components/Layout"
 import {WOQLClientObj} from '../init-woql-client'
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react"
+import {Card} from "react-bootstrap"
 
 export const UserManagement = (props) =>{
     const {user} = useAuth0();
@@ -39,6 +40,10 @@ export const UserManagement = (props) =>{
 
     return  <div className="mb-5">
                 <Layout/>
-                <TeamMembers organization={team} currentUser={user} options={setting} accessControlDashboard={accessControlDashboard} />
+                <Card className="border-0">
+                    <div className="user-mnagement-padding">
+                        <TeamMembers organization={team} currentUser={user} options={setting} accessControlDashboard={accessControlDashboard} />
+                    </div>
+                </Card>
             </div>
 }

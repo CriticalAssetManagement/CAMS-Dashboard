@@ -156,6 +156,7 @@ export const LinkForm = () => {
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
                         type={LINK_TYPE}
+                        formData={extracted}
                         handleSubmit={handleDocumentSubmit}/>}
                 </Tab>}
             </Tabs>

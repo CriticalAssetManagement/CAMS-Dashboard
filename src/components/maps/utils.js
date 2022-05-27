@@ -125,18 +125,10 @@ export function getPopContent (coord){
     }
     
 
-    element.push(`<div>
-        <div> name:  ${coord.name} </div>
-        <div>owners: ${ownerElement} </div>
-    </div>`)
-
-    return `${element}`
-
-    return `<div>
-        <div> name:  ${coord.name} </div>
-        <div> lat:   ${coord.lat} </div>
-        <div> lng:   ${coord.lng}</div>
-    </div>`
+    element.push(`<span> name:  ${coord.name} </span>`)
+    
+    if(ownerElement.length > 0) element.push(`<span> owners: ${ownerElement} </span>`)
+    return `<span>${element}</span>`
 }
 
 // draw marker

@@ -154,7 +154,8 @@ export const AssetForm = () => {
                 {tabControl.write && <Tab eventKey={CREATE_ASSET_TAB} title={CREATE_ASSET_TAB}>
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
-                        type={ASSET_TYPE}
+                        type={ASSET_TYPE} 
+                        formData={extracted}
                         handleSubmit={handleDocumentSubmit}/>}
                 </Tab>}
             </Tabs>

@@ -156,6 +156,7 @@ export const OwnerForm = () => {
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
                         type={OWNER_TYPE}
+                        formData={extracted}
                         handleSubmit={handleDocumentSubmit}/>}
                 </Tab>}
             </Tabs>

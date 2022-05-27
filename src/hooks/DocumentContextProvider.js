@@ -33,34 +33,24 @@ export const DocumentContextProvider = ({children, params}) => {
 	} = WOQLClientObj()
 
 
-    console.log("accessControlDashboard", accessControlDashboard)
-
-    /*let tempControl = { // admin/ collaborator role/ Data Updater
-        read: true,
-        write: true
-    }*/
-
-    let tempControl = { // DataReader role
-        read: true,
-        write: false
-    }
+    //console.log("accessControlDashboard", accessControlDashboard)
 
     useState(() => {
-        //if(accessControlDashboard) {
+        if(accessControlDashboard) {
             let control={
                 read: false,
                 write: false
             }
-            //if(accessControlDashboard.instanceRead()) {
-            if(tempControl.read) {
+            if(accessControlDashboard.instanceRead()) {
+            //if(tempControl.read) {
                 control.read=true
             }
-            //if(accessControlDashboard.instanceWrite()) {
-            if(tempControl.write) {
+            if(accessControlDashboard.instanceWrite()) {
+            //if(tempControl.write) {
                 control.write=true
             }
             setTabControl(control)
-        //}
+        }
     }, [accessControlDashboard])
 
     // on click of row in WOQLTable
@@ -108,8 +98,8 @@ export const DocumentContextProvider = ({children, params}) => {
     }
 
     function getDocumentToolBar(document) {
-        //if(!accessControlDashboard.instanceWrite()) return <div/>
-        if(!tempControl.write) return <div/>
+        if(!accessControlDashboard.instanceWrite()) return <div/>
+        //if(!tempControl.write) return <div/>
         return <span className="toolbar-right">
            {getEditButton(document)}
            {getDeleteButton(document)}
@@ -124,7 +114,7 @@ export const DocumentContextProvider = ({children, params}) => {
     }
 
     // function to handle document Submit
-    function handleDocumentSubmit(data) {
+    function handleDocumentSubmit(data) { 
         if(!data.hasOwnProperty("@type")) data["@type"] = params.type
         clearMessages()
         setExtracted(data)

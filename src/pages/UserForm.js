@@ -158,6 +158,7 @@ export const UserForm = () => {
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
                         type={USER_TYPE}
+                        formData={extracted}
                         handleSubmit={handleDocumentSubmit}/>}
                 </Tab>}
 
