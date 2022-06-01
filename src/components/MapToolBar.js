@@ -48,8 +48,10 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
         setErrorMsg
 	} = WOQLClientObj()
 
-    const [scaleQuery, setScaleQuery]=useState(false)
+    const [scaleQuery, setScaleQuery]=useState(false) 
     let scaleResults = QueryHook(woqlClient, scaleQuery, setLoading, setSuccessMsg, setErrorMsg)
+
+    //console.log("maxScale", maxScale, scaleResults)
 
     // onchange of select events
     function handleEvents(e) {
@@ -68,11 +70,11 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
             let q = getEventScaleQuery(value.value)
             setScaleQuery(q)
         }
-    }, [value])
+    }, [value]) 
 
     // ones we get min and max of hazrad from hazard scale
     useEffect(() => {
-        if(scaleResults && Array.isArray(scaleResults) && scaleResults.length) {
+        if(scaleResults && Array.isArray(scaleResults) && scaleResults.length > 0) {
             let eventScale = scaleResults[0] // we do only single select of event
             if(eventScale.hasOwnProperty(VAR_MAX)) {
                 setMaxScale(eventScale[VAR_MAX]["@value"])
@@ -125,24 +127,17 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
             })
             setEventList(options)
         }
-    }, [frames])
+    }, [frames]) 
 
     // function to display failure chains
     function handleClicked (e) {
-        //setFailureChain(e.target.checked)
         if(setFailureChain) setFailureChain(true)
-        // clear filter by events or ID
-        //if(setFilterAssetByEvent) setFilterAssetByEvent(false)
-        //if(setFilterAssetById) setFilterAssetById(false)
     }
 
     // function to display upward links
     function handleUpwardChainClick(e) {
         if(setUpwardChain) setUpwardChain(true)
     }
-
-    //console.log("value", value)
-
 
 
     return <Card>
@@ -160,7 +155,7 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
 
 
                 {
-                    eventList &&
+                    eventList && 
                         <Col>
                             <div className="hazard-select-button">
                                 <Select options={eventList}
@@ -183,7 +178,7 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
                                 <GradedButtons setCurrentGrade={setCurrentGrade} max={maxScale}/>
                             </ButtonGroup>
                         </ButtonToolbar>
-                    </Col>
+                    </Col> 
                 }
 
                 {

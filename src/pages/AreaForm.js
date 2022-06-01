@@ -116,6 +116,7 @@ export const AreaForm = () => {
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
                         type={AREA_TYPE}
+                        formData={extracted}
                         handleSubmit={handleDocumentSubmit}/>}
                 </Tab>
             </Tabs>

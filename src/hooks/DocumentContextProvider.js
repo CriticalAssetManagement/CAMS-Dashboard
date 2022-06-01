@@ -20,13 +20,38 @@ export const DocumentContextProvider = ({children, params}) => {
     // on traverse
     const [traverseDocument, setTraverseDocument]= useState(false)
 
+    // tab control constants based on access control priviliges
+    const [tabControl, setTabControl]=useState({})
+
     const {
         setSuccessMsg,
         setErrorMsg,
         woqlClient,
         clearMessages,
-        setRefresh
+        setRefresh,
+        accessControlDashboard
 	} = WOQLClientObj()
+
+
+    //console.log("accessControlDashboard", accessControlDashboard)
+
+    useState(() => {
+        if(accessControlDashboard) {
+            let control={
+                read: false,
+                write: false
+            }
+            if(accessControlDashboard.instanceRead()) {
+            //if(tempControl.read) {
+                control.read=true
+            }
+            if(accessControlDashboard.instanceWrite()) {
+            //if(tempControl.write) {
+                control.write=true
+            }
+            setTabControl(control)
+        }
+    }, [accessControlDashboard])
 
     // on click of row in WOQLTable
     function onRowClick(row) {
@@ -73,10 +98,12 @@ export const DocumentContextProvider = ({children, params}) => {
     }
 
     function getDocumentToolBar(document) {
-       return <span className="toolbar-right">
+        if(!accessControlDashboard.instanceWrite()) return <div/>
+        //if(!tempControl.write) return <div/>
+        return <span className="toolbar-right">
            {getEditButton(document)}
            {getDeleteButton(document)}
-       </span>
+        </span>
     }
 
     // clear clicked document to view
@@ -87,7 +114,7 @@ export const DocumentContextProvider = ({children, params}) => {
     }
 
     // function to handle document Submit
-    function handleDocumentSubmit(data) {
+    function handleDocumentSubmit(data) { 
         if(!data.hasOwnProperty("@type")) data["@type"] = params.type
         clearMessages()
         setExtracted(data)
@@ -143,7 +170,7 @@ export const DocumentContextProvider = ({children, params}) => {
     function handleSelect(inp, type) {
         if(!inp) return
         return handleDocumentSelect(woqlClient, inp, type)
-    }
+    } 
 
     //function to manage page page tabs
     function managePageTabs() {
@@ -155,7 +182,7 @@ export const DocumentContextProvider = ({children, params}) => {
         }
         setSuccessMsg(false)
         setErrorMsg(false)
-    }
+    }  
 
 
     return (
@@ -186,7 +213,8 @@ export const DocumentContextProvider = ({children, params}) => {
                 setType,
                 type,
                 traverseDocument,
-                goToPreviousLinkedDocument
+                goToPreviousLinkedDocument,
+                tabControl
             }}
         >
             {children}

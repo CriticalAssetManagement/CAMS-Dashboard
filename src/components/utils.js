@@ -317,6 +317,29 @@ export function getAssetSelectOptions(list) {
 }
 
 
+Date.prototype.toShortFormat = function() {
+
+    let monthNames =["Jan","Feb","Mar","Apr",
+                      "May","Jun","Jul","Aug",
+                      "Sep", "Oct","Nov","Dec"]
+    
+    let day = this.getDate()
+    
+    let monthIndex = this.getMonth()
+    let monthName = monthNames[monthIndex]
+    
+    let year = this.getFullYear()
+    
+    return `${day}-${monthName}-${year}` 
+}
+
+
+export function renderDates(row) {
+    let value = row.value
+    let displayDate=new Date(value).toShortFormat()
+    return <>{displayDate}</>
+}
+
 
 
 

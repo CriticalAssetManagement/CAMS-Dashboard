@@ -7,7 +7,7 @@ import {HOME_PAGE} from './routing/constants'
 import {AccessControlDashboard} from "@terminusdb/terminusdb-access-control-component"
 import {getClientAccessControl} from "./utils/clientAccessControl"
 import { useAuth0 } from "@auth0/auth0-react";
-//profiles_test
+//profiles_test 
 export const WOQLClientProvider = ({children, team}) => {
     const {user,getAccessTokenSilently } = useAuth0();
     let server = process.env.TERMINUSDB_SERVER
@@ -44,6 +44,7 @@ export const WOQLClientProvider = ({children, team}) => {
         await accessControlDash.callGetRolesList()
         // get team role
         await accessControlDash.callGetUserTeamRole(team,user.email)
+        console.log("accessControlDash", accessControlDash)
         setAccessControlDash(accessControlDash)
     }
 

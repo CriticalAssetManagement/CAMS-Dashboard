@@ -44,11 +44,9 @@ import "leaflet-arrowheads"
 import "leaflet.browser.print/dist/leaflet.browser.print.js"
 import {getGradeIcons, getAssetTypeIcons} from "./icons"
 import {antPath} from 'leaflet-ant-path'
+export const ExtraMarkers = L.ExtraMarkers
 
-import "leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css";
-import "leaflet-extra-markers/dist/js/leaflet.extra-markers.js";
-
-// get colored markers if grade and asset type avail
+// get colored markers if grade and asset tfype avail
 function getMarkerOptions(asset) {
     var options=MARKER_OPTIONS
     if(asset.hasOwnProperty(VAR_ASSET_TYPE)) {
@@ -58,23 +56,9 @@ function getMarkerOptions(asset) {
     if(asset.hasOwnProperty(VAR_GRADE)) {
         let gradeColor=getGradeIcons(asset)
         // create a new icon with the grade color
-        /*var  antPolyline = antPath(gatherLinkedChains, DASH_LINES_OPTIONS)
-            layerJson[
-                `<span class='my-layer-item'>${FAILURE_CHAIN_LINKS}</span>
-                <i style='display: inline-block;
-                    border-top: 10px solid #ffffffff;
-                    border-right: 10px solid #800000;
-                    width: 10px;
-                    height: 10px;
-                    float: left;
-                    opacity: 0.5;
-                    margin-right: 8px;
-                    margin-top: 3px;'/>`
-            ] = antPolyline.addTo(layerGorup) */
-
-
+        
         let icon = options.icon.options.icon
-        let gradedOptions = {
+        /*let gradedOptions = {
             icon: L.ExtraMarkers.icon({
                 shape: 'circle',
                 markerColor: gradeColor,
@@ -87,7 +71,26 @@ function getMarkerOptions(asset) {
                 svg: true,
                 shadowSize: [0, 0]
             })
-        }
+        }*/
+        //this is a temporary solution L loast ExtraMarkers 
+        //We have to investigate this better
+        //do not remove before fix the problem!!!!
+        L.ExtraMarkers = ExtraMarkers
+        let gradedOptions = {
+            icon: L.ExtraMarkers.icon({
+                shape: 'circle',
+                markerColor: gradeColor,
+                prefix: 'fa',
+                icon: icon,
+                iconColor: "#fff",
+                iconRotate: 0,
+                extraClasses: 'fa-2x',
+                number: '',
+                svg: true,
+                shadowSize: [0, 0]
+        })
+    }
+   
         return gradedOptions
     }
     return options
@@ -122,18 +125,10 @@ export function getPopContent (coord){
     }
     
 
-    element.push(`<div>
-        <div> name:  ${coord.name} </div>
-        <div>owners: ${ownerElement} </div>
-    </div>`)
-
-    return `${element}`
-
-    return `<div>
-        <div> name:  ${coord.name} </div>
-        <div> lat:   ${coord.lat} </div>
-        <div> lng:   ${coord.lng}</div>
-    </div>`
+    element.push(`<span> name:  ${coord.name} </span>`)
+    
+    if(ownerElement.length > 0) element.push(`<span> owners: ${ownerElement} </span>`)
+    return `<span>${element}</span>`
 }
 
 // draw marker

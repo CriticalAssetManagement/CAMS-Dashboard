@@ -52,7 +52,8 @@ export const OwnerForm = () => {
         setType,
         type,
         traverseDocument,
-        goToPreviousLinkedDocument
+        goToPreviousLinkedDocument,
+        tabControl
     } = DocumentContextObj()
 
     const {
@@ -103,13 +104,13 @@ export const OwnerForm = () => {
                 activeKey={tabKey}
                 onSelect={(k) => {setTabKey(k)}}
                 className="mb-3">
-                <Tab eventKey={VIEW_OWNER_LIST} title={VIEW_OWNER_LIST}>
+                {tabControl.read && <Tab eventKey={VIEW_OWNER_LIST} title={VIEW_OWNER_LIST}>
                     <DisplayDocuments results={ownerResults}
                         css={OWNER_PAGE_TABLE_CSS}
                         title={OWNER_TYPE}
                         config={getOwnerConfig(ownerResults, onRowClick)}/>
-                </Tab>
-                {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_OWNER} title={VIEW_CLICKED_OWNER}>
+                </Tab>}
+                {tabControl.read && showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_OWNER} title={VIEW_CLICKED_OWNER}>
                     {Array.isArray(traverseDocument.previous) &&
                         <span className="col-md-1 ml-5">
                             <Button
@@ -142,7 +143,7 @@ export const OwnerForm = () => {
                     }
                     </Tab>
                 }
-                {editDocument && <Tab eventKey={EDIT_CLICKED_OWNER} title={EDIT_CLICKED_OWNER}>
+                {tabControl.write && editDocument && <Tab eventKey={EDIT_CLICKED_OWNER} title={EDIT_CLICKED_OWNER}>
                     <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
@@ -151,12 +152,13 @@ export const OwnerForm = () => {
                         editDocument={editDocument}/>
                     </Tab>
                 }
-                <Tab eventKey={CREATE_OWNER_TAB} title={CREATE_OWNER_TAB}>
+                {tabControl.write && <Tab eventKey={CREATE_OWNER_TAB} title={CREATE_OWNER_TAB}>
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
                         type={OWNER_TYPE}
+                        formData={extracted}
                         handleSubmit={handleDocumentSubmit}/>}
-                </Tab>
+                </Tab>}
             </Tabs>
 
             <Alerts successMsg={successMsg}/>
