@@ -75,7 +75,7 @@ export const LinkForm = () => {
 
     useEffect(() => {
         // on changing tabs
-        managePageTabs()
+        managePageTabs() 
     }, [tabKey])
 
 
