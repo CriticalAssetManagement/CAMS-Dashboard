@@ -14,6 +14,7 @@ export function DocumentHook(woqlClient, document, onRefreshTab, handleRefresh, 
             setLoading(false)
         }
         catch(err){ 
+            setLoading(false)
            setErrorMsg(err.message)
        }
     }
@@ -41,7 +42,8 @@ export function GetDocumentListHook(woqlClient, type, refresh, setLoading, setSu
             return res
         }
         catch(err){
-           setErrorMsg(err.message)
+            setLoading(false)
+            setErrorMsg(err.message)
        }
     }
 
@@ -68,6 +70,7 @@ export function GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMs
             return res
         }
         catch(err){
+            setLoading(false)
            setErrorMsg(err.message)
        }
     }
@@ -96,6 +99,7 @@ export function DeleteDocumentHook(woqlClient, documentId, onRefreshTab, handleR
         }
         catch(err){
            setErrorMsg(err.message)
+           setLoading(false)
        }
     }
 
@@ -127,6 +131,7 @@ export function EditDocumentHook(woqlClient, extractedUpdate, onRefreshTab, hand
         }
         catch(err){
            setErrorMsg(err.message)
+           setLoading(false)
        }
     }
 

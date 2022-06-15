@@ -178,6 +178,7 @@ export const DocumentContextProvider = ({children, params}) => {
             clearClickedDocument()
         }
         else if(tabKey === params.createTab) {
+            setExtracted(false)
             clearClickedDocument()
         }
         setSuccessMsg(false)
