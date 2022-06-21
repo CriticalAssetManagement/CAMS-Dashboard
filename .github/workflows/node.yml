@@ -44,7 +44,7 @@ jobs:
         AUTH0_CLIENT_ID=365PsB0AmUmB2odSFwezWkX31BZv6PoH
         AUTH0_AUDIENCE=https://terminuscloud/users
         ' > .env
-    - run: npm ci
+    - run: npm ci --legacy-peer-deps
     - run: npm run build
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
