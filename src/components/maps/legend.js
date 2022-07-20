@@ -1,30 +1,18 @@
-import {
-	ENERGY,
-	COMMUNICATIONS,
-	AIRPORT,
-	ELECTRICAL_POWER_GENERATING_PLANTS,
-	SAFETY_AND_SECURITY,
-	FOOD_WATER_SHELTER,
-	HEALTH_AND_MEDICAL,
-	TRANSPORTATION,
-	OTHERS
-} from "./markerTypes"
 
-
-const getIcon = (currentLabel) => {
-		if(currentLabel === ENERGY) return 'fa-lightbulb'
-		else if(currentLabel === COMMUNICATIONS) return 'fa-satellite-dish'
-		else if(currentLabel === AIRPORT) return 'fa-plane'
-		else if(currentLabel === ELECTRICAL_POWER_GENERATING_PLANTS) return 'fa-bolt'
-		else if(currentLabel === SAFETY_AND_SECURITY) return 'fa-shield-alt'
-		else if(currentLabel === FOOD_WATER_SHELTER) return 'fa-utensils'
-		else if(currentLabel === HEALTH_AND_MEDICAL) return 'fa-briefcase-medical'
-		else if(currentLabel === TRANSPORTATION) return 'fa-truck'
-		else if(currentLabel === OTHERS) return 'fa-ellipsis-h'
+const getIcon = (currentLabel, language) => {
+		if(currentLabel === language.ENERGY) return 'fa-lightbulb'
+		else if(currentLabel === language.COMMUNICATIONS) return 'fa-satellite-dish'
+		else if(currentLabel === language.AIRPORT) return 'fa-plane'
+		else if(currentLabel === language.ELECTRICAL_POWER_GENERATING_PLANTS) return 'fa-bolt'
+		else if(currentLabel === language.SAFETY_AND_SECURITY) return 'fa-shield-alt'
+		else if(currentLabel === language.FOOD_WATER_SHELTER) return 'fa-utensils'
+		else if(currentLabel === language.HEALTH_AND_MEDICAL) return 'fa-briefcase-medical'
+		else if(currentLabel === language.TRANSPORTATION) return 'fa-truck'
+		else if(currentLabel === language.OTHERS) return 'fa-ellipsis-h'
 }
 
 
-export function getLegend(L) {
+export function getLegend(L, language) {
 
 		//const legend = L.control.layers(null, getLegend,{ position: "topleft", collapsed: false }).addTo(map)
 		const legend = L.control({ position: "topleft", collapsed: false })
@@ -32,15 +20,15 @@ export function getLegend(L) {
 		legend.onAdd = () => {
 				const div = L.DomUtil.create("div", "info legend")
 				const labelArray = [
-					ENERGY,
-					COMMUNICATIONS,
-					AIRPORT,
-					ELECTRICAL_POWER_GENERATING_PLANTS,
-					SAFETY_AND_SECURITY,
-					FOOD_WATER_SHELTER,
-					HEALTH_AND_MEDICAL,
-					TRANSPORTATION,
-					OTHERS
+					language.ENERGY,
+					language.COMMUNICATIONS,
+					language.AIRPORT,
+					language.ELECTRICAL_POWER_GENERATING_PLANTS,
+					language.SAFETY_AND_SECURITY,
+					language.FOOD_WATER_SHELTER,
+					language.HEALTH_AND_MEDICAL,
+					language.TRANSPORTATION,
+					language.OTHERS
 				]
 				let labels = []
 
@@ -49,7 +37,7 @@ export function getLegend(L) {
 
 					labels.push(
 						'<i class="fa ' +
-							getIcon(currentLabel) +
+							getIcon(currentLabel, language) +
 							' legend-icon-color"></i> ' +
 						currentLabel
 					)

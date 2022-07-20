@@ -1,5 +1,5 @@
 import React from "react"
-import {HOME, USER_FORM, OWNER_FORM, AREA_FORM, ASSET_FORM, ASSETS_LINK, REPORTS, BRAND_TITLE,USER_MANAGEMENT} from "./constants"
+//import {HOME, USER_FORM, OWNER_FORM, AREA_FORM, ASSET_FORM, ASSETS_LINK, REPORTS, BRAND_TITLE,USER_MANAGEMENT} from "./constants"
 import {USER_FORM_PAGE, OWNER_FORM_PAGE, HOME_PAGE, AREA_FORM_PAGE, ASSET_FORM_PAGE, REPORTS_PAGE, ASSETS_LINK_PAGE,USER_MANAGEMENT_PAGE} from "../routing/constants"
 import {Nav, Navbar,Button,Dropdown} from "react-bootstrap"
 //import { NavLink as RouterNavLink } from "react-router-dom"
@@ -39,7 +39,10 @@ const BrandIcon = () => {
 export const Menu = () => {
 
     const {
-		setPage,team, accessControlDashboard
+		setPage, 
+        team, 
+        accessControlDashboard,
+        language
 	} = WOQLClientObj()
 
     const {
@@ -83,30 +86,30 @@ export const Menu = () => {
             <RouterNavLink
                 to={toHomeTeam} 
                 className={getActive}
-                id={HOME}
+                id={language.HOME}
                 onClick={(e) => setPage(HOME_PAGE)}>
-                <MenuIcon icon={<GoHome/>} title={HOME}/>
+                <MenuIcon icon={<GoHome/>} title={language.HOME}/>
             </RouterNavLink>  
              <Nav.Link
                     as={RouterNavLink}
-                    title={USER_FORM}
+                    title={language.USER_FORM}
                     to={USER_FORM_PAGE.replace(":teamid",team)}
                     exact
-                    id={USER_FORM}
+                    id={language.USER_FORM}
                     onClick={(e) => setPage(USER_FORM_PAGE)}
                     className="nav-link"
                     >
-                    <MenuIcon icon={<BsPerson/>} title={USER_FORM}/>
+                    <MenuIcon icon={<BsPerson/>} title={language.USER_FORM}/>
                 </Nav.Link>
                 <Nav.Link
                     as={RouterNavLink}
-                    title={OWNER_FORM}
+                    title={language.OWNER_FORM}
                     to={OWNER_FORM_PAGE.replace(":teamid",team)}
                     exact
-                    id={OWNER_FORM}
+                    id={language.OWNER_FORM}
                     onClick={(e) => setPage(OWNER_FORM_PAGE)}
                     >
-                        <MenuIcon icon={<BsPersonBadge/>} title={OWNER_FORM}/>
+                        <MenuIcon icon={<BsPersonBadge/>} title={language.OWNER_FORM}/>
                 </Nav.Link>
                 {/*<Nav.Link // hide for now
                     as={RouterNavLink}
@@ -120,33 +123,33 @@ export const Menu = () => {
                 </Nav.Link> */}
                 <Nav.Link
                     as={RouterNavLink}
-                    title={ASSET_FORM}
+                    title={language.ASSET_FORM}
                     to={ASSET_FORM_PAGE.replace(":teamid",team)}
                     exact
-                    id={ASSET_FORM}
+                    id={language.ASSET_FORM}
                     onClick={(e) => setPage(ASSET_FORM_PAGE)}
                     >
-                        <MenuIcon icon={<FiMapPin/>} title={ASSET_FORM}/>
+                        <MenuIcon icon={<FiMapPin/>} title={language.ASSET_FORM}/>
                 </Nav.Link>
                 <Nav.Link
                     as={RouterNavLink}
-                    title={ASSETS_LINK}
+                    title={language.ASSETS_LINK}
                     to={ASSETS_LINK_PAGE.replace(":teamid",team)}
                     exact
-                    id={ASSETS_LINK}
+                    id={language.ASSETS_LINK}
                     onClick={(e) => setPage(ASSETS_LINK_PAGE)}
                     >
-                            <MenuIcon icon={<FiLink/>} title={ASSETS_LINK}/>
+                            <MenuIcon icon={<FiLink/>} title={language.ASSETS_LINK}/>
                 </Nav.Link>
                 <Nav.Link
                     as={RouterNavLink}
-                    title={REPORTS}
+                    title={language.REPORTS}
                     to={REPORTS_PAGE.replace(":teamid",team)}
                     exact
-                    id={REPORTS}
+                    id={language.REPORTS}
                     onClick={(e) => setPage(REPORTS_PAGE)}
                     >
-                        <MenuIcon icon={<BiBookReader/>} title={REPORTS}/>
+                        <MenuIcon icon={<BiBookReader/>} title={language.REPORTS}/>
                     </Nav.Link>
             </Nav>
             <div className="d-flex">
@@ -185,23 +188,23 @@ export const Menu = () => {
                         
                         {isAdmin && <React.Fragment><Dropdown.Item>
                             <Nav.Link  as={RouterNavLink}
-                                title={USER_MANAGEMENT}
+                                title={language.USER_MANAGEMENT}
                                 to={USER_MANAGEMENT_PAGE.replace(":teamid",team)}
                                 exact
-                                onClick={(e) => setPage(USER_MANAGEMENT)}
+                                onClick={(e) => setPage(language.USER_MANAGEMENT)}
                                 id={USER_MANAGEMENT_PAGE}>
-                                    <GrUserAdmin  className="mr-3 mb-1" />User Manager
+                                    <GrUserAdmin  className="mr-3 mb-1" />{language.USER_MANAGER}
                             </Nav.Link>
                         </Dropdown.Item> 
 
                         <Dropdown.Divider /> </React.Fragment>}
                         <Dropdown.Item>
                             <Nav.Link
-                                title={"Logout"}
+                                title={language.LOGOUT}
                                 exact
                                 onClick={(e) => logoutWithRedirect()}
-                                id={"Logout"}>
-                                    <AiOutlinePoweroff className="mr-3 mb-1" />Logout
+                                id={language.LOGOUT}>
+                                    <AiOutlinePoweroff className="mr-3 mb-1" />{language.LOGOUT}
                             </Nav.Link>
                         </Dropdown.Item>
                     </Dropdown.Menu>

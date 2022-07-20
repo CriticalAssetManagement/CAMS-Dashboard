@@ -2,7 +2,7 @@ import React from "react"
 import {ALERT_DANGER, ALERT_SUCCESS} from "./constants"
 import {Alert} from "react-bootstrap"
 
-export const Alerts = ({successMsg, errorMsg})  => {
+export const Alerts = ({successMsg, errorMsg})  => { 
 
 
     return <React.Fragment>

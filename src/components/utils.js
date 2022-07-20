@@ -31,7 +31,10 @@ import {
     VAR_LINKED_ASSET_DESCRIPTION,
     VAR_ASSET_TYPE,
     VAR_LINKED_ASSET_TYPE,
-    VAR_ASSET_NAME
+    VAR_ASSET_NAME,
+    VAR_LINKED_ASSET_OWNER,
+    VAR_LINKED_ASSET_PHONE,
+    VAR_LINKED_ASSET_EMAIL
 } from "./constants"
 import {MdAddAlert} from "react-icons/md"
 import { ASSET_TYPE } from '../pages/constants'
@@ -137,7 +140,8 @@ export function extractAssetLocations(results) {
     results.map(item => {
         json = {}
         if(item.hasOwnProperty(VAR_ASSET)) {
-            json["id"]=item[VAR_ASSET]
+            //json["id"]=item[VAR_ASSET]
+            json[VAR_ASSET]=item[VAR_ASSET]
         }
         if(item.hasOwnProperty(VAR_NAME)) {
             json[VAR_NAME]=item[VAR_NAME]["@value"]
@@ -192,8 +196,8 @@ export function getUpwardChainAssetLocation (results) {
         if(item.hasOwnProperty(VAR_ASSET_Y)) {
             json[ASSET_LNG] = item[VAR_ASSET_Y]["@value"]
         }
-        if(item.hasOwnProperty(VAR_ASSET_NAME)) {
-            json[VAR_ASSET_NAME] = item[VAR_ASSET_NAME]["@value"]
+        if(item.hasOwnProperty(VAR_NAME)) {
+            json[VAR_NAME] = item[VAR_NAME]["@value"]
         }
         if(item.hasOwnProperty(VAR_ASSET_TYPE)) {
             json[VAR_ASSET_TYPE] = item[VAR_ASSET_TYPE]
@@ -258,6 +262,15 @@ export function getFailureChainAssetLocation(results) {
         if(item.hasOwnProperty(VAR_LINKED_ASSET_TYPE) && item[VAR_LINKED_ASSET_TYPE]) {
             json[VAR_LINKED_ASSET_TYPE] = item[VAR_LINKED_ASSET_TYPE]
         }
+        if(item.hasOwnProperty(VAR_LINKED_ASSET_OWNER) && item[VAR_LINKED_ASSET_OWNER]) {
+            json[VAR_LINKED_ASSET_OWNER] = item[VAR_LINKED_ASSET_OWNER]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_LINKED_ASSET_PHONE) && item[VAR_LINKED_ASSET_PHONE]) {
+            json[VAR_LINKED_ASSET_PHONE] = item[VAR_LINKED_ASSET_PHONE]["@value"]
+        }
+        if(item.hasOwnProperty(VAR_LINKED_ASSET_EMAIL) && item[VAR_LINKED_ASSET_EMAIL]) {
+            json[VAR_LINKED_ASSET_EMAIL] = item[VAR_LINKED_ASSET_EMAIL]["@value"]
+        }
         docs.push(json)
      })
     //console.log("docs", docs)
@@ -305,8 +318,6 @@ export function extractNewAssetLocations(results) {
     return docs
 }
 
-
-
 export function getAssetSelectOptions(list) {
     if(!Array.isArray(list) && !list.length) return []
     let opts = []
@@ -340,7 +351,17 @@ export function renderDates(row) {
     return <>{displayDate}</>
 }
 
-
+/** function which returns datetime to download csv file  */
+export function getFormattedTime() {
+    var today = new Date()
+    var y = today.getFullYear()
+    var m = today.getMonth() + 1
+    var d = today.getDate()
+    var h = today.getHours()
+    var mi = today.getMinutes()
+    var s = today.getSeconds()
+    return y + "-" + m + "-" + d + "-" + h + "-" + mi + "-" + s
+}
 
 
 /***

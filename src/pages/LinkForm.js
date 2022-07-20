@@ -2,10 +2,10 @@ import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
 import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
-import {LINK_TYPE, LINK_PAGE_TABLE_CSS, EDIT_CLICKED_LINK, CREATE_LINK_TAB, VIEW_LINK_LIST, VIEW_CLICKED_LINK} from "./constants"
+import {LINK_TYPE, LINK_PAGE_TABLE_CSS} from "./constants"
 import {Alerts} from "../components/Alerts"
 import {DocumentHook, GetDocumentListHook, GetDocumentHook, DeleteDocumentHook, EditDocumentHook} from "../hooks/DocumentHook"
-import {getUserConfig} from "../components/Views"
+import {getLinksConfig} from "../components/Views"
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
@@ -27,7 +27,7 @@ export const LinkForm = () => {
         loading,
         setLoading,
         refresh,
-        setRefresh
+        language
 	} = WOQLClientObj()
 
     const {
@@ -62,15 +62,15 @@ export const LinkForm = () => {
 
 
     // create
-    let result=DocumentHook(woqlClient, extracted, VIEW_LINK_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let result=DocumentHook(woqlClient, extracted, language.VIEW_LINK_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg, language)
     //view all document
     let linkResults=GetDocumentListHook(woqlClient, type, refresh, setLoading, setSuccessMsg, setErrorMsg)
     //get a document
     let documentResults=GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMsg, setErrorMsg)
     // delete a document
-    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, VIEW_LINK_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, language.VIEW_LINK_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg, language)
     // edit a document
-    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_LINK_LIST, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
+    let editResult=EditDocumentHook(woqlClient, extractedUpdate, language.VIEW_LINK_LIST, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
 
 
     useEffect(() => {
@@ -105,14 +105,15 @@ export const LinkForm = () => {
                 activeKey={tabKey}
                 onSelect={(k) => {setTabKey(k)}}
                 className="mb-3">
-               {tabControl.read && <Tab eventKey={VIEW_LINK_LIST} title={VIEW_LINK_LIST}>
+               {tabControl.read && <Tab eventKey={language.VIEW_LINK_LIST} title={language.VIEW_LINK_LIST}>
                     <DisplayDocuments results={linkResults}
                         css={LINK_PAGE_TABLE_CSS}
-                        title={LINK_TYPE}
-                        config={getUserConfig(linkResults, onRowClick)}/>
+                        type={LINK_TYPE}
+                        csvConfig={language.LINK_CSV_CONFIG}
+                        config={getLinksConfig(linkResults, onRowClick, frames)}/>
                 </Tab>}
                 {tabControl.read && showDocument && !editDocument &&
-                    <Tab eventKey={VIEW_CLICKED_LINK} title={VIEW_CLICKED_LINK}>
+                    <Tab eventKey={language.VIEW_CLICKED_LINK} title={language.VIEW_CLICKED_LINK}>
                         {Array.isArray(traverseDocument.previous) && <span className="col-md-1 ml-5">
                             <Button
                                 className="btn-sm"
@@ -143,7 +144,7 @@ export const LinkForm = () => {
                         }
                     </Tab>
                 }
-                {tabControl.write && editDocument && <Tab eventKey={EDIT_CLICKED_LINK} title={EDIT_CLICKED_LINK}>
+                {tabControl.write && editDocument && <Tab eventKey={language.EDIT_CLICKED_LINK} title={language.EDIT_CLICKED_LINK}>
                     <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
@@ -152,7 +153,7 @@ export const LinkForm = () => {
                         editDocument={editDocument}/>
                     </Tab>
                 }
-                {tabControl.write && <Tab eventKey={CREATE_LINK_TAB} title={CREATE_LINK_TAB}>
+                {tabControl.write && <Tab eventKey={language.CREATE_LINK_TAB} title={language.CREATE_LINK_TAB}>
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
                         type={LINK_TYPE}

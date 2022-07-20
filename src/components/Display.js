@@ -6,11 +6,12 @@ import {Row, Card} from "react-bootstrap"
 import {Form} from "./Form"
 import {UI_FRAMES} from "./constants"
 
-export const DisplayDocuments = ({results, css, config, title}) => {
+export const DisplayDocuments = ({results, css, config, type, csvConfig}) => {
     return <div className="text-break m-2 border-0">
         <Table documents = {results}
-            config={config}
-            title={title}
+            config={config} 
+            type={type}
+            csvConfig={csvConfig}
             css={css}/>
     </div>
 }

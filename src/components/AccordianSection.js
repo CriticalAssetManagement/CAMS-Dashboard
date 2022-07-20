@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react"
 import Accordion from 'react-bootstrap/Accordion'
-import {OWNER_ACCORDIAN_TITLE, ASSET_DEPENDENCY_ACCORDIAN_TITLE, NO_OWNER_INFO} from "./constants"
+import {Button, Stack} from "react-bootstrap"
+import {OWNER_ACCORDIAN_TITLE, NO_OWNER_INFO, VAR_NAME, VAR_ASSET} from "./constants"
 import {BsTelephoneFill} from "react-icons/bs"
 import {QueryHook} from "../hooks/QueryHook"
 import {WOQLClientObj} from '../init-woql-client'
@@ -8,16 +9,21 @@ import {getOwnerDetailsQuery} from "../hooks/queries"
 import {ProgressBar} from "react-bootstrap"
 import {FiLink} from "react-icons/fi"
 import {AiOutlineMail} from "react-icons/ai"
+import {getAssetOwnerChainQuery} from "../hooks/queries"
 import Toast from 'react-bootstrap/Toast'
-import ToastContainer from 'react-bootstrap/ToastContainer'
+import {getFailureChainAssetLocation} from "./utils"
+import { CSVLink, CSVDownload } from "react-csv"
+import {FaInfoCircle} from "react-icons/fa"
 
 /**
  * document - asset on which user has clicked
  * documents - dependant assets on document
 */
-export const AccordianSection = ({asset, documents}) =>{
+export const AccordianSection = ({info}) =>{
     const [query, setQuery] = useState(false)
     const [ownerInfo, setOwnerInfo] = useState(false)
+    const [ownerQuery, setOwnerQuery]=useState(false)
+    const [ownerData, setOwnerData]=useState([])
 
     const {
         woqlClient,
@@ -25,24 +31,34 @@ export const AccordianSection = ({asset, documents}) =>{
         setErrorMsg,
         loading,
         setLoading,
+        language
 	} = WOQLClientObj()
 
     // get document location on select of an Asset
     let queryResults = QueryHook(woqlClient, query, setLoading)
+    // get owner of all dependant assets
+    let ownerResults = QueryHook(woqlClient, ownerQuery, setLoading)
+
+    useEffect(() => {
+        if(Array.isArray(ownerResults) && ownerResults.length) {
+            let or = getFailureChainAssetLocation(ownerResults) 
+            setOwnerData(or)
+        }
+    }, [ownerResults])
 
     useEffect(() => {
         if(!woqlClient) return
-        if(!asset) return
-        let q = getOwnerDetailsQuery(asset)
+        if(!info[VAR_ASSET]) return
+        let q = getOwnerDetailsQuery(info[VAR_ASSET])
         setQuery(q)
-    }, [asset])
+    }, [info[VAR_ASSET]])
 
     useEffect(() => {
-        let info = []
+        let infoDisplay = []
         if(queryResults.length) {
 
             queryResults.map(qr=> {
-                info.push(
+                infoDisplay.push(
                     <Toast className="w-100 mb-4">
                         <Toast.Header closeButton={false}>
                             <strong className="me-auto">{qr.Name["@value"]}</strong>
@@ -63,27 +79,47 @@ export const AccordianSection = ({asset, documents}) =>{
             setLoading(false)
         }
         else {
-
-            info.push(
-                <React.Fragment>{NO_OWNER_INFO}</React.Fragment>
+            infoDisplay.push(
+                <p>{language.NO_OWNER_INFO}</p>
             )
         }
-        setOwnerInfo(info)
+        setOwnerInfo(infoDisplay)
     }, [queryResults])
 
+    async function handleContactList(e) {
+        setOwnerQuery(getAssetOwnerChainQuery(info[VAR_ASSET]))
+    }
 
-    return <Accordion className="mt-4 mb-4">
+    return <Accordion className="mt-4">
         <Accordion.Item eventKey="0">
             <Accordion.Header>
                 <span className="d-flex w-100">
                     <span className="col-md-6 text-break text-primary fw-bold" title={OWNER_ACCORDIAN_TITLE}>
-                        {OWNER_ACCORDIAN_TITLE}
+                        {language.OWNER_ACCORDIAN_TITLE} 
                     </span>
                 </span>
-            </Accordion.Header>
+            </Accordion.Header> 
             <Accordion.Body>
                 {loading && <ProgressBar animated now={100} variant="info"/>}
-                {ownerInfo && ownerInfo}
+                <Stack gap={3}>
+                    {ownerInfo && <div>
+                        <small>{`${language.CLICKED_CONTACT_LIST_ASSET} ${info[VAR_NAME]}`}</small>
+                        {ownerInfo}
+                    </div>}
+                    <Toast className="w-100 mb-4">
+                        <Toast.Header closeButton={false}>
+                            <strong className="me-auto">
+                                {language.EXPORT_CSV_DESCRIPTION}
+                            </strong>
+                        </Toast.Header>
+                        <Toast.Body className="text-center">
+                            <Button className="w-100 btn-sm" onClick={handleContactList}>
+                                {language.EXPORT_OWNER_LIST}
+                            </Button>
+                            {ownerData.length > 0 && <CSVDownload data={ownerData} target="_blank"></CSVDownload>}
+                        </Toast.Body>
+                    </Toast>
+                </Stack>
             </Accordion.Body>
         </Accordion.Item>
         {/*<Accordion.Item eventKey="1">
@@ -97,3 +133,9 @@ export const AccordianSection = ({asset, documents}) =>{
         </Accordion.Item> */}
   </Accordion>
 }
+
+/* <FaInfoCircle className="pr-2 text-info"/>
+<Button onClick={handleContactList}>
+                        {language.EXPORT_OWNER_LIST}
+                    </Button>
+                    {ownerData.length > 0 && <CSVDownload data={ownerData} target="_blank"></CSVDownload>}*/

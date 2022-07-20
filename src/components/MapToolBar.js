@@ -1,24 +1,8 @@
 import React, {useState, useEffect} from "react"
 import {Card, Col, Row, Button} from "react-bootstrap"
-import Dropdown from 'react-bootstrap/Dropdown'
-import {
-    VAR_MAX,
-    SHOW_ALL_FAILURE_CHAIN_TITLE,
-    SHOW_ALL_ASSETS_TITLE,
-    SHOW_ALL_ASSETS,
-    SEARCH_ASSET,
-    SEARCH_ASSET_PLACEHOLDER,
-    FAILURE_CHAIN_TITLE,
-    HAZARD_TYPE,
-    HAZARD_DROPDOWN_TITLE,
-    UPWARD_CHAIN_TITLE,
-    SHOW_ALL_UPWARD_CHAIN_TITLE
-} from "./constants"
+import {VAR_MAX, VAR_ASSET} from "./constants"
 import Select from 'react-select'
-import {getAssetSelectOptions} from "./utils"
-import {DocumentDetail} from "./DocumentDetail"
 import {WOQLClientObj} from '../init-woql-client'
-import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes'
 import {SearchBar} from "./SearchBar"
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
@@ -45,7 +29,8 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
         woqlClient,
         setLoading,
         setSuccessMsg,
-        setErrorMsg
+        setErrorMsg,
+        language
 	} = WOQLClientObj()
 
     const [scaleQuery, setScaleQuery]=useState(false) 
@@ -83,7 +68,7 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
     }, [scaleResults])
 
     //clear filters
-    function handleShowAll() {
+    function handleShowAll() { 
         // clear filters and show all available assets
         if(setResetMap) setResetMap(Date.now())
         if(setDisplayFailureChains) {
@@ -120,7 +105,7 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
         // get all hazard event names
         if(Object.keys(frames).length) {
             //let type = `${prefix}${HAZARD_TYPE}`
-            let type = `${HAZARD_TYPE}`
+            let type = "Hazard"
             let list = frames[type]["@values"], options=[]
             list.map(lst => {
                 options.push({label: lst, value: lst})
@@ -149,7 +134,7 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
                         resetMap={resetMap}
                         woqlClient={woqlClient}
                         type={ASSET_TYPE}
-                        placeholder={SEARCH_ASSET_PLACEHOLDER}
+                        placeholder={language.SEARCH_ASSET_PLACEHOLDER}
                         setFilterAssetById={setFilterAssetById}/>
                 </Col>
 
@@ -159,7 +144,7 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
                         <Col>
                             <div className="hazard-select-button">
                                 <Select options={eventList}
-                                    placeholder={HAZARD_DROPDOWN_TITLE}
+                                    placeholder={language.HAZARD_DROPDOWN_TITLE}
                                     value={value}
                                     onChange={handleEvents}/>
                                 {/*<ReactMultiSelectCheckboxes
@@ -182,25 +167,25 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
                 }
 
                 {
-                onMarkerClick && onMarkerClick.hasOwnProperty("id") &&
+                onMarkerClick && onMarkerClick.hasOwnProperty(VAR_ASSET) &&
                     <Col>
                         <Button variant="outline-secondary"
                             className="btn-sm"
                             onClick={handleClicked}
-                            title={SHOW_ALL_FAILURE_CHAIN_TITLE}>
-                            {FAILURE_CHAIN_TITLE}
+                            title={language.SHOW_ALL_FAILURE_CHAIN_TITLE}>
+                            {language.FAILURE_CHAIN_TITLE}
                         </Button>
                     </Col>
                 }
 
                 {
-                onMarkerClick && onMarkerClick.hasOwnProperty("id") &&
+                onMarkerClick && onMarkerClick.hasOwnProperty(VAR_ASSET) &&
                     <Col>
                         <Button variant="outline-secondary"
                             className="btn-sm"
                             onClick={handleUpwardChainClick}
-                            title={SHOW_ALL_UPWARD_CHAIN_TITLE}>
-                            {UPWARD_CHAIN_TITLE}
+                            title={language.SHOW_ALL_UPWARD_CHAIN_TITLE}>
+                            {language.UPWARD_CHAIN_TITLE}
                         </Button>
                     </Col>
                 }
@@ -209,8 +194,8 @@ export const MapToolBar = ({setResetMap, resetMap, onMarkerClick, setDisplayFail
                     <Button variant="outline-secondary"
                         className="btn-sm"
                         onClick={handleShowAll}
-                        title={SHOW_ALL_ASSETS_TITLE}>
-                        {SHOW_ALL_ASSETS}
+                        title={language.SHOW_ALL_ASSETS_TITLE}>
+                        {language.SHOW_ALL_ASSETS}
                     </Button>
                 </Col>
 

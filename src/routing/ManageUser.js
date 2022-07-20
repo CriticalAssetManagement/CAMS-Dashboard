@@ -4,19 +4,20 @@ import React from "react"
 import {DocumentContextProvider} from "../hooks/DocumentContextProvider"
 import {UserForm} from "../pages/UserForm"
 import {
-    VIEW_USER_LIST,
-    VIEW_CLICKED_USER,
-    CREATE_USER_TAB,
-    EDIT_CLICKED_USER,
     USER_TYPE
 } from "../pages/constants"
+import {WOQLClientObj} from '../init-woql-client'
 
 export const ManageUser = () => {
+    const {
+        language
+	} = WOQLClientObj()
+
     let config = {
-        listTab: VIEW_USER_LIST,
-        viewTab: VIEW_CLICKED_USER,
-        editTab: EDIT_CLICKED_USER,
-        createTab: CREATE_USER_TAB,
+        listTab: language.VIEW_USER_LIST,
+        viewTab: language.VIEW_CLICKED_USER,
+        editTab: language.EDIT_CLICKED_USER,
+        createTab: language.CREATE_USER_TAB,
         type: USER_TYPE
     }
 

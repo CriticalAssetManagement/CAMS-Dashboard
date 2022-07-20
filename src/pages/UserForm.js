@@ -2,7 +2,7 @@ import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
 import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
-import {USER_TYPE, USER_PAGE_TABLE_CSS, EDIT_CLICKED_USER, CREATE_USER_TAB, VIEW_USER_LIST, VIEW_CLICKED_USER} from "./constants"
+import {USER_TYPE, USER_PAGE_TABLE_CSS} from "./constants"
 import {Alerts} from "../components/Alerts"
 import {DocumentHook, GetDocumentListHook, GetDocumentHook, DeleteDocumentHook, EditDocumentHook} from "../hooks/DocumentHook"
 import {getUserConfig} from "../components/Views"
@@ -27,7 +27,8 @@ export const UserForm = () => {
         loading,
         setLoading,
         refresh,
-        setRefresh
+        setRefresh,
+        language
 	} = WOQLClientObj()
 
     const {
@@ -62,15 +63,15 @@ export const UserForm = () => {
     } = useAuth0()
 
     // create
-    let result=DocumentHook(woqlClient, extracted, VIEW_USER_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let result=DocumentHook(woqlClient, extracted, language.VIEW_USER_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg, language)
     //view all document
     let userResults=GetDocumentListHook(woqlClient, type, refresh, setLoading, setSuccessMsg, setErrorMsg)
     //get a document
     let documentResults=GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMsg, setErrorMsg)
     // delete a document
-    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, VIEW_USER_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, language.VIEW_USER_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg, language)
     // edit a document
-    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_USER_LIST, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
+    let editResult=EditDocumentHook(woqlClient, extractedUpdate, language.VIEW_USER_LIST, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
 
 
     useEffect(() => {
@@ -106,13 +107,14 @@ export const UserForm = () => {
                 activeKey={tabKey}
                 onSelect={(k) => {setTabKey(k)}}
                 className="mb-3">
-                {tabControl.read && <Tab eventKey={VIEW_USER_LIST} title={VIEW_USER_LIST}>
+                {tabControl.read && <Tab eventKey={language.VIEW_USER_LIST} title={language.VIEW_USER_LIST}>
                     <DisplayDocuments results={userResults}
                         css={USER_PAGE_TABLE_CSS}
-                        title={USER_TYPE}
-                        config={getUserConfig(userResults, onRowClick)}/>
+                        type={USER_TYPE}
+                        csvConfig={language.PERSON_CSV_CONFIG}
+                        config={getUserConfig(userResults, onRowClick, frames)}/>
                 </Tab>}
-                {tabControl.read && showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_USER} title={VIEW_CLICKED_USER}>
+                {tabControl.read && showDocument && !editDocument && <Tab eventKey={language.VIEW_CLICKED_USER} title={language.VIEW_CLICKED_USER}>
                     {Array.isArray(traverseDocument.previous) &&
                         <span className="col-md-1 ml-5">
                             <Button
@@ -145,7 +147,7 @@ export const UserForm = () => {
                     }
                     </Tab>
                 }
-                {tabControl.write && editDocument && <Tab eventKey={EDIT_CLICKED_USER} title={EDIT_CLICKED_USER}>
+                {tabControl.write && editDocument && <Tab eventKey={language.EDIT_CLICKED_USER} title={language.EDIT_CLICKED_USER}>
                     <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
@@ -154,7 +156,7 @@ export const UserForm = () => {
                         editDocument={editDocument}/>
                     </Tab>
                 }
-                {tabControl.write && <Tab eventKey={CREATE_USER_TAB} title={CREATE_USER_TAB}>
+                {tabControl.write && <Tab eventKey={language.CREATE_USER_TAB} title={language.CREATE_USER_TAB}>
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
                         type={USER_TYPE}

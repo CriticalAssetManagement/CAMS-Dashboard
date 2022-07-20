@@ -170,9 +170,9 @@ export const getEventScaleQuery = (event) => {
 }
 
 // failure chain query - Linked Asset is dependants
-export const getAssetFailureChain = (asset) => {
+export const getAssetFailureChain = (asset) => { 
     let WOQL=TerminusDBClient.WOQL
-    let documentID=asset
+    let documentID=asset 
 
     //let documentID = "Asset/Castle%20bruce%20Electrical%20substation%20"
     return WOQL.and(
@@ -181,6 +181,12 @@ export const getAssetFailureChain = (asset) => {
         WOQL.triple("v:Inter", "@schema:dependent", "v:LinkedAsset"),
     )
     .triple("v:LinkedAsset", "@schema:name", "v:LinkedAssetName")
+    .opt(WOQL.triple("v:LinkedAsset", "@schema:owner", "v:LinkedAsset_Owner")
+        .triple("v:LinkedAsset_Owner", "@schema:name", "v:LinkedAsset_Owner_Name")
+        .triple("v:LinkedAsset_Owner", "@schema:contact_person", "v:Person")
+        .triple("v:Person", "@schema:phone_number", "v:LinkedAsset_Owner_PhoneNumber")
+        .triple("v:Person", "@schema:email_address", "v:LinkedAsset_Owner_Email")
+    )
     .opt(WOQL.triple("v:LinkedAsset", "@schema:description", "v:LinkedAssetDescription"))
     .opt(WOQL.triple("v:LinkedAsset", "@schema:assetType", "v:LinkedAssetType"))
     .triple("v:LinkedAsset", "@schema:location", "v:LinkedAssetLocation")
@@ -193,7 +199,6 @@ export const getAssetFailureChain = (asset) => {
     .triple("v:LinkedAssetCoordinatesY", "sys:value", "v:LinkedAssetY")
     .triple("v:LinkedAssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
 
-
     .triple("v:Asset", "@schema:location", "v:AssetLocation")
     .triple("v:AssetLocation", "@schema:geometry_location", "v:AssetPoint")
     .triple("v:AssetPoint", "@schema:coordinates", "v:AssetCoordinatesX")
@@ -204,8 +209,29 @@ export const getAssetFailureChain = (asset) => {
     .triple("v:AssetCoordinatesY", "sys:value", "v:AssetY")
     .triple("v:AssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
 
+    
+
 }
 
+// failure chain query - Linked Asset is dependants
+export const getAssetOwnerChainQuery = (asset) => { 
+    let WOQL=TerminusDBClient.WOQL
+    let documentID=asset 
+
+    //let documentID = "Asset/Castle%20bruce%20Electrical%20substation%20"
+    return WOQL.and(
+        WOQL.path(documentID, "(<depends_on,dependent>)*", "v:Asset"),
+        WOQL.triple("v:Inter", "@schema:depends_on", "v:Asset"),
+        WOQL.triple("v:Inter", "@schema:dependent", "v:LinkedAsset"),
+    )
+    .triple("v:LinkedAsset", "@schema:name", "v:LinkedAssetName")
+    .opt(WOQL.triple("v:LinkedAsset", "@schema:owner", "v:LinkedAsset_Owner")
+        .triple("v:LinkedAsset_Owner", "@schema:name", "v:LinkedAsset_Owner_Name")
+        .triple("v:LinkedAsset_Owner", "@schema:contact_person", "v:Person")
+        .triple("v:Person", "@schema:phone_number", "v:LinkedAsset_Owner_PhoneNumber")
+        .triple("v:Person", "@schema:email_address", "v:LinkedAsset_Owner_Email")
+    )
+}
 
 // upward chain query
 export const getAssetUpwardChain = (asset) => {
@@ -231,7 +257,7 @@ export const getAssetUpwardChain = (asset) => {
     .triple("v:LinkedAssetCoordinatesY", "sys:value", "v:LinkedAssetY")
     .triple("v:LinkedAssetCoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
 
-    .triple("v:Asset", "@schema:name", "v:AssetName")
+    .triple("v:Asset", "@schema:name", "v:Name")
     .opt(WOQL.triple("v:Asset", "@schema:assetType", "v:AssetType"))
     .triple("v:Asset", "@schema:location", "v:AssetLocation")
     .triple("v:AssetLocation", "@schema:geometry_location", "v:AssetPoint")
@@ -254,6 +280,19 @@ export const getAssetLinks = () => {
         .triple("v:Asset", "@schema:asset_identifier", "v:AssetIdentifier")
 }
 
+export const getMapConfigQuery = () => {
+    let WOQL=TerminusDBClient.WOQL
+    return WOQL.triple("v:MapConfig", "rdf:type","@schema:MapConfig")
+        .triple("v:MapConfig", "@schema:zoom", "v:zoom")
+        .triple("v:MapConfig", "@schema:center", "v:center")
+        .triple("v:center", "@schema:coordinates", "v:CoordinatesX")
+        .triple("v:center", "@schema:coordinates", "v:CoordinatesY")
+        .triple("v:CoordinatesX", "sys:value", "v:X")
+        .triple("v:CoordinatesX", "sys:index", "v:X_X")
+        .eq("v:X_X", 0)
+        .triple("v:CoordinatesY", "sys:value", "v:Y")
+        .triple("v:CoordinatesY", "sys:index",  WOQL.literal(1, "xsd:nonNegativeInteger"))
+}
 
 
 // correct query - gav

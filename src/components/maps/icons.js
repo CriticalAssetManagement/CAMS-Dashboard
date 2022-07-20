@@ -15,25 +15,15 @@ import {
 import {VAR_GRADE, VAR_ASSET_ENUM_SCHEMA_REF} from "../constants"
 import {
     ENERGY_ICON,
-    ENERGY,
-    COMMUNICATIONS,
     COMMUNICATIONS_ICON,
-    AIRPORT,
     AIRPORT_ICON,
-    ELECTRICAL_POWER_GENERATING_PLANTS,
     ELECTRICAL_POWER_GENERATING_PLANTS_ICON,
-    SAFETY_AND_SECURITY,
     SAFETY_AND_SECURITY_ICON,
-    FOOD_WATER_SHELTER,
     FOOD_WATER_SHELTER_ICON,
-    HEALTH_AND_MEDICAL,
     HEALTH_AND_MEDICAL_ICON,
-    TRANSPORTATION,
     TRANSPORTATION_ICON,
     OTHERS_ICON,
-    GOVERNMENT_BUILDINGS,
     GOVERNMENT_BUILDINGS_ICON,
-    MARINE_PORTS,
     MARINE_PORTS_ICON
 } from "./markerTypes"
 
@@ -43,56 +33,56 @@ function getEnumTypeFromFrames(type) {
 
 
 // function returns marker icons
-export function getAssetTypeIcons(asset, key) {
+export function getAssetTypeIcons(asset, key, language) {
 
     let options = {}
-
-    if(asset[key] === getEnumTypeFromFrames(ENERGY)) {
+ 
+    if(asset[key] === getEnumTypeFromFrames(language.ENERGY)) {
         options = {
             icon: ENERGY_ICON
         }
     }
-    else if(asset[key] === getEnumTypeFromFrames(TRANSPORTATION)) {
+    else if(asset[key] === getEnumTypeFromFrames(language.TRANSPORTATION)) {
         options = {
             icon: TRANSPORTATION_ICON
         }
     }
-    else if(asset[key] === getEnumTypeFromFrames(HEALTH_AND_MEDICAL)) {
+    else if(asset[key] === getEnumTypeFromFrames(language.HEALTH_AND_MEDICAL)) {
         options = {
             icon: HEALTH_AND_MEDICAL_ICON
         }
     }
-    else if(asset[key] === getEnumTypeFromFrames(FOOD_WATER_SHELTER)) {
+    else if(asset[key] === getEnumTypeFromFrames(language.FOOD_WATER_SHELTER)) {
         options = {
             icon: FOOD_WATER_SHELTER_ICON
         }
     }
-    else if(asset[key] === getEnumTypeFromFrames(SAFETY_AND_SECURITY)) {
+    else if(asset[key] === getEnumTypeFromFrames(language.SAFETY_AND_SECURITY)) {
         options = {
             icon: SAFETY_AND_SECURITY_ICON
         }
     }
-    else if(asset[key] === getEnumTypeFromFrames(ELECTRICAL_POWER_GENERATING_PLANTS)) {
+    else if(asset[key] === getEnumTypeFromFrames(language.ELECTRICAL_POWER_GENERATING_PLANTS)) {
         options = {
             icon: ELECTRICAL_POWER_GENERATING_PLANTS_ICON
         }
     }
-    else if(asset[key] === getEnumTypeFromFrames(COMMUNICATIONS)) {
+    else if(asset[key] === getEnumTypeFromFrames(language.COMMUNICATIONS)) {
         options = {
             icon: COMMUNICATIONS_ICON
         }
     }
-    else if(asset[key] === getEnumTypeFromFrames(AIRPORT)) {
+    else if(asset[key] === getEnumTypeFromFrames(language.AIRPORT)) {
         options = {
             icon: AIRPORT_ICON
         }
     }
-    else if(asset[key] === getEnumTypeFromFrames(GOVERNMENT_BUILDINGS)) {
+    else if(asset[key] === getEnumTypeFromFrames(language.GOVERNMENT_BUILDINGS)) {
         options = {
             icon: GOVERNMENT_BUILDINGS_ICON
         }
     }
-    else if(asset[key] === getEnumTypeFromFrames(MARINE_PORTS)) {
+    else if(asset[key] === getEnumTypeFromFrames(language.MARINE_PORTS)) {
         options = {
             icon: MARINE_PORTS_ICON
         }

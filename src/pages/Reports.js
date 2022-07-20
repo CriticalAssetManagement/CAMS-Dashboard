@@ -5,7 +5,6 @@ import {WOQLClientObj} from '../init-woql-client'
 import {USER_TYPE, USER_PAGE_TABLE_CSS, EDIT_CLICKED_USER, CREATE_USER_TAB, VIEW_USER_LIST, VIEW_CLICKED_USER} from "./constants"
 import {Alerts} from "../components/Alerts"
 import {DocumentHook, GetDocumentListHook, GetDocumentHook, DeleteDocumentHook, EditDocumentHook} from "../hooks/DocumentHook"
-import {getUserConfig} from "../components/Views"
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
@@ -17,12 +16,15 @@ import {QueryHook} from "../hooks/QueryHook"
 import {Table} from "../components/Table"
 import {getAssetLinks} from "../hooks/queries"
 import {getReportsConfig} from "../components/Views"
+import { FaLanguage } from "react-icons/fa"
 
 export const Reports = () => {
 
     const {
         woqlClient,
         setLoading,
+        language,
+        frames
 	} = WOQLClientObj()
 
     const {
@@ -82,8 +84,6 @@ export const Reports = () => {
         }
     }, [results])
 
-    //console.log("assets",assets)
-
     return <div className="mb-5">
         <Layout/>
 
@@ -93,10 +93,12 @@ export const Reports = () => {
             <span className="table-word-break">
                 <Table documents = {assets}
                     //css={CRITCAL_LIST_TABLE_CSS}
-                    config={getReportsConfig(assets)}
+                    csvConfig={language.REPORT_CSV_CONFIG}
+                    config={getReportsConfig(assets, language)}
+                    type={null}
                 />
             </span>
-        </div>}
+        </div>} 
 
     </div>
 

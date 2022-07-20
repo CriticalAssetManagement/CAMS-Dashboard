@@ -6,7 +6,13 @@ import {DATA_PRODUCT} from "./constants"
 import {HOME_PAGE} from './routing/constants'
 import {AccessControlDashboard} from "@terminusdb/terminusdb-access-control-component"
 import {getClientAccessControl} from "./utils/clientAccessControl"
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react"
+import * as EN_LANGUAGE from "./components/languages/constants_en"
+import * as SPA_LANGUAGE from "./components/languages/constants_spa"
+import {SANTA_ANA_TEAM} from "./constants"
+import {getMapConfigQuery} from "./hooks/queries"
+import {VAR_ZOOM, VAR_CENTER} from "./components/constants"
+
 //profiles_test 
 export const WOQLClientProvider = ({children, team}) => {
     const {user,getAccessTokenSilently } = useAuth0();
@@ -23,6 +29,12 @@ export const WOQLClientProvider = ({children, team}) => {
     const [successMsg, setSuccessMsg] = useState(false)
     const [errorMsg, setErrorMsg] = useState(false)
     const [accessControlDashboard,setAccessControlDash] = useState(false)
+
+    console.log("user", user)
+
+    // config 
+    const [language, setLanguage]=useState(EN_LANGUAGE) // language
+    const [mapConfig, setMapConfig]=useState(false) // map configuration
 
     const initAccessControlAndClient = async()=>{
         const jwtoken = await getAccessTokenSilently()
@@ -44,7 +56,7 @@ export const WOQLClientProvider = ({children, team}) => {
         await accessControlDash.callGetRolesList()
         // get team role
         await accessControlDash.callGetUserTeamRole(team,user.email)
-        console.log("accessControlDash", accessControlDash)
+        //console.log("accessControlDash", accessControlDash)
         setAccessControlDash(accessControlDash)
     }
 
@@ -66,6 +78,10 @@ export const WOQLClientProvider = ({children, team}) => {
                 client.db(DATA_PRODUCT)*/
                 initAccessControlAndClient()
                 //initAccessControl()
+                
+                // language used is English by default, if team is Santa Ana then language is set to Spanish
+                if(team === SANTA_ANA_TEAM) setLanguage(SPA_LANGUAGE)
+
                 setLoading(false)
             }
         }
@@ -74,19 +90,38 @@ export const WOQLClientProvider = ({children, team}) => {
         }
     }, [user])
 
+    /** Get Map config */
+    useEffect(() => {
+        // get Map Config  
+        if(!woqlClient) return          
+        let mapQ = getMapConfigQuery()
+        mapQ.execute(woqlClient)
+        .then((res) => {
+            let json = {}
+            let config = res.bindings[0] // Should be only 1 entry for map config
+            json[VAR_CENTER]=[config['X']["@value"], config['Y']["@value"]]
+            json[VAR_ZOOM]=config[VAR_ZOOM]["@value"]
+            setMapConfig(json)
+        })
+        .catch((err) => {
+            let errMessage=`Cannot find Map Configuration to set Map`
+            if(setErrorMsg) setErrorMsg(`${errMessage} - ${err.message}`)
+        })
+    }, [woqlClient])
+
+    
+    /** Get frames */
     useEffect(() => {
         if(!woqlClient) return
         woqlClient.getSchemaFrame(null, DATA_PRODUCT).then((res) => {
-            //let extractedPrefix = extractPrefix(res)
-            //setPrefix(extractedPrefix)
             setFrames(res)
         })
         .catch((err) =>  {
             setConnectionError(`Error in init woql while fetching schema frames - ${err.message}`)
         })
+    }, [mapConfig])
 
-    }, [woqlClient])
-
+    
     function clearMessages() {
         setConnectionError(false)
         setSuccessMsg(false)
@@ -97,7 +132,7 @@ export const WOQLClientProvider = ({children, team}) => {
         clearMessages()
     }, [page])
 
-
+    console.log("mapConfig init", mapConfig)
 
     return (
         <WOQLContext.Provider
@@ -117,7 +152,9 @@ export const WOQLClientProvider = ({children, team}) => {
                 refresh,
                 setRefresh,
                 //prefix,
-                accessControlDashboard
+                accessControlDashboard,
+                language,
+                mapConfig
             }}
         >
             {children}
