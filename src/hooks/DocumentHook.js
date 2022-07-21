@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 
 // create a new document
-export function DocumentHook(woqlClient, document, onRefreshTab, handleRefresh, setLoading, setSuccessMsg, setErrorMsg) {
+export function DocumentHook(woqlClient, document, onRefreshTab, handleRefresh, setLoading, setSuccessMsg, setErrorMsg, language) {
     const [result, setResult] = useState(false)
  
     async function addDocument() {
@@ -10,7 +10,7 @@ export function DocumentHook(woqlClient, document, onRefreshTab, handleRefresh, 
             const res = await woqlClient.addDocument(document, null, woqlClient.db())
             setResult(res)
             handleRefresh(onRefreshTab)
-            setSuccessMsg(`Successfully added`)
+            setSuccessMsg(`${language.SUCCESS_CREATE}`)
             setLoading(false)
         }
         catch(err){ 
@@ -83,18 +83,18 @@ export function GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMs
 }
 
 // delete documents
-export function DeleteDocumentHook(woqlClient, documentId, onRefreshTab, handleRefresh, setLoading, setSuccessMsg, setErrorMsg) {
+export function DeleteDocumentHook(woqlClient, documentId, onRefreshTab, handleRefresh, setLoading, setSuccessMsg, setErrorMsg, language) {
     const [result, setResult] = useState(false)
 
     async function deleteDocument() {
         try{
             let params={}
             params['id'] = documentId
-            let commitMsg=`Deleting document ${documentId}`
+            let commitMsg=`Deleting document ${documentId}` 
             setLoading(true)
             const res = await woqlClient.deleteDocument(params, woqlClient.db(), commitMsg)
             handleRefresh(onRefreshTab)
-            setSuccessMsg(`Successfully deleted ${documentId}`)
+            setSuccessMsg(`${language.SUCCESS_DELETE} ${documentId}`)
             setLoading(false)
         }
         catch(err){

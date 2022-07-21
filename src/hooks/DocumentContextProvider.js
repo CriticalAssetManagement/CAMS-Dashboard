@@ -5,6 +5,7 @@ import {handleDocumentSelect} from "../components/utils"
 import {WOQLClientObj} from '../init-woql-client'
 import {Button, Row} from "react-bootstrap"
 import {SUCCESS_VARIANT} from '../components/constants'
+import { FaLanguage } from 'react-icons/fa'
 
 export const DocumentContextProvider = ({children, params}) => {
 
@@ -29,7 +30,8 @@ export const DocumentContextProvider = ({children, params}) => {
         woqlClient,
         clearMessages,
         setRefresh,
-        accessControlDashboard
+        accessControlDashboard,
+        language
 	} = WOQLClientObj()
 
 
@@ -76,9 +78,9 @@ export const DocumentContextProvider = ({children, params}) => {
     function getDeleteButton(document) {
         return <Button className="btn-sm"
             variant="danger"
-            title={`Delete ${document["@id"]}`}
+            title={`${language.DELETE} ${document["@id"]}`}
             onClick={(e) => setDeleteDocument(document["@id"])}>
-            Delete
+            {language.DELETE}
         </Button>
     }
 
@@ -91,13 +93,13 @@ export const DocumentContextProvider = ({children, params}) => {
         }
         return <Button className="btn-sm mr-1"
             variant={SUCCESS_VARIANT}
-            title={`Edit ${document}`}
+            title={`${language.EDIT} ${document}`}
             onClick={(e) => handleEdit(document)}>
-            Edit
-        </Button>
+            {language.EDIT}
+        </Button> 
     }
 
-    function getDocumentToolBar(document) {
+    function getDocumentToolBar(document) { 
         if(!accessControlDashboard.instanceWrite()) return <div/>
         //if(!tempControl.write) return <div/>
         return <span className="toolbar-right">

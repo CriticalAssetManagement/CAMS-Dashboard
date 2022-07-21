@@ -1,6 +1,7 @@
 
 //variant
 export const VARIANT="dark"
+export const INFO_VARIANT="info"
 export const SECONDARY_VARIANT="secondary"
 export const SUCCESS_VARIANT="success"
 
@@ -46,10 +47,17 @@ export const VAR_LINKED_ASSET_LAT = "LinkedAsset_Lat"
 export const VAR_LINKED_ASSET_LNG = "LinkedAsset_Lng"
 export const VAR_LINKED_ASSET_NAME ="LinkedAssetName"
 export const VAR_LINKED_ASSET_DESCRIPTION ="LinkedAssetDescription"
+export const VAR_LINKED_ASSET_OWNER= "LinkedAsset_Owner_Name"
+export const VAR_LINKED_ASSET_PHONE= "LinkedAsset_Owner_PhoneNumber"
+export const VAR_LINKED_ASSET_EMAIL= "LinkedAsset_Owner_Email"
 export const VAR_ASSET_TYPE="AssetType"
 export const VAR_LINKED_ASSET_TYPE="LinkedAssetType"
 export const VAR_OWNER="Owner"
 export const VAR_ASSET_ENUM_SCHEMA_REF="@schema:AssetEnum/"
+
+// map variables 
+export const VAR_ZOOM="zoom"
+export const VAR_CENTER="center"
 
 // color constants
 export const CRITICAL_COLOR="#bf0a30"//"#dc3545"

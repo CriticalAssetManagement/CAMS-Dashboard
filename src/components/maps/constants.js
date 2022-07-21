@@ -15,7 +15,7 @@ const CENTER=[15.2999988, -61.3833318] // Domanica
 //const CENTER=[25.7617, -80.1918] // Miami
 
 // Map configs
-export const MAP_OPTIONS = {
+export const MAP_OPTIONS = { 
 	center: CENTER,
 	zoom: 11,
 	zoomDelta: 0.5,

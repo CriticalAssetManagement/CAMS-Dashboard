@@ -1,13 +1,12 @@
 import React, {useState, useRef, useEffect, useContext} from "react"
 import {Layout} from "../components/Layout"
-import {ProgressBar, Button, Row} from "react-bootstrap"
+import {ProgressBar, Button, Alert} from "react-bootstrap"
 import {VAR_NAME} from "../components/constants"
 import {WOQLClientObj} from '../init-woql-client'
 import {QueryHook} from "../hooks/QueryHook"
 import {getAvailableAssets} from "../hooks/queries"
 import {extractAssetLocations} from "../components/utils"
 import {MapHook} from "../hooks/MapHook"
-import {DEPENDENCY_RELATION_TYPE_TITLE, HOME_PAGE_TABLE_CSS, NO_DEPENDENCY_ALERT, SEARCH_ASSET} from "./constants"
 import {MapToolBar} from "../components/MapToolBar"
 import {SearchBar} from "../components/SearchBar"
 import {DisplayMarkerInfo} from "../components/DisplayMarkerInfo"
@@ -19,7 +18,8 @@ import "leaflet/dist/leaflet.css"
 import {getLegend} from "../components/maps/legend"
 import { useAuth0 } from "@auth0/auth0-react"
 import {Login} from "./Login"
-
+import {VAR_CENTER, VAR_ZOOM, INFO_VARIANT} from "../components/constants"
+import { FaLanguage } from "react-icons/fa"
 
 export const HomePage = () => {
     const [query, setQuery] = useState(false)
@@ -34,11 +34,20 @@ export const HomePage = () => {
 
     useEffect(() => {
         if(!showAssets) return 
+        if(!mapConfig) return 
 		map()
-	}, [showAssets])
+	}, [showAssets, mapConfig]) 
+
+    console.log("mapConfig", mapConfig)
 
     const map = () => {
-		const map = L.map(mapRef.current , MAP_OPTIONS)
+        let mapOptions = MAP_OPTIONS 
+
+        mapOptions[VAR_CENTER]=mapConfig[VAR_CENTER]
+        mapOptions[VAR_ZOOM]=mapConfig[VAR_ZOOM] 
+        
+        //console.log("mapOptions", mapOptions)
+		const map = L.map(mapRef.current , mapOptions)
         map.invalidateSize()
 
         setMapComponent(map)
@@ -59,7 +68,7 @@ export const HomePage = () => {
         //.addTo(map)
 
         // get icon legends and add to map
-        let legend=getLegend(L)
+        let legend=getLegend(L, language)
         legend.addTo(map) 
 
 		window.map = map
@@ -70,7 +79,7 @@ export const HomePage = () => {
     function loadMarkers (assets, layerGroup, map) {
         if(!assets) return
         clearMap()
-        getMarkers (assets, layerGroup, setOnMarkerClick)
+        getMarkers (assets, layerGroup, setOnMarkerClick, language)
         map.addLayer(layerGroup)
         setLayerGroup(layerGroup)
     }
@@ -97,17 +106,17 @@ export const HomePage = () => {
     function changeMap () {
         clearMap()
         var mg = L.layerGroup()
-        let vectorJson=extractAndDrawVectors(polyLine, setOnMarkerClick, mg)
+        let vectorJson=extractAndDrawVectors(polyLine, setOnMarkerClick, mg, language)
         // draw failure chain
-        drawFailureChains (displayFailureChains, mg)
+        drawFailureChains (displayFailureChains, setOnMarkerClick, mg, language)
 
         // draw upward chain
-        drawUpwardChainMarkers (displayUpwardChains, mg)
+        drawUpwardChainMarkers (displayUpwardChains, setOnMarkerClick, mg, language)
 
         // get vector and add arrows
 		function getVector (vector) {
             clearMap()
-            return gatherVectorLines(vector, displayFailureChains, displayUpwardChains, mg, onMarkerClick)
+            return gatherVectorLines(vector, displayFailureChains, displayUpwardChains, mg, onMarkerClick, language)
 		}
 
         var layersControl = L.control
@@ -127,7 +136,9 @@ export const HomePage = () => {
         setErrorMsg,
         loading,
         setLoading,
-        frames
+        frames,
+        language,
+        mapConfig
 	} = WOQLClientObj()
 
     const {
@@ -149,7 +160,7 @@ export const HomePage = () => {
         layerGroup,
         setLayerGroup,
         setUpwardChain,
-        displayUpwardChains
+        displayUpwardChains 
     } = MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg)
 
     const {
@@ -199,7 +210,7 @@ export const HomePage = () => {
             setRefresh(Date.now())
             changeMap()
         }
-    }, [displayUpwardChains])
+    }, [displayUpwardChains]) 
 
     useEffect(() => {
         if(mapComponent) {
@@ -221,7 +232,32 @@ export const HomePage = () => {
         }
     }, [filteredAssets])
 
+    useEffect(() => {
+        //console.log("I am refreshed", onMarkerClick)
+        if(setDisplayFailureChains) {
+            // clear failure chains
+            setDisplayFailureChains([])
+            setFailureChain(false)
+        }
+        // clear upward chain
+        if(setDisplayUpwardChains) {
+            setDisplayUpwardChains([])
+            setUpwardChain(false)
+        }
+        // clear filter by ID, Events
+        if(setFilterAssetById) setFilterAssetById(false)
+        if(setFilterAssetByEvent) setFilterAssetByEvent(false)
+        // clear grades
+        /*setGradedEvents(false)
+        // clear grade scales
+        setMaxScale(false)
+        setCurrentGrade(false) */
+    }, [onMarkerClick.refresh])
+
     if(!showAssets && loading)
+        return <ProgressBar animated now={100} variant="info"/>
+
+    if(!mapConfig)
         return <ProgressBar animated now={100} variant="info"/>
 
 
@@ -239,6 +275,10 @@ export const HomePage = () => {
                 setUpwardChain={setUpwardChain}
                 setFilterAssetById={setFilterAssetById}/>
 
+            {!showAssets && <Alert key={"no-assets-info"} variant={INFO_VARIANT}>
+                {language.NO_ASSETS_AVAILABLE_MAP}
+            </Alert>}
+
             {showAssets && <React.Fragment>
 
                 {onMarkerClick.refresh && <DisplayMarkerInfo dependencies={dependencies} info={onMarkerClick}/>}
@@ -248,7 +288,7 @@ export const HomePage = () => {
                 </div>
 
 
-                {loading && <ProgressBar animated now={100} variant="info"/>}
+                {loading && <ProgressBar animated now={100} variant={INFO_VARIANT}/>}
 
             </React.Fragment>}
         </div>}

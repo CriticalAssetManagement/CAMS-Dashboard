@@ -2,23 +2,6 @@
 import 'leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css'
 import 'leaflet-extra-markers/dist/js/leaflet.extra-markers.min.js'
 
-// Asset Types
-export const GOVERNMENT_BUILDINGS="Government Buildings"
-export const MARINE_PORTS="Marine Ports"
-export const AIRPORT="Airport"
-export const ELECTRICAL_POWER_GENERATING_PLANTS="Electrical Power Generating Plants"
-export const DESALINIZATION_PLANT="Desalinization Plant"
-export const DESALINATION_PLANT="Desalination Plant"
-export const WATER_DISTRIBUTION_SYSTEM="Water Distribution System"
-export const SAFETY_AND_SECURITY="Safety and Security"
-export const FOOD_WATER_SHELTER="Food, Water, Shelter"
-export const HEALTH_AND_MEDICAL="Health and Medical"
-export const ENERGY="Energy"
-export const COMMUNICATIONS="Communications"
-export const TRANSPORTATION="Transportation"
-export const HAZARDOUS_MATERIAL="Hazardous Material"
-export const OTHERS="Others"
-
 const MARKER_COLOR='#e194ff' //'blue-dark' //cyan/ green-dark
 const ICON_SIZE='fa-2x'
 const ICON_COLOR= '#00008b'//'#62ff97'

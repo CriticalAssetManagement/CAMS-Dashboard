@@ -4,8 +4,13 @@ import {VAR_NAME, LAT, LNG, EMPTY_DESCRIPTION, VAR_ASSET_IDENTIFIER, VAR_DESCRIP
 import {ClickedMarkerInfo} from "./DisplayMarkerInfo"
 import {AccordianSection} from "./AccordianSection"
 import {RiArrowGoBackFill} from "react-icons/ri"
+import {WOQLClientObj} from '../init-woql-client'
 
 export const ContactClickedAsset =({info, ownerResults}) => {
+    const {
+        language
+	} = WOQLClientObj()
+
     const [open, setOpen] = useState(false)
 
     const handleViewSidebar = () => {
@@ -32,7 +37,7 @@ export const ContactClickedAsset =({info, ownerResults}) => {
             </Offcanvas.Header>
             <Offcanvas.Body>
                 {info.hasOwnProperty(VAR_DESCRIPTION) && info[VAR_DESCRIPTION].length && info[VAR_DESCRIPTION]}
-                {!info.hasOwnProperty(VAR_DESCRIPTION) && EMPTY_DESCRIPTION }
+                {!info.hasOwnProperty(VAR_DESCRIPTION) && language.EMPTY_DESCRIPTION }
                 <ClickedMarkerInfo info={info}/>
                 <AccordianSection asset = {info.id}/>
             </Offcanvas.Body>

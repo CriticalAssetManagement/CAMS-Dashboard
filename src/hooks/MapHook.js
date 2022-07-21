@@ -3,6 +3,7 @@ import {QueryHook, executeQuery} from "./QueryHook"
 import {NON_CRITICAL_COLOR, CRITICAL_COLOR, CRITICAL_LINKS, VAR_CRITICAL, VAR_LATITUDE, VAR_LONGITUDE, NON_CRITICAL_LINKS, VAR_ASSET, VAR_LINKED_ASSET} from "../components/constants"
 import {getAssetFailureChain, getAssetsByEventsOrIDQuery, getAssetDependentOnQuery, getAssetUpwardChain} from "./queries"
 import {DEPENDENT} from "../pages/constants"
+import {REFRESH} from "../components/maps/constants"
 import {extractLocations, handleDocumentSelect, extractAssetLocations, getUpwardChainAssetLocation, extractNewAssetLocations, getFailureChainAssetLocation} from "../components/utils"
 import { arrayOf } from 'prop-types'
 
@@ -35,7 +36,6 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
     const [displayUpwardChains, setDisplayUpwardChains] = useState([])
     let upwardChainResults = QueryHook(woqlClient, upwardChainQuery, setLoading, setSuccessMsg, setErrorMsg)
 
-
     // get document location on select of an Asset
     let queryResults = QueryHook(woqlClient, query, setLoading, setSuccessMsg, setErrorMsg)
 
@@ -52,19 +52,28 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
     useEffect(() => {
         if(!onMarkerClick) return
         //console.log("onMarkerClick", onMarkerClick)
-        if(onMarkerClick.hasOwnProperty("id")) {
+        if(onMarkerClick.hasOwnProperty(VAR_ASSET)) {
+            setPolyLine(false)
+            setDependencies(false)
+            setLoading(true)
+            let documentID = onMarkerClick[VAR_ASSET]
+            let q = getAssetDependentOnQuery(documentID)
+            setQuery(q)
+        }
+        /*if(onMarkerClick.hasOwnProperty("id")) {
             setPolyLine(false)
             setDependencies(false)
             setLoading(true)
             let documentID = onMarkerClick["id"]
             let q = getAssetDependentOnQuery(documentID)
             setQuery(q)
-        }
-    }, [onMarkerClick])
+        }*/
+    }, [onMarkerClick[REFRESH]])
 
     useEffect(() => {
-        if(onMarkerClick && onMarkerClick.hasOwnProperty("id") && Array.isArray(queryResults) && queryResults.length > 0) {
-            let locs = extractAssetLocations(queryResults)
+        //if(onMarkerClick && onMarkerClick.hasOwnProperty("id") && Array.isArray(queryResults) && queryResults.length > 0) {
+        if(onMarkerClick && onMarkerClick.hasOwnProperty(VAR_ASSET) && Array.isArray(queryResults) && queryResults.length > 0) {
+            let locs = extractAssetLocations(queryResults) 
             setDependencies(locs)
 
             let gatherPolylines = []
@@ -130,8 +139,8 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
 
     // if failure chain is checked
     useEffect(() => {
-        if(failureChain && Object.keys(onMarkerClick).length && onMarkerClick.hasOwnProperty("id")) {
-            let q = getAssetFailureChain(onMarkerClick["id"])
+        if(failureChain && Object.keys(onMarkerClick).length && onMarkerClick.hasOwnProperty(VAR_ASSET)) {
+            let q = getAssetFailureChain(onMarkerClick[VAR_ASSET])
             setFailureChainPathQuery(q)
         }
         else if(!failureChain) setDisplayFailureChains([])
@@ -140,10 +149,10 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
 
     useEffect(() => {
         // get failure node
-        if(Array.isArray(failureChainResults) && failureChainResults.length && onMarkerClick.hasOwnProperty("id")) {
+        if(Array.isArray(failureChainResults) && failureChainResults.length && onMarkerClick.hasOwnProperty(VAR_ASSET)) {
             //console.log("failureChainResults ****", failureChainResults)
             //console.log("polyline", polyLine)
-            let locationResults = getFailureChainAssetLocation(failureChainResults)
+            let locationResults = getFailureChainAssetLocation(failureChainResults) 
             setDisplayFailureChains(locationResults)
 
         }
@@ -151,8 +160,8 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
 
     // if upward chain is checked
     useEffect(() => {
-        if(upwardChain && Object.keys(onMarkerClick).length && onMarkerClick.hasOwnProperty("id")) {
-            let q = getAssetUpwardChain(onMarkerClick["id"])
+        if(upwardChain && Object.keys(onMarkerClick).length && onMarkerClick.hasOwnProperty(VAR_ASSET)) {
+            let q = getAssetUpwardChain(onMarkerClick[VAR_ASSET])
             setUpwardChainQuery(q)
         }
         else if(!failureChain) setDisplayFailureChains([])
@@ -160,7 +169,7 @@ export function MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg) {
 
     useEffect(() => {
         // get failure node
-        if(Array.isArray(upwardChainResults) && upwardChainResults.length && onMarkerClick.hasOwnProperty("id")) {
+        if(Array.isArray(upwardChainResults) && upwardChainResults.length && onMarkerClick.hasOwnProperty(VAR_ASSET)) {
             //console.log("polyline", polyLine)
             let locationResults = getUpwardChainAssetLocation(upwardChainResults)
             //console.log("locationResults", locationResults)

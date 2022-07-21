@@ -327,5 +327,9 @@ a.leaflet-browser-print{
 }
 
 .tab-content, .user-mnagement-padding {
-    padding: 0px 30px 0px 30px; 
+    padding: 0px 0px 0px 00px; 
+}
+
+.p-description {
+    font-size: 14px;
 }

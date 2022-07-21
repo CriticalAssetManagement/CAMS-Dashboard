@@ -70,6 +70,7 @@
     "react-bootstrap-accordion": "^1.0.0",
     "react-codemirror2": "^7.2.1",
     "react-collapsible-component": "^1.3.4",
+    "react-csv": "^2.2.2",
     "react-dates": "^21.8.0",
     "react-dom": "^16.10.3",
     "react-icons": "^4.3.1",

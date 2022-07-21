@@ -1,48 +1,80 @@
 import React, {useEffect, useState} from "react"
 import {WOQLTable} from '@terminusdb/terminusdb-react-table'
-import {ControlledGetDocumentQuery} from '@terminusdb/terminusdb-react-table'
+import {ControlledGetDocumentQuery, ControlledDocuments} from '@terminusdb/terminusdb-react-table'
 import {WOQLClientObj} from '../init-woql-client'
 import {Alert} from "react-bootstrap"
-import {SECONDARY_VARIANT} from "./constants"
-import {displayResults} from "./utils"
+import {INFO_VARIANT} from "./constants"
+import {displayResults, getFormattedTime} from "./utils"
+import {ASSET_TYPE, OWNER_TYPE, USER_TYPE, LINK_TYPE} from "../pages/constants"
 
-export const Table = ({documents, config, title, css}) => {
+export const Table = ({documents, config, type, css, csvConfig}) => {
 
     const {
-        woqlClient
+        woqlClient,
+        language
 	} = WOQLClientObj()
 
-    const {
+    /*const { 
+        changeOrder,
+        changeLimits,
+        limit,
+        start,
+        orderBy,
+        loading, 
+        documentResults,
+        rowCount
+    } = ControlledGetDocumentQuery(woqlClient, title, 10) */
+
+    const { 
         changeOrder,
         changeLimits,
         limit,
         start,
         orderBy,
         loading,
+        documentResults,
         rowCount
-    } = ControlledGetDocumentQuery(woqlClient, null, 10)
+    } = ControlledDocuments(woqlClient, type, documents, 10)
 
-    if(Array.isArray(documents) && documents.length === 0) {
-        return <Alert variant={SECONDARY_VARIANT}>
-           {` No ${title} available`}
+
+    function getDocumentNotAvailableMessage(type) {
+        if(type === ASSET_TYPE) return language.NO_ASSETS_AVAILBLE
+        else if(type === OWNER_TYPE) return language.NO_OWNER_AVAILBLE
+        else if(type === USER_TYPE) return language.NO_PERSON_AVAILABLE
+        else if(type === LINK_TYPE) return language.NO_LINKS_AVAILABLE
+        else return language.EMPTY_PLACEHOLDER
+    }
+
+    function displayEmptyMessage(type) {
+        return <Alert variant={INFO_VARIANT}>
+            {getDocumentNotAvailableMessage(type)}
         </Alert>
     }
 
+    if(Array.isArray(documents) && documents.length === 0) {
+        return <React.Fragment>{displayEmptyMessage(type) }</React.Fragment>
+    }
+    else if(!documents) return <React.Fragment>{displayEmptyMessage(type) }</React.Fragment>
 
     return <React.Fragment>
         <span className={css}>
             {config && <WOQLTable
-                result={displayResults(documents)}
+                //result={displayResults(documentResults)}
+                //result={type ? documentResults : documents}
+                result={documents}
                 freewidth={true}
                 view={(config ? config.json() : {})}
                 limit={limit}
                 start={start}
                 orderBy={orderBy}
                 setLimits={changeLimits}
-                setOrder={changeOrder}
+                setOrder={changeOrder} 
                 query={false}
                 loading={loading}
-                totalRows={rowCount}
+                totalRows={rowCount} 
+                dowloadConfig={{filename: `${"file"}_${getFormattedTime()}.csv`, headers: csvConfig.headers,
+                    headersLabel: csvConfig.labels}}
+                //dowloadConfig={{filename:"test.csv", headers:["asset_identifier","assetType"]}}
             />}
         </span>
     </React.Fragment>

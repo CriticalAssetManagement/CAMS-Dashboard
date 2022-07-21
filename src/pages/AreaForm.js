@@ -2,7 +2,7 @@ import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
 import {ProgressBar} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
-import {AREA_TYPE, AREA_PAGE_TABLE_CSS, EDIT_CLICKED_AREA, CREATE_AREA_TAB, VIEW_AREA_LIST, VIEW_CLICKED_AREA} from "./constants"
+import {AREA_TYPE, AREA_PAGE_TABLE_CSS} from "./constants"
 import {Alerts} from "../components/Alerts"
 import {DocumentHook, GetDocumentListHook, GetDocumentHook, DeleteDocumentHook, EditDocumentHook} from "../hooks/DocumentHook"
 import {getAreaConfig} from "../components/Views"
@@ -24,7 +24,8 @@ export const AreaForm = () => {
         woqlClient,
         loading,
         setLoading,
-        refresh
+        refresh,
+        language
 	} = WOQLClientObj()
 
     const {
@@ -50,15 +51,14 @@ export const AreaForm = () => {
     } = DocumentContextObj()
 
     // create
-    let result=DocumentHook(woqlClient, extracted, VIEW_AREA_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let result=DocumentHook(woqlClient, extracted, language.VIEW_AREA_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     //view all document
-    let areaResults=GetDocumentListHook(woqlClient, type, refresh, setLoading, setSuccessMsg, setErrorMsg)
     //get a document
     let documentResults=GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMsg, setErrorMsg)
     // delete a document
-    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, VIEW_AREA_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, language.VIEW_AREA_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     // edit a document
-    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_CLICKED_AREA, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
+    let editResult=EditDocumentHook(woqlClient, extractedUpdate, language.VIEW_CLICKED_AREA, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
 
 
     useEffect(() => {
@@ -87,14 +87,14 @@ export const AreaForm = () => {
                 activeKey={tabKey}
                 onSelect={(k) => setTabKey(k)}
                 className="mb-3">
-                <Tab eventKey={VIEW_AREA_LIST} title={VIEW_AREA_LIST}>
+                <Tab eventKey={language.VIEW_AREA_LIST} title={language.VIEW_AREA_LIST}>
                     <DisplayDocuments results={areaResults}
                         css={AREA_PAGE_TABLE_CSS}
                         config={getAreaConfig(areaResults, onRowClick)}
-                        title={AREA_TYPE}
+                        type={AREA_TYPE}
                         onRowClick={onRowClick}/>
                 </Tab>
-                {showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_AREA} title={VIEW_CLICKED_AREA}>
+                {showDocument && !editDocument && <Tab eventKey={language.VIEW_CLICKED_AREA} title={language.VIEW_CLICKED_AREA}>
 
                         <ViewDocument frames={frames}
                             getDocumentToolBar={getDocumentToolBar}
@@ -103,7 +103,7 @@ export const AreaForm = () => {
                             showDocument={showDocument}/>
                     </Tab>
                 }
-                {editDocument && <Tab eventKey={EDIT_CLICKED_AREA} title={EDIT_CLICKED_AREA}>
+                {editDocument && <Tab eventKey={language.EDIT_CLICKED_AREA} title={language.EDIT_CLICKED_AREA}>
                     <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
@@ -112,7 +112,7 @@ export const AreaForm = () => {
                         editDocument={editDocument}/>
                     </Tab>
                 }
-                <Tab eventKey={CREATE_AREA_TAB} title={CREATE_AREA_TAB}>
+                <Tab eventKey={language.CREATE_AREA_TAB} title={language.CREATE_AREA_TAB}>
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
                         type={AREA_TYPE}

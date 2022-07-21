@@ -13,7 +13,7 @@ export const InfoBar = ({documents, info}) => {
     const [nonCritical, setNonCritical]=useState(false)
 
     const {
-		setPage,team
+		setPage,team, language
 	} = WOQLClientObj()
 
     let documentId = info.hasOwnProperty(VAR_NAME) ? info[VAR_NAME] : ""
@@ -37,14 +37,14 @@ export const InfoBar = ({documents, info}) => {
     return <div className="text-center">
         <Badge bg="danger" pill className="mt-3 h6 ">
             <div className="d-flex justify-content-center mb-2" title={`${critical} ${CRITICAL_LINKS}`}>
-                <label className="m-1 text-white mt-2">{CRITICAL_LINK_TITLE}</label> {` `}
+                <label className="m-1 text-white mt-2">{language.CRITICAL_LINK_TITLE}</label> {` `}
                 <label className="m-1 text-white mt-2 fw-bold">{critical}</label>
             </div>
         </Badge>
         {' '}
         <Badge bg="success" pill className="mt-3 h6 ">
             <div className="d-flex justify-content-center mb-2" title={`${nonCritical} ${NON_CRITICAL_LINKS}`}>
-                <label className=" m-1 text-white mt-2">{NON_CRITICAL_LINK_TITLE}</label> {` `}
+                <label className=" m-1 text-white mt-2">{language.NON_CRITICAL_LINK_TITLE}</label> {` `}
                 <label className="m-1 text-white mt-2 fw-bold">{nonCritical}</label>
             </div>
         </Badge>

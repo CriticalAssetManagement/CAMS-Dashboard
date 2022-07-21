@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react"
 import {Layout} from "../components/Layout"
 import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
-import {ASSET_TYPE, ASSET_PAGE_TABLE_CSS, EDIT_CLICKED_ASSET, CREATE_ASSET_TAB, VIEW_ASSET_LIST, VIEW_CLICKED_ASSET} from "./constants"
+import {ASSET_TYPE, ASSET_PAGE_TABLE_CSS} from "./constants"
 import {Alerts} from "../components/Alerts"
 import {DocumentHook, GetDocumentListHook, GetDocumentHook, DeleteDocumentHook, EditDocumentHook} from "../hooks/DocumentHook"
 import {getAssetConfig} from "../components/Views"
@@ -28,7 +28,8 @@ export const AssetForm = () => {
         woqlClient,
         loading,
         setLoading,
-        refresh
+        refresh,
+        language
 	} = WOQLClientObj()
 
     const {
@@ -62,17 +63,17 @@ export const AssetForm = () => {
     } = useAuth0()
 
     // create
-    let result=DocumentHook(woqlClient, extracted, VIEW_ASSET_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let result=DocumentHook(woqlClient, extracted, language.VIEW_ASSET_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg, language)
     //view all document
     let assetResults=GetDocumentListHook(woqlClient, type, refresh, setLoading, setSuccessMsg, setErrorMsg)
     //get a document
     let documentResults=GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMsg, setErrorMsg)
     // delete a document
-    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, VIEW_ASSET_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, language.VIEW_ASSET_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg, language)
     // edit a document
-    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_ASSET_LIST, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
+    let editResult=EditDocumentHook(woqlClient, extractedUpdate, language.VIEW_ASSET_LIST, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
 
-
+    console.log("assetResults", assetResults)
     useEffect(() => {
         // on changing tabs
         managePageTabs()
@@ -89,8 +90,6 @@ export const AssetForm = () => {
         }
     }, [documentResults])
 
-    
-
     return <div className="mb-5">
         <Layout/>
 
@@ -104,14 +103,15 @@ export const AssetForm = () => {
                 activeKey={tabKey}
                 onSelect={(k) => setTabKey(k)}
                 className="mb-3">
-                {tabControl.read && <Tab eventKey={VIEW_ASSET_LIST} title={VIEW_ASSET_LIST}>
+                {tabControl.read && <Tab eventKey={language.VIEW_ASSET_LIST} title={language.VIEW_ASSET_LIST}>
                     <DisplayDocuments results={assetResults}
                         css={ASSET_PAGE_TABLE_CSS}
-                        config={getAssetConfig(assetResults, onRowClick, renderDates)}
-                        title={ASSET_TYPE}
+                        config={getAssetConfig(assetResults, onRowClick, renderDates, frames)}
+                        type={ASSET_TYPE}    
+                        csvConfig={language.ASSET_CSV_CONFIG}                
                         onRowClick={onRowClick}/>
                 </Tab>}
-                {tabControl.read && showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_ASSET} title={VIEW_CLICKED_ASSET}>
+                {tabControl.read && showDocument && !editDocument && <Tab eventKey={language.VIEW_CLICKED_ASSET} title={language.VIEW_CLICKED_ASSET}>
 
                         {Array.isArray(traverseDocument.previous) && <span className="col-md-1 ml-5">
                             <Button
@@ -138,11 +138,11 @@ export const AssetForm = () => {
                                 type={ASSET_TYPE}
                                 onTraverse={handleTraverse}
                                 showDocument={showDocument}
-                            />
+                            /> 
                         }
                     </Tab>
                 }
-                {tabControl.write && editDocument && <Tab eventKey={EDIT_CLICKED_ASSET} title={EDIT_CLICKED_ASSET}>
+                {tabControl.write && editDocument && <Tab eventKey={language.EDIT_CLICKED_ASSET} title={language.EDIT_CLICKED_ASSET}>
                     <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
@@ -151,7 +151,7 @@ export const AssetForm = () => {
                         editDocument={editDocument}/>
                     </Tab>
                 }
-                {tabControl.write && <Tab eventKey={CREATE_ASSET_TAB} title={CREATE_ASSET_TAB}>
+                {tabControl.write && <Tab eventKey={language.CREATE_ASSET_TAB} title={language.CREATE_ASSET_TAB}>
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
                         type={ASSET_TYPE} 

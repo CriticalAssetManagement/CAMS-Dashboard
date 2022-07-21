@@ -2,7 +2,7 @@ import React, {useEffect} from "react"
 import {Layout} from "../components/Layout"
 import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
-import {OWNER_TYPE, OWNER_PAGE_TABLE_CSS, EDIT_CLICKED_OWNER, CREATE_OWNER_TAB, VIEW_OWNER_LIST, VIEW_CLICKED_OWNER} from "./constants"
+import {OWNER_TYPE, OWNER_PAGE_TABLE_CSS} from "./constants"
 import {Alerts} from "../components/Alerts"
 import {DocumentHook, GetDocumentListHook, GetDocumentHook, DeleteDocumentHook, EditDocumentHook} from "../hooks/DocumentHook"
 import {getOwnerConfig} from "../components/Views"
@@ -27,7 +27,7 @@ export const OwnerForm = () => {
         loading,
         setLoading,
         refresh,
-        setRefresh
+        language
 	} = WOQLClientObj()
 
     const {
@@ -61,15 +61,15 @@ export const OwnerForm = () => {
     } = useAuth0()
 
     // create
-    let result=DocumentHook(woqlClient, extracted, VIEW_OWNER_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let result=DocumentHook(woqlClient, extracted, language.VIEW_OWNER_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg, language)
     //view all document
     let ownerResults=GetDocumentListHook(woqlClient, type, refresh, setLoading, setSuccessMsg, setErrorMsg)
     //get a document
     let documentResults=GetDocumentHook(woqlClient, documentId, setLoading, setSuccessMsg, setErrorMsg)
     // delete a document
-    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, VIEW_OWNER_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
+    let deleteResult=DeleteDocumentHook(woqlClient, deleteDocument, language.VIEW_OWNER_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg, language)
     // edit a document
-    let editResult=EditDocumentHook(woqlClient, extractedUpdate, VIEW_OWNER_LIST, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
+    let editResult=EditDocumentHook(woqlClient, extractedUpdate, language.VIEW_OWNER_LIST, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
 
 
     useEffect(() => {
@@ -104,13 +104,14 @@ export const OwnerForm = () => {
                 activeKey={tabKey}
                 onSelect={(k) => {setTabKey(k)}}
                 className="mb-3">
-                {tabControl.read && <Tab eventKey={VIEW_OWNER_LIST} title={VIEW_OWNER_LIST}>
+                {tabControl.read && <Tab eventKey={language.VIEW_OWNER_LIST} title={language.VIEW_OWNER_LIST}>
                     <DisplayDocuments results={ownerResults}
                         css={OWNER_PAGE_TABLE_CSS}
-                        title={OWNER_TYPE}
-                        config={getOwnerConfig(ownerResults, onRowClick)}/>
+                        type={OWNER_TYPE}
+                        csvConfig={language.OWNER_CSV_CONFIG}
+                        config={getOwnerConfig(ownerResults, onRowClick, frames)}/>
                 </Tab>}
-                {tabControl.read && showDocument && !editDocument && <Tab eventKey={VIEW_CLICKED_OWNER} title={VIEW_CLICKED_OWNER}>
+                {tabControl.read && showDocument && !editDocument && <Tab eventKey={language.VIEW_CLICKED_OWNER} title={language.VIEW_CLICKED_OWNER}>
                     {Array.isArray(traverseDocument.previous) &&
                         <span className="col-md-1 ml-5">
                             <Button
@@ -143,7 +144,7 @@ export const OwnerForm = () => {
                     }
                     </Tab>
                 }
-                {tabControl.write && editDocument && <Tab eventKey={EDIT_CLICKED_OWNER} title={EDIT_CLICKED_OWNER}>
+                {tabControl.write && editDocument && <Tab eventKey={language.EDIT_CLICKED_OWNER} title={language.EDIT_CLICKED_OWNER}>
                     <EditDocument frames={frames}
                         getDocumentToolBar={getDocumentToolBar}
                         handleSelect={handleSelect}
@@ -152,7 +153,7 @@ export const OwnerForm = () => {
                         editDocument={editDocument}/>
                     </Tab>
                 }
-                {tabControl.write && <Tab eventKey={CREATE_OWNER_TAB} title={CREATE_OWNER_TAB}>
+                {tabControl.write && <Tab eventKey={language.CREATE_OWNER_TAB} title={language.CREATE_OWNER_TAB}>
                     {frames && <CreateDocument frames={frames}
                         handleSelect={handleSelect}
                         type={OWNER_TYPE}
