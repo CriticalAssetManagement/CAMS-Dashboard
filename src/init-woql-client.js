@@ -132,7 +132,7 @@ export const WOQLClientProvider = ({children, team}) => {
         clearMessages()
     }, [page])
 
-    console.log("mapConfig init", mapConfig)
+    //console.log("mapConfig init", mapConfig)
 
     return (
         <WOQLContext.Provider
