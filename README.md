@@ -17,9 +17,15 @@ TerminusX is used as our database back-end to store the critical assets.
 
 - Sign into TerminusX https://terminusdb.com/
 
-- Create a new Data Product by the ID ```CAMSDemo```
+- Create a new Data Product by the ID ```CAMSDemo``` by clicking "New Data Product" in the upper right corner of the dashboard.
 
-- Add the CAMS schema which you will find https://github.com/CriticalAssetManagement/CAMS-Dashboard/schema.json
+- Add the the CAMS schema from [https://github.com/CriticalAssetManagement/CAMS-Dashboard/blob/main/CAMSSchema.JSON](https://github.com/CriticalAssetManagement/CAMS-Dashboard/blob/main/CAMSSchema.json) by doing the following:
+  - Open the schema by clicking on the upper link and copy the entire schema in your clipboard
+  - Click on the added data product in the sidebar (called CAMSDemo in this README example)
+  - Click on the bubbly icon on the sidebar on the left (the second entry in the three icons)
+  - Click on the JSON View tab
+  - Click the edit button
+  - Paste the entire schema, overwrite the default schema and save it
 
 ### Step 2 - Clone CAMS Dashboard repo ```CAMS-Dashboard```
 
