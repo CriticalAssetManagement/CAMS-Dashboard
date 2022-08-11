@@ -55,7 +55,8 @@ export const WOQLClientProvider = ({children, team}) => {
         clientAccessControl.setJwtToken(jwtoken)
         await accessControlDash.callGetRolesList()
         // get team role
-        await accessControlDash.callGetUserTeamRole(team,user.email)
+        const currentUser = user ? user['http://terminusdb.com/schema/system#agent_name'] : false
+        await accessControlDash.callGetUserTeamRole(currentUser,team)
         //console.log("accessControlDash", accessControlDash)
         setAccessControlDash(accessControlDash)
     }
