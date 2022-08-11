@@ -40,7 +40,7 @@
     "@auth0/auth0-react": "^1.9.0",
     "@terminusdb/terminusdb-access-control-component": "^0.0.9",
     "@terminusdb/terminusdb-client": "^10.0.14",
-    "@terminusdb/terminusdb-documents-ui": "^1.0.6",
+    "@terminusdb/terminusdb-documents-ui": "^1.0.8",
     "@terminusdb/terminusdb-react-table": "^0.0.5",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.2",
