@@ -41,7 +41,7 @@
     "@terminusdb/terminusdb-access-control-component": "^0.0.9",
     "@terminusdb/terminusdb-client": "^10.0.14",
     "@terminusdb/terminusdb-documents-ui": "^1.0.8",
-    "@terminusdb/terminusdb-react-table": "^0.0.5",
+    "@terminusdb/terminusdb-react-table": "^0.0.7",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.2",
     "classnames": "^2.2.5",
@@ -116,8 +116,8 @@
     "ts-loader": "^9.2.6",
     "webpack": "^5.69.1",
     "webpack-bundle-analyzer": "^4.4.0",
-    "webpack-cli": "^4.6.0",
-    "webpack-dev-server": "^4.6.0"
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.10.0"
   },
   "license": "APACHE",
   "gitHead": "aa081c438b01f552aaad466229baee35c0299ff5"
