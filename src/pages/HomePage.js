@@ -20,6 +20,7 @@ import { useAuth0 } from "@auth0/auth0-react"
 import {Login} from "./Login"
 import {VAR_CENTER, VAR_ZOOM, INFO_VARIANT} from "../components/constants"
 import { FaLanguage } from "react-icons/fa"
+import {Alerts} from "../components/Alerts"
 
 export const HomePage = () => {
     const [query, setQuery] = useState(false)
@@ -35,10 +36,10 @@ export const HomePage = () => {
     useEffect(() => {
         if(!showAssets) return 
         if(!mapConfig) return 
+        console.log("mapConfig", mapConfig)
 		map()
 	}, [showAssets, mapConfig]) 
 
-    console.log("mapConfig", mapConfig)
 
     const map = () => {
         let mapOptions = MAP_OPTIONS 
@@ -138,7 +139,8 @@ export const HomePage = () => {
         setLoading,
         frames,
         language,
-        mapConfig
+        mapConfig,
+        errorMsg
 	} = WOQLClientObj()
 
     const {
@@ -257,13 +259,14 @@ export const HomePage = () => {
     if(!showAssets && loading)
         return <ProgressBar animated now={100} variant="info"/>
 
-    if(!mapConfig)
-        return <ProgressBar animated now={100} variant="info"/>
+    //if(!mapConfig)
+      //  return <ProgressBar animated now={100} variant="info"/>
 
 
     return <React.Fragment>
         <Layout/>
         {!isAuthenticated &&  <Login/>}
+        {errorMsg && <Alerts errorMsg={errorMsg}/>}
         {isAuthenticated && <div className="content-container">
             <MapToolBar setResetMap={setResetMap}
                 resetMap={resetMap}
