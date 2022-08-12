@@ -333,3 +333,17 @@ a.leaflet-browser-print{
 .p-description {
     font-size: 14px;
 }
+
+.nav__main__profile__img {
+    background-size: 40px 40px;
+    background-color: white;
+    border: 0;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    display: block;
+    margin: 0;
+    position: relative;
+    height: 40px;
+    width: 40px;
+    z-index: 0;
+}

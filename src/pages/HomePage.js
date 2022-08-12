@@ -257,7 +257,7 @@ export const HomePage = () => {
     if(!showAssets && loading)
         return <ProgressBar animated now={100} variant="info"/>
 
-    if(!mapConfig)
+    if(!mapConfig && loading )
         return <ProgressBar animated now={100} variant="info"/>
 
 

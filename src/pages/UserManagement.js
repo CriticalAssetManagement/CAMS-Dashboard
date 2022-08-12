@@ -15,13 +15,16 @@ export const UserManagement = (props) =>{
     const setting ={
         labels:{
             userListTitle:"Team Members",
-            inviteAddText: "Here you can add users to CAMS team",
-            inviteMember:"Add a new user"
+            inviteAddText: `Here you can add users to CAMS ${team} team`,
+            inviteMember:`Add a new user to CAMS ${team}`
         },
         tabs:{
             MEMBERS_TAB:true,
             INVITATION_TAB:false,
             REQUEST_ACCESS:true
+        },
+        buttons:{
+            ADD_USER_TO_THE_TEAM:true
         },
         interface:{
             memberList:{
@@ -32,8 +35,8 @@ export const UserManagement = (props) =>{
         },
         hookMessage:{
             sendInvitation:{
-                error: "I can not add the User to the CAMS team",
-                success:"The user has been added to the CAMS team"
+                error: `I can not add the User to CAMS ${team} team`,
+                success:`The user has been added to CAMS ${team} team`
             }
         },
     }
