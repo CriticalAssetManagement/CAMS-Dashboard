@@ -23,6 +23,45 @@ import { FaLanguage } from "react-icons/fa"
 import {Alerts} from "../components/Alerts"
 
 export const HomePage = () => {
+    const {isAuthenticated} = useAuth0()
+
+    const {
+        woqlClient,
+        setSuccessMsg,
+        setErrorMsg,
+        loading,
+        setLoading,
+        frames,
+        language,
+        mapConfig,
+        errorMsg
+	} = WOQLClientObj()
+
+    const {
+        setOnMarkerClick,
+        polyLine,
+        dependencies,
+        onMarkerClick,
+        setPolyLine,
+        setFilterAssetById,
+        filteredAssets,
+        setFilterAssetByEvent,
+        filterAssetByEvent,
+        setFailureChain,
+        displayFailureChains,
+        setDisplayFailureChains,
+        setDisplayUpwardChains,
+        setVectorLayerGroup,
+        vectorLayerGroup,
+        layerGroup,
+        setLayerGroup,
+        setUpwardChain,
+        displayUpwardChains 
+    } = MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg)
+
+
+    
+
     const [query, setQuery] = useState(false)
     const [showAssets, setShowAssets] = useState(false)
     const [resetMap, setResetMap] = useState(false)
@@ -131,43 +170,9 @@ export const HomePage = () => {
 
     } //changeMap()
 
-    const {
-        woqlClient,
-        setSuccessMsg,
-        setErrorMsg,
-        loading,
-        setLoading,
-        frames,
-        language,
-        mapConfig,
-        errorMsg
-	} = WOQLClientObj()
 
-    const {
-        setOnMarkerClick,
-        polyLine,
-        dependencies,
-        onMarkerClick,
-        setPolyLine,
-        setFilterAssetById,
-        filteredAssets,
-        setFilterAssetByEvent,
-        filterAssetByEvent,
-        setFailureChain,
-        displayFailureChains,
-        setDisplayFailureChains,
-        setDisplayUpwardChains,
-        setVectorLayerGroup,
-        vectorLayerGroup,
-        layerGroup,
-        setLayerGroup,
-        setUpwardChain,
-        displayUpwardChains 
-    } = MapHook(woqlClient, setLoading, setSuccessMsg, setErrorMsg)
 
-    const {
-        isAuthenticated
-    } = useAuth0()
+
 
     //console.log("displayFailureChains", displayFailureChains)
     //console.log("polyLine", polyLine)
