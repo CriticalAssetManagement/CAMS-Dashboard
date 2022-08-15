@@ -30,11 +30,10 @@ export const WOQLClientProvider = ({children, team}) => {
     const [errorMsg, setErrorMsg] = useState(false)
     const [accessControlDashboard,setAccessControlDash] = useState(false)
 
-    console.log("user", user)
-
     // config 
     const [language, setLanguage]=useState(EN_LANGUAGE) // language
     const [mapConfig, setMapConfig]=useState(false) // map configuration
+    
 
     const initAccessControlAndClient = async()=>{
         const jwtoken = await getAccessTokenSilently()
@@ -48,12 +47,13 @@ export const WOQLClientProvider = ({children, team}) => {
         client.localAuth(hubcreds)
         client.db(DATA_PRODUCT)
         setWoqlClient(client)
+        getMapConfig(client, setMapConfig, setErrorMsg)
 
         const clientAccessControl = getClientAccessControl(team)
         const accessControlDash = new AccessControlDashboard(clientAccessControl)
 
         clientAccessControl.setJwtToken(jwtoken)
-        await accessControlDash.callGetRolesList()
+        await accessControlDash.callGetRolesList({"Role/infoReader":true})
         // get team role
         const currentUser = user ? user['http://terminusdb.com/schema/system#agent_name'] : false
         await accessControlDash.callGetUserTeamRole(currentUser,team)
@@ -77,6 +77,7 @@ export const WOQLClientProvider = ({children, team}) => {
                 client.localAuth(hubcreds)
 
                 client.db(DATA_PRODUCT)*/
+                console.log("user", user)
                 initAccessControlAndClient()
                 //initAccessControl()
                 
@@ -92,13 +93,13 @@ export const WOQLClientProvider = ({children, team}) => {
     }, [user])
 
     /** Get Map config */
-    useEffect(() => {
+    async function getMapConfig(client, setMapConfig, setErrorMsg) {
         // get Map Config  
-        if(!woqlClient) return          
+        if(!client) return          
         let mapQ = getMapConfigQuery()
-        mapQ.execute(woqlClient)
+        await mapQ.execute(client)
         .then((res) => {
-            let json = {}
+            let json = {} 
             let config = res.bindings[0] // Should be only 1 entry for map config
             json[VAR_CENTER]=[config['X']["@value"], config['Y']["@value"]]
             json[VAR_ZOOM]=config[VAR_ZOOM]["@value"]
@@ -108,7 +109,7 @@ export const WOQLClientProvider = ({children, team}) => {
             let errMessage=`Cannot find Map Configuration to set Map`
             if(setErrorMsg) setErrorMsg(`${errMessage} - ${err.message}`)
         })
-    }, [woqlClient])
+    }
 
     
     /** Get frames */
