@@ -34,7 +34,6 @@ module.exports = {
   resolve: {
     alias: {
        "@terminusdb/terminusdb-client": path.resolve('../terminusdb-client/index.js'),
-      // "@rjsf/core": path.resolve('../react-jsonschema-form/packages/core/src/index.js'),
        "@terminusdb/terminusdb-react-table": path.resolve('../terminusdb-react-table/src/index.js'),
        "@terminusdb/terminusdb-documents-ui": path.resolve('../terminusdb-documents-ui/src/index.js'),
        "@terminusdb/terminusdb-access-control-component": path.resolve('../terminusdb-access-control-component/src/index.js'),   

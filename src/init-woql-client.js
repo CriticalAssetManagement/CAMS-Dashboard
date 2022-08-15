@@ -33,6 +33,7 @@ export const WOQLClientProvider = ({children, team}) => {
     // config 
     const [language, setLanguage]=useState(EN_LANGUAGE) // language
     const [mapConfig, setMapConfig]=useState(false) // map configuration
+    
 
     const initAccessControlAndClient = async()=>{
         const jwtoken = await getAccessTokenSilently()
@@ -52,7 +53,7 @@ export const WOQLClientProvider = ({children, team}) => {
         const accessControlDash = new AccessControlDashboard(clientAccessControl)
 
         clientAccessControl.setJwtToken(jwtoken)
-        await accessControlDash.callGetRolesList()
+        await accessControlDash.callGetRolesList({"Role/infoReader":true})
         // get team role
         const currentUser = user ? user['http://terminusdb.com/schema/system#agent_name'] : false
         await accessControlDash.callGetUserTeamRole(currentUser,team)
