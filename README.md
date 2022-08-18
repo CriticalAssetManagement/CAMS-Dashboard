@@ -1,21 +1,27 @@
 # CAMS-Dashboard
-This repo relates to the CAMS project UI.
+This repo relates to the CAMS (Critical Asset Management System) project UI.
 
-Featuring the front end code, it includes:
+CAMS is an open-source project dedicated to helping nations, communities, cities, and people become disaster resilient. We want to enable people to plan for disasters so they can rebuild faster and save lives.
+
+Develop and deliver a mobile and desktop application that users can securely access to learn more about their critical assets and the potential failure chains associated with each.
+
+## Contributions
+
+If you’re interested in contributing, here is the contributions guide
+
+This repo features the front end code, it includes:
 
 - User data capture - Forms for users to add, update, and delete critical asset information
 - Critical asset map GUI
 - Critical asset list GUI
 
-For more information about the full project, please visit the [CAMS Repo](https://github.com/CriticalAssetManagement/CAMS).
-
 ## Getting started
 
-### Step 1 - TerminusX
+### Step 1 - TerminusDB
 
-TerminusX is used as our database back-end to store the critical assets.
+TerminusDB is used as our database back-end to store the critical assets.
 
-- Sign into TerminusX https://terminusdb.com/
+- Sign into TerminusDB https://terminusdb.com/
 
 - Create a new Data Product by the ID ```CAMSDemo``` by clicking "New Data Product" in the upper right corner of the dashboard.
 
