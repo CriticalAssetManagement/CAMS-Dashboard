@@ -1,5 +1,5 @@
 # CAMS
-This repo relates to CAMS (Critical Asset Management System) and the project UI.
+This repo relates to CAMS (Critical Asset Management System) and the project UI. It is where the magic happens, so **put issues here**
 
 CAMS is an open-source project dedicated to helping nations, communities, cities, and people become disaster resilient. We want to enable people to plan for disasters so they can rebuild faster and save lives.
 
