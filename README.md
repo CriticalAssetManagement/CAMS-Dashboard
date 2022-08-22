@@ -3,6 +3,10 @@ This repo relates to CAMS (Critical Asset Management System) and the project UI.
 
 CAMS is an open-source project dedicated to helping nations, communities, cities, and people become disaster resilient. We want to enable people to plan for disasters so they can rebuild faster and save lives. It is a mobile and desktop application that users can securely access to learn more about their critical assets and the potential failure chains associated with each.
 
+### CAMS Technology
+
+CAMS is built with TerminusDB, the TerminusDB UI SDK, and React, the popular JS library. The maps are OpenStreetMap. JSON is the data-interchange format. TerminusDB is a document-oriented graph database that links JSON documents in a knowledge graph through a document API. The Document UI SDK builds the UI directly from documents in the database.
+
 ## Contributions
 
 If you’re interested in contributing, [here is the contributions guide](https://github.com/CriticalAssetManagement/contributor-guide/blob/main/README.md)
