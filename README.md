@@ -1,13 +1,11 @@
 # CAMS
-This repo relates to CAMS (Critical Asset Management System) and the project UI. It is where the magic happens, so **put issues here**.
+This repo relates to CAMS (Critical Asset Management System) and the project UI. It is where the magic happens, [report bugs, submit features, and see the current workload here](https://github.com/CriticalAssetManagement/CAMS-Dashboard/issues).
 
-CAMS is an open-source project dedicated to helping nations, communities, cities, and people become disaster resilient. We want to enable people to plan for disasters so they can rebuild faster and save lives.
-
-Develop and deliver a mobile and desktop application that users can securely access to learn more about their critical assets and the potential failure chains associated with each.
+CAMS is an open-source project dedicated to helping nations, communities, cities, and people become disaster resilient. We want to enable people to plan for disasters so they can rebuild faster and save lives. It is a mobile and desktop application that users can securely access to learn more about their critical assets and the potential failure chains associated with each.
 
 ## Contributions
 
-If you’re interested in contributing, here is the contributions guide
+If you’re interested in contributing, [here is the contributions guide](https://github.com/CriticalAssetManagement/contributor-guide/blob/main/README.md)
 
 This repo features the front end code, it includes:
 
@@ -17,11 +15,13 @@ This repo features the front end code, it includes:
 
 ## Getting started
 
+How to install CAMS locally.
+
 ### Step 1 - TerminusDB
 
-TerminusDB is used as our database back-end to store the critical assets.
+TerminusX, which is the hosted version of TerminusDB, is used as the database back-end to store the critical assets.
 
-- Sign into TerminusDB https://terminusdb.com/
+- Sign up or sign into TerminusDB https://dashboard.terminusdb.com
 
 - Create a new Data Product by the ID ```CAMSDemo``` by clicking "New Data Product" in the upper right corner of the dashboard.
 
