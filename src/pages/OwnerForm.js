@@ -11,7 +11,6 @@ import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
 import {BiArrowBack} from "react-icons/bi"
-import { useAuth0 } from "@auth0/auth0-react"
 import {Login} from "./Login"
 
 export const OwnerForm = () => {
@@ -27,7 +26,8 @@ export const OwnerForm = () => {
         loading,
         setLoading,
         refresh,
-        language
+        language,
+        clientUser
 	} = WOQLClientObj()
 
     const {
@@ -56,9 +56,7 @@ export const OwnerForm = () => {
         tabControl
     } = DocumentContextObj()
 
-    const {
-        isAuthenticated
-    } = useAuth0()
+    const isAuthenticated = clientUser.isAuthenticated
 
     // create
     let result=DocumentHook(woqlClient, extracted, language.VIEW_OWNER_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg, language)

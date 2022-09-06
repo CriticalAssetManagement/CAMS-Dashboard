@@ -34,11 +34,18 @@ const providerConfig ={
 	teamName:teamName
 };
 
-return <Auth0Provider {...providerConfig}>
+if(process.env.CONNECTION_TYPE !== "LOCAL"){
+	return <Auth0Provider {...providerConfig}>
 			<WOQLClientProvider team={teamName}>
 				<App />
 			</WOQLClientProvider>
 		</Auth0Provider>
+}
+
+return <WOQLClientProvider team={teamName}>
+		  <App />
+		</WOQLClientProvider>
+		
 }
 
 ReactDOM.render(

@@ -11,7 +11,6 @@ import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
 import {BiArrowBack} from "react-icons/bi"
-import { useAuth0 } from "@auth0/auth0-react"
 import {Login} from "./Login"
 
 export const UserForm = () => {
@@ -28,7 +27,8 @@ export const UserForm = () => {
         setLoading,
         refresh,
         setRefresh,
-        language
+        language,
+        clientUser
 	} = WOQLClientObj()
 
     const {
@@ -60,7 +60,7 @@ export const UserForm = () => {
 
     const {
         isAuthenticated
-    } = useAuth0()
+    } = clientUser
 
     // create
     let result=DocumentHook(woqlClient, extracted, language.VIEW_USER_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg, language)

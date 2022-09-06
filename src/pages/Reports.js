@@ -10,7 +10,6 @@ import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
 import {BiArrowBack} from "react-icons/bi"
-import { useAuth0 } from "@auth0/auth0-react"
 import {Login} from "./Login"
 import {QueryHook} from "../hooks/QueryHook"
 import {Table} from "../components/Table"
@@ -24,12 +23,13 @@ export const Reports = () => {
         woqlClient,
         setLoading,
         language,
-        frames
+        frames,
+        clientUser
 	} = WOQLClientObj()
 
     const {
         isAuthenticated
-    } = useAuth0()
+    } = clientUser
 
     const {
         tabControl

@@ -16,15 +16,12 @@ import {extractAndDrawVectors, gatherVectorLines, drawFailureChains, getMarkers,
 import "leaflet.browser.print/dist/leaflet.browser.print.min.js"
 import "leaflet/dist/leaflet.css"
 import {getLegend} from "../components/maps/legend"
-import { useAuth0 } from "@auth0/auth0-react"
 import {Login} from "./Login"
 import {VAR_CENTER, VAR_ZOOM, INFO_VARIANT} from "../components/constants"
 import { FaLanguage } from "react-icons/fa"
 import {Alerts} from "../components/Alerts"
 
 export const HomePage = () => {
-    const {isAuthenticated} = useAuth0()
-
     const {
         woqlClient,
         setSuccessMsg,
@@ -34,9 +31,12 @@ export const HomePage = () => {
         frames,
         language,
         mapConfig,
-        errorMsg
+        errorMsg,
+        clientUser
 	} = WOQLClientObj()
 
+    const isAuthenticated = clientUser.isAuthenticated;
+    console.log(isAuthenticated,"isAuthenticated")
     const {
         setOnMarkerClick,
         polyLine,

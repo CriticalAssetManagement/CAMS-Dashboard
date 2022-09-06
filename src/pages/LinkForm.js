@@ -11,7 +11,6 @@ import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
 import {BiArrowBack} from "react-icons/bi"
-import { useAuth0 } from "@auth0/auth0-react"
 import {Login} from "./Login"
 
 export const LinkForm = () => {
@@ -27,7 +26,8 @@ export const LinkForm = () => {
         loading,
         setLoading,
         refresh,
-        language
+        language,
+        clientUser
 	} = WOQLClientObj()
 
     const {
@@ -58,7 +58,7 @@ export const LinkForm = () => {
 
     const {
         isAuthenticated
-    } = useAuth0()
+    } = clientUser
 
 
     // create

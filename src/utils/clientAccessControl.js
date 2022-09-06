@@ -1,9 +1,9 @@
 import TerminusClient from '@terminusdb/terminusdb-client'
 let server = process.env.TERMINUSDB_SERVER
 
-export const getClientAccessControl = (team) =>{
+export const getClientAccessControl = (accessCredential) =>{
   //to be review 
-  const accessControl = new TerminusClient.AccessControl(server,{organization:team})
+  const accessControl = new TerminusClient.AccessControl(server,accessCredential)
   
 
   accessControl.sendOrgInvite = function (userEmail, role, note = '', orgName) {
