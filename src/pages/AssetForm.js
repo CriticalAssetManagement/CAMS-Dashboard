@@ -11,25 +11,14 @@ import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
 import {BiArrowBack} from "react-icons/bi"
-import {Login} from "./Login"
 import {renderDates} from "../components/utils"
 
 export const AssetForm = () => {
-
     const {
-		connectionError,
-        frames,
-        prefix,
-        successMsg,
-        setSuccessMsg,
-        errorMsg,
-        setErrorMsg,
+	    frames,
         woqlClient,
-        loading,
-        setLoading,
         refresh,
-        language,
-        clientUser
+        language
 	} = WOQLClientObj()
 
     const {
@@ -58,9 +47,9 @@ export const AssetForm = () => {
         tabControl
     } = DocumentContextObj()
 
-    const {
-        isAuthenticated
-    } = clientUser
+    const [loading,setLoading] = useState(false)
+    const [successMsg, setSuccessMsg] = useState(false)
+    const [errorMsg,setErrorMsg] = useState(false)
 
     // create
     let result=DocumentHook(woqlClient, extracted, language.VIEW_ASSET_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg, language)
@@ -73,10 +62,9 @@ export const AssetForm = () => {
     // edit a document
     let editResult=EditDocumentHook(woqlClient, extractedUpdate, language.VIEW_ASSET_LIST, handleRefresh, setDocumentId, setLoading, setSuccessMsg, setErrorMsg)
 
-    console.log("assetResults", assetResults)
     useEffect(() => {
         // on changing tabs
-        managePageTabs()
+        managePageTabs(setSuccessMsg,setErrorMsg)
     }, [tabKey])
 
     useEffect(() => {
@@ -92,11 +80,7 @@ export const AssetForm = () => {
 
     return <div className="mb-5">
         <Layout/>
-
-        {!isAuthenticated &&  <Login/>}
-
-        {isAuthenticated && <div className="px-3 content-container">
-            <Alerts errorMsg={connectionError}/>
+        <div className="px-3 content-container">
             {loading && <ProgressBar animated now={100} variant="info"/>}
 
             <Tabs id="controlled-tab"
@@ -162,8 +146,7 @@ export const AssetForm = () => {
 
             <Alerts successMsg={successMsg}/>
             <Alerts errorMsg={errorMsg}/>
-        </div>}
-
+        </div>
     </div>
 
 }

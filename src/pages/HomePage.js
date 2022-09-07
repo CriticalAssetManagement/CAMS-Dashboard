@@ -24,19 +24,15 @@ import {Alerts} from "../components/Alerts"
 export const HomePage = () => {
     const {
         woqlClient,
-        setSuccessMsg,
-        setErrorMsg,
-        loading,
-        setLoading,
         frames,
         language,
         mapConfig,
-        errorMsg,
-        clientUser
-	} = WOQLClientObj()
+      } = WOQLClientObj()
 
-    const isAuthenticated = clientUser.isAuthenticated;
-    console.log(isAuthenticated,"isAuthenticated")
+   const [loading,setLoading] = useState(false)
+   const [successMsg,setSuccessMsg] = useState(false)
+   const [errorMsg,setErrorMsg] = useState(false)
+
     const {
         setOnMarkerClick,
         polyLine,
@@ -270,9 +266,8 @@ export const HomePage = () => {
 
     return <React.Fragment>
         <Layout/>
-        {!isAuthenticated &&  <Login/>}
         {errorMsg && <Alerts errorMsg={errorMsg}/>}
-        {isAuthenticated && <div className="content-container">
+        <div className="content-container">
             <MapToolBar setResetMap={setResetMap}
                 resetMap={resetMap}
                 setDisplayFailureChains={setDisplayFailureChains}
@@ -299,7 +294,7 @@ export const HomePage = () => {
                 {loading && <ProgressBar animated now={100} variant={INFO_VARIANT}/>}
 
             </React.Fragment>}
-        </div>}
+        </div>
 
     </React.Fragment>
 }

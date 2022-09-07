@@ -41,65 +41,59 @@ export const WOQLClientProvider = ({children, team}) => {
 
     const initAccessControlAndClient = async(url,credentials,accessCredential)=>{
         //const jwtoken = await getAccessTokenSilently()
+        setConnectionError(false)
+        setLoading(true)
+        try{
+            credentials.organization = team 
+            const client = new TerminusDBClient.WOQLClient(url,credentials)
 
-        credentials.organization = team 
-        const client = new TerminusDBClient.WOQLClient(url,credentials)
-
-        //let hubcreds = {type: "jwt", key: jwtoken, user: user.email}
-        //client.localAuth(credentials)
-        client.db(DATA_PRODUCT)
-        setWoqlClient(client)
-        getMapConfig(client, setMapConfig, setErrorMsg)
-
-        accessCredential.organization = team
-        const clientAccessControl = getClientAccessControl(accessCredential)
-        const accessControlDash = new AccessControlDashboard(clientAccessControl)
-
-        //clientAccessControl.setJwtToken(jwtoken)
-        await accessControlDash.callGetRolesList({"Role/infoReader":true})
-        // get team role
-        // const currentUser = user ? user['http://terminusdb.com/schema/system#agent_name'] : false
-        await accessControlDash.callGetUserTeamRole(clientUser.user,team)
-        //console.log("accessControlDash", accessControlDash)
-        setAccessControlDash(accessControlDash)
+            //let hubcreds = {type: "jwt", key: jwtoken, user: user.email}
+            //client.localAuth(credentials)
+            client.db(DATA_PRODUCT)
+            
+            accessCredential.organization = team
+            const clientAccessControl = getClientAccessControl(accessCredential)
+            const accessControlDash = new AccessControlDashboard(clientAccessControl)
+            setAccessControlDash(accessControlDash)
+            //clientAccessControl.setJwtToken(jwtoken)
+            await accessControlDash.callGetRolesList({"Role/infoReader":true})
+            // get team role
+            await accessControlDash.callGetUserTeamRole(clientUser.user,team)
+            //console.log("accessControlDash", accessControlDash)
+            setWoqlClient(client)
+            getMapConfig(client, setMapConfig, setErrorMsg)
+            
+        }catch(e) {
+            setConnectionError(e)
+        }finally{
+            setLoading(false)
+        }
     }
 
     /* Initialize client */
     useEffect(() => {
-        try{
             //client.setApiKey(token)
             if(clientUser.email && team){      
                     //to be review the local connection maybe don't need a user in the cloud
                     //and don't need auth0 too
                     if(process.env.CONNECTION_TYPE === "LOCAL"){
-                        setLoading(true)
                         const user =  process.env.TERMINUSDB_USER
                         const key = process.env.TERMINUSDB_KEY
                         const credentials  = {user ,key}                        
                         initAccessControlAndClient(server,credentials,credentials)
-        
                     }else if(clientUser && clientUser.isAuthenticated){
-                        setLoading(true)
                         clientUser.getAccessTokenSilently().then(jwtoken=>{
-                            let hubcreds = {jwt: jwtoken, user: clientUser.email}
-                            // user is the Auth0 id
-                            let accesscred ={jwt : jwtoken, user:clientUser.user}              
-                            initAccessControlAndClient(`${server}${team}/`,hubcreds,accesscred)
+                        let hubcreds = {jwt: jwtoken, user: clientUser.email}
+                        // user is the Auth0 id
+                        let accesscred ={jwt : jwtoken, user:clientUser.user}              
+                        initAccessControlAndClient(`${server}${team}/`,hubcreds,accesscred)
                         })
                         
                     }
                 }
-
-                //initAccessControlAndClient()
-                //initAccessControl()
                 
                 // language used is English by default, if team is Santa Ana then language is set to Spanish
                 if(team === SANTA_ANA_TEAM) setLanguage(SPA_LANGUAGE)
-
-                setLoading(false)
-        }catch(e) {
-            setConnectionError(e)
-        }
     }, [clientUser.email])
 
     /** Get Map config */
@@ -155,13 +149,13 @@ export const WOQLClientProvider = ({children, team}) => {
                 frames,
                 connectionError,
                 successMsg,
-                setSuccessMsg,
+               // setSuccessMsg,
                 errorMsg,
-                setErrorMsg,
+               // setErrorMsg,
                 setPage,
                 clearMessages,
                 loading,
-                setLoading,
+               // setLoading,
                 refresh,
                 setRefresh,
                 //prefix,

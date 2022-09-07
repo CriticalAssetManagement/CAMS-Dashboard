@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect,useState} from "react"
 import {Layout} from "../components/Layout"
 import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
@@ -18,16 +18,9 @@ export const OwnerForm = () => {
     const {
 		connectionError,
         frames,
-        successMsg,
-        setSuccessMsg,
-        errorMsg,
-        setErrorMsg,
         woqlClient,
-        loading,
-        setLoading,
         refresh,
-        language,
-        clientUser
+        language
 	} = WOQLClientObj()
 
     const {
@@ -56,7 +49,9 @@ export const OwnerForm = () => {
         tabControl
     } = DocumentContextObj()
 
-    const isAuthenticated = clientUser.isAuthenticated
+    const [loading,setLoading] = useState(false)
+    const [successMsg,setSuccessMsg] = useState(false)
+    const [errorMsg,setErrorMsg] = useState(false)
 
     // create
     let result=DocumentHook(woqlClient, extracted, language.VIEW_OWNER_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg, language)
@@ -72,7 +67,7 @@ export const OwnerForm = () => {
 
     useEffect(() => {
         // on changing tabs
-        managePageTabs()
+        managePageTabs(setSuccessMsg,setErrorMsg)
     }, [tabKey])
 
 
@@ -91,13 +86,8 @@ export const OwnerForm = () => {
 
     return <div className="mb-5">
         <Layout/>
-
-        {!isAuthenticated &&  <Login/>}
-
-        {isAuthenticated && <div className="px-3 content-container">
-            <Alerts errorMsg={connectionError}/>
+       <div className="px-3 content-container">
             {loading && <ProgressBar animated now={100} variant="info"/>}
-
             <Tabs id="controlled-tab"
                 activeKey={tabKey}
                 onSelect={(k) => {setTabKey(k)}}
@@ -162,8 +152,6 @@ export const OwnerForm = () => {
 
             <Alerts successMsg={successMsg}/>
             <Alerts errorMsg={errorMsg}/>
-        </div>}
-
+        </div>
     </div>
-
 }

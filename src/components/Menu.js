@@ -8,7 +8,6 @@ import {WOQLClientObj} from '../init-woql-client'
 import {GoHome} from "react-icons/go"
 import {FiMap, FiMapPin, FiLink} from "react-icons/fi"
 import {BiBookReader} from "react-icons/bi"
-import {RiUserSmileLine} from "react-icons/ri"
 import {GrUserAdmin} from "react-icons/gr"
 import {AiOutlineUsergroupAdd,AiOutlineUser,AiOutlinePoweroff} from "react-icons/ai"
 import {BsPerson, BsPersonBadge} from "react-icons/bs"
@@ -46,7 +45,7 @@ export const Menu = () => {
 	} = WOQLClientObj()
 
     const {
-        user,
+        picture,
         isAuthenticated,
         loginWithRedirect,
         logout,
@@ -171,7 +170,7 @@ export const Menu = () => {
                 {isAuthenticated &&  <Dropdown className="mr-4" >
                     <Dropdown.Toggle nav caret id="profileDropDown">
                         <img
-                        src={user.picture}
+                        src={picture}
                         alt="Profile"
                         className="nav-user-profile rounded-circle"
                         width="50"

@@ -21,7 +21,6 @@ export const Reports = () => {
 
     const {
         woqlClient,
-        setLoading,
         language,
         frames,
         clientUser
@@ -37,6 +36,7 @@ export const Reports = () => {
 
     const [query, setQuery] = useState(false)
     const [assets, setAssets] = useState(false)
+    const [loading,setLoading] = useState(false)
     let results = QueryHook(woqlClient, query, setLoading)
 
     useEffect(() => {
@@ -86,10 +86,7 @@ export const Reports = () => {
 
     return <div className="mb-5">
         <Layout/>
-
-        {!isAuthenticated &&  <Login/>}
-
-        {tabControl.read && isAuthenticated  && <div className="px-3 content-container">
+        {tabControl.read  && <div className="px-3 content-container">
             <span className="table-word-break">
                 <Table documents = {assets}
                     //css={CRITCAL_LIST_TABLE_CSS}
