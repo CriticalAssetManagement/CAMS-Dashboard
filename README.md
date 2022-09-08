@@ -1,7 +1,17 @@
-# CAMS-Dashboard
-This repo relates to the CAMS project UI.
+# CAMS
+This repo relates to CAMS (Critical Asset Management System) and the project UI. It is where the magic happens, [report bugs, submit features, and see the current workload here](https://github.com/CriticalAssetManagement/CAMS-Dashboard/issues).
 
-Featuring the front end code, it includes:
+CAMS is an open-source project dedicated to helping nations, communities, cities, and people become disaster resilient. We want to enable people to plan for disasters so they can rebuild faster and save lives. It is a mobile and desktop application that users can securely access to learn more about their critical assets and the potential failure chains associated with each.
+
+### CAMS Technology
+
+CAMS is built with TerminusDB, the TerminusDB UI SDK, and React, the popular JS library. The maps are OpenStreetMap. JSON is the data-interchange format. TerminusDB is a document-oriented graph database that links JSON documents in a knowledge graph through a document API. The Document UI SDK builds the UI directly from documents in the database.
+
+## Contributions
+
+If you’re interested in contributing, [here is the contributions guide](https://github.com/CriticalAssetManagement/contributor-guide/blob/main/README.md)
+
+This repo features the front end code, it includes:
 
 - User data capture - Forms for users to add, update, and delete critical asset information
 - Critical asset map GUI
@@ -18,14 +28,15 @@ For more information about the full project, please visit the [CAMS Repo](https:
 
 These steps will get you up and running and will allow you to contribute to CAMS.
 
-
 ## Getting started for online teams
 
-### Step 1 - TerminusX
+How to install CAMS locally.
 
-TerminusX is used as our database back-end to store the critical assets.
+### Step 1 - TerminusDB
 
-- Sign into TerminusX https://terminusdb.com/
+TerminusX, which is the hosted version of TerminusDB, is used as the database back-end to store the critical assets.
+
+- Sign up or sign into TerminusDB https://dashboard.terminusdb.com
 
 - Create a new Data Product by the ID ```CAMSDemo``` by clicking "New Data Product" in the upper right corner of the dashboard.
 
