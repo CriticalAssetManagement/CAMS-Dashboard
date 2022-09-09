@@ -8,9 +8,7 @@ import {WOQLClientObj} from '../init-woql-client'
 import {GoHome} from "react-icons/go"
 import {FiMap, FiMapPin, FiLink} from "react-icons/fi"
 import {BiBookReader} from "react-icons/bi"
-import {RiUserSmileLine} from "react-icons/ri"
 import {GrUserAdmin} from "react-icons/gr"
-import { useAuth0 } from "@auth0/auth0-react"
 import {AiOutlineUsergroupAdd,AiOutlineUser,AiOutlinePoweroff} from "react-icons/ai"
 import {BsPerson, BsPersonBadge} from "react-icons/bs"
 import {loginConf} from "../utils/auth0LoginConf"
@@ -42,15 +40,18 @@ export const Menu = () => {
 		setPage, 
         team, 
         accessControlDashboard,
-        language
+        language,
+        clientUser,
 	} = WOQLClientObj()
 
     const {
-        user,
+        picture,
         isAuthenticated,
         loginWithRedirect,
         logout,
-    } = useAuth0()
+    } = clientUser
+
+    const connection_type = process.env.CONNECTION_TYPE;
 
     //console.log("user",user)
     const login = () =>{
@@ -109,7 +110,7 @@ export const Menu = () => {
                     id={language.OWNER_FORM}
                     onClick={(e) => setPage(OWNER_FORM_PAGE)}
                     >
-                        <MenuIcon icon={<BsPersonBadge/>} title={language.OWNER_FORM}/>
+                    <MenuIcon icon={<BsPersonBadge/>} title={language.OWNER_FORM}/>
                 </Nav.Link>
                 {/*<Nav.Link // hide for now
                     as={RouterNavLink}
@@ -129,7 +130,7 @@ export const Menu = () => {
                     id={language.ASSET_FORM}
                     onClick={(e) => setPage(ASSET_FORM_PAGE)}
                     >
-                        <MenuIcon icon={<FiMapPin/>} title={language.ASSET_FORM}/>
+                    <MenuIcon icon={<FiMapPin/>} title={language.ASSET_FORM}/>
                 </Nav.Link>
                 <Nav.Link
                     as={RouterNavLink}
@@ -152,10 +153,11 @@ export const Menu = () => {
                         <MenuIcon icon={<BiBookReader/>} title={language.REPORTS}/>
                     </Nav.Link>
             </Nav>
+            {connection_type !== "LOCAL" &&
             <div className="d-flex">
                 {!isAuthenticated && (
                     <Nav.Item>
-                    <Button
+                    <Button 
                         id="qsLoginBtn"
                         color="primary"
                         className="btn-margin"
@@ -168,7 +170,7 @@ export const Menu = () => {
                 {isAuthenticated &&  <Dropdown className="mr-4" >
                     <Dropdown.Toggle nav caret id="profileDropDown">
                         <img
-                        src={user.picture}
+                        src={picture}
                         alt="Profile"
                         className="nav-user-profile rounded-circle"
                         width="50"
@@ -209,7 +211,7 @@ export const Menu = () => {
                         </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>}
-            </div>
+            </div>}
         </Navbar.Collapse>
   </Navbar>
 }

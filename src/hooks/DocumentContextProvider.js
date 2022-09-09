@@ -7,7 +7,16 @@ import {Button, Row} from "react-bootstrap"
 import {SUCCESS_VARIANT} from '../components/constants'
 import { FaLanguage } from 'react-icons/fa'
 
-export const DocumentContextProvider = ({children, params}) => {
+export const DocumentContextProvider = ({children, params }) => {
+    const {
+       // setSuccessMsg,
+       // setErrorMsg,
+        woqlClient,
+        clearMessages,
+        setRefresh,
+        accessControlDashboard,
+        language
+	} = WOQLClientObj()
 
     const [documentId, setDocumentId] = useState(false) // view a document
     const [extracted, setExtracted] = useState(false) //create document
@@ -24,15 +33,7 @@ export const DocumentContextProvider = ({children, params}) => {
     // tab control constants based on access control priviliges
     const [tabControl, setTabControl]=useState({})
 
-    const {
-        setSuccessMsg,
-        setErrorMsg,
-        woqlClient,
-        clearMessages,
-        setRefresh,
-        accessControlDashboard,
-        language
-	} = WOQLClientObj()
+
 
 
     //console.log("accessControlDashboard", accessControlDashboard)
@@ -175,7 +176,7 @@ export const DocumentContextProvider = ({children, params}) => {
     } 
 
     //function to manage page page tabs
-    function managePageTabs() {
+    function managePageTabs(setSuccessMsg,setErrorMsg) {
         if(tabKey === params.listTab) {
             clearClickedDocument()
         }

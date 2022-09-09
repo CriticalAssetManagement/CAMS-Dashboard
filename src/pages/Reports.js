@@ -10,7 +10,6 @@ import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
 import {BiArrowBack} from "react-icons/bi"
-import { useAuth0 } from "@auth0/auth0-react"
 import {Login} from "./Login"
 import {QueryHook} from "../hooks/QueryHook"
 import {Table} from "../components/Table"
@@ -22,14 +21,14 @@ export const Reports = () => {
 
     const {
         woqlClient,
-        setLoading,
         language,
-        frames
+        frames,
+        clientUser
 	} = WOQLClientObj()
 
     const {
         isAuthenticated
-    } = useAuth0()
+    } = clientUser
 
     const {
         tabControl
@@ -37,6 +36,7 @@ export const Reports = () => {
 
     const [query, setQuery] = useState(false)
     const [assets, setAssets] = useState(false)
+    const [loading,setLoading] = useState(false)
     let results = QueryHook(woqlClient, query, setLoading)
 
     useEffect(() => {
@@ -86,10 +86,7 @@ export const Reports = () => {
 
     return <div className="mb-5">
         <Layout/>
-
-        {!isAuthenticated &&  <Login/>}
-
-        {tabControl.read && isAuthenticated  && <div className="px-3 content-container">
+        {tabControl.read  && <div className="px-3 content-container">
             <span className="table-word-break">
                 <Table documents = {assets}
                     //css={CRITCAL_LIST_TABLE_CSS}

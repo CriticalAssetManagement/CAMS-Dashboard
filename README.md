@@ -17,7 +17,18 @@ This repo features the front end code, it includes:
 - Critical asset map GUI
 - Critical asset list GUI
 
-## Getting started
+For more information about the full project, please visit the [CAMS Repo](https://github.com/CriticalAssetManagement/CAMS).
+
+## Getting started locally with the Miami demo (fastest way to get started)
+
+1. Be sure to install [Docker and the docker-compose plugin](https://docs.docker.com/engine/install/).
+2. Copy `.env.default` to `.env`.
+3. Run `docker compose up`. You might need root access depending on whether your user has been added to the Docker group.
+4. Visit localhost:3036/Miami in your browser.
+
+These steps will get you up and running and will allow you to contribute to CAMS.
+
+## Getting started for online teams
 
 How to install CAMS locally.
 

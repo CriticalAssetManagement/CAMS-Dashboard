@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect,useState} from "react"
 import {Layout} from "../components/Layout"
 import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
@@ -11,25 +11,15 @@ import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
 import {BiArrowBack} from "react-icons/bi"
-import { useAuth0 } from "@auth0/auth0-react"
-import {Login} from "./Login"
 
 export const UserForm = () => {
 
     const {
-		connectionError,
         frames,
-        successMsg,
-        setSuccessMsg,
-        errorMsg,
-        setErrorMsg,
         woqlClient,
-        loading,
-        setLoading,
         refresh,
-        setRefresh,
-        language
-	} = WOQLClientObj()
+        language,
+     } = WOQLClientObj()
 
     const {
         onRowClick,
@@ -57,10 +47,10 @@ export const UserForm = () => {
         tabControl
     } = DocumentContextObj()
 
-
-    const {
-        isAuthenticated
-    } = useAuth0()
+    //important do not use the global loading  
+    const [loading,setLoading] = useState(false)
+    const [successMsg,setSuccessMsg] = useState(false)
+    const [errorMsg,setErrorMsg] = useState(false)
 
     // create
     let result=DocumentHook(woqlClient, extracted, language.VIEW_USER_LIST, handleRefresh, setLoading, setSuccessMsg, setErrorMsg, language)
@@ -76,7 +66,7 @@ export const UserForm = () => {
 
     useEffect(() => {
         // on changing tabs
-        managePageTabs()
+        managePageTabs(setSuccessMsg,setErrorMsg)
     }, [tabKey])
 
 
@@ -96,13 +86,8 @@ export const UserForm = () => {
 
     return <div className="mb-5">
         <Layout/>
-
-        {!isAuthenticated &&  <Login/>}
-
-        {isAuthenticated && <div className="px-3 content-container">
-            <Alerts errorMsg={connectionError}/>
-            {loading && <ProgressBar animated now={100} variant="info"/>}
-
+        <div className="px-3 content-container">
+        {loading && <ProgressBar animated now={100} variant="info"/>}
             <Tabs id="controlled-tab"
                 activeKey={tabKey}
                 onSelect={(k) => {setTabKey(k)}}
@@ -168,7 +153,7 @@ export const UserForm = () => {
 
             <Alerts successMsg={successMsg}/>
             <Alerts errorMsg={errorMsg}/>
-        </div>}
+        </div>
 
     </div>
 

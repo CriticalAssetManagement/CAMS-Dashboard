@@ -6,3 +6,15 @@ services:
       - "3036:3036"
     volumes:
       - .:/app
+    depends_on:
+      - "terminusdb-server"
+    entrypoint: ["bash", "-c", "npm i --legacy-peer-deps && npm start"]
+  terminusdb-server:
+    image: terminusdb/terminusdb-server:latest
+    container_name: terminusdb-server
+    hostname: terminusdb-server
+    ports:
+      - "6363:6363"
+    volumes:
+      - ./demo_data:/app/demo_data
+    entrypoint: [ "bash", "-c", "/app/demo_data/init.sh"]

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect,useState} from "react"
 import {Layout} from "../components/Layout"
 import {ProgressBar} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
@@ -15,15 +15,8 @@ import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../c
 export const AreaForm = () => {
 
     const {
-		connectionError,
-        frames,
-        successMsg,
-        setSuccessMsg,
-        errorMsg,
-        setErrorMsg,
+      frames,
         woqlClient,
-        loading,
-        setLoading,
         refresh,
         language
 	} = WOQLClientObj()
@@ -50,6 +43,11 @@ export const AreaForm = () => {
         type
     } = DocumentContextObj()
 
+    const [loading,setLoading] = useState(false)
+    const [successMsg,setSuccessMsg] = useState(false)
+    const [errorMsg,setErrorMsg] = useState(false)
+
+
     // create
     let result=DocumentHook(woqlClient, extracted, language.VIEW_AREA_LIST,handleRefresh, setLoading, setSuccessMsg, setErrorMsg)
     //view all document
@@ -63,7 +61,7 @@ export const AreaForm = () => {
 
     useEffect(() => {
         // on changing tabs
-        managePageTabs()
+        managePageTabs(setSuccessMsg,setErrorMsg)
     }, [tabKey])
 
     useEffect(() => {
@@ -80,9 +78,7 @@ export const AreaForm = () => {
     return <div className="mb-5">
         <Layout/>
         <div className="px-3 content-container">
-            <Alerts errorMsg={connectionError}/>
             {loading && <ProgressBar animated now={100} variant="info"/>}
-
             <Tabs id="controlled-tab"
                 activeKey={tabKey}
                 onSelect={(k) => setTabKey(k)}

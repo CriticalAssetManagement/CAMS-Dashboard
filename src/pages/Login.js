@@ -1,15 +1,15 @@
 import React from "react"
 import {Button, Alert, Card} from "react-bootstrap"
-import { useAuth0 } from "@auth0/auth0-react"
 import {loginConf} from "../utils/auth0LoginConf"
+import {WOQLClientObj} from '../init-woql-client'
 
 export const Login = () => {
-
+    const {clientUser} = WOQLClientObj()
     const {
         user,
         isAuthenticated,
         loginWithRedirect,
-    } = useAuth0()
+    } = clientUser
 
     const login = () =>{
         const loginConfObj = loginConf()

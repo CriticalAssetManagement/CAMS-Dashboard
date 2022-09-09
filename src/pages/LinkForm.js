@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect,useState} from "react"
 import {Layout} from "../components/Layout"
 import {ProgressBar, Button} from "react-bootstrap"
 import {WOQLClientObj} from '../init-woql-client'
@@ -11,7 +11,6 @@ import Tab from 'react-bootstrap/Tab'
 import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
 import {BiArrowBack} from "react-icons/bi"
-import { useAuth0 } from "@auth0/auth0-react"
 import {Login} from "./Login"
 
 export const LinkForm = () => {
@@ -19,16 +18,10 @@ export const LinkForm = () => {
     const {
 		connectionError,
         frames,
-        successMsg,
-        setSuccessMsg,
-        errorMsg,
-        setErrorMsg,
         woqlClient,
-        loading,
-        setLoading,
         refresh,
-        language
-	} = WOQLClientObj()
+        language,
+    } = WOQLClientObj()
 
     const {
         onRowClick,
@@ -56,9 +49,9 @@ export const LinkForm = () => {
         tabControl
     } = DocumentContextObj()
 
-    const {
-        isAuthenticated
-    } = useAuth0()
+    const [loading,setLoading] = useState(false)
+    const [successMsg,setSuccessMsg] = useState(false)
+    const [errorMsg,setErrorMsg] = useState(false)
 
 
     // create
@@ -75,7 +68,7 @@ export const LinkForm = () => {
 
     useEffect(() => {
         // on changing tabs
-        managePageTabs() 
+        managePageTabs(setSuccessMsg,setErrorMsg) 
     }, [tabKey])
 
 
@@ -94,13 +87,8 @@ export const LinkForm = () => {
 
     return <div className="mb-5">
         <Layout/>
-
-        {!isAuthenticated &&  <Login/>}
-
-        {isAuthenticated && <div className="px-3 content-container">
-            <Alerts errorMsg={connectionError}/>
+       <div className="px-3 content-container">
             {loading && <ProgressBar animated now={100} variant="info"/>}
-
             <Tabs id="controlled-tab"
                 activeKey={tabKey}
                 onSelect={(k) => {setTabKey(k)}}
@@ -164,8 +152,7 @@ export const LinkForm = () => {
 
             <Alerts successMsg={successMsg}/>
             <Alerts errorMsg={errorMsg}/>
-        </div>}
-
+        </div>
     </div>
 
 }

@@ -2,14 +2,15 @@ import React  from 'react';
 import { TeamMembers } from '@terminusdb/terminusdb-access-control-component'
 import {Layout} from "../components/Layout"
 import {WOQLClientObj} from '../init-woql-client'
-import { useAuth0 } from "@auth0/auth0-react"
 import {Card} from "react-bootstrap"
 
 export const UserManagement = (props) =>{
-    const {user} = useAuth0();
     const {
-        accessControlDashboard, team
+        accessControlDashboard, team,
+        clientUser
     } = WOQLClientObj()
+
+    const user = clientUser
 
 
     const setting ={

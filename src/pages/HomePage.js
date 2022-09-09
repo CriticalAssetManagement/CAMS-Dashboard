@@ -16,26 +16,22 @@ import {extractAndDrawVectors, gatherVectorLines, drawFailureChains, getMarkers,
 import "leaflet.browser.print/dist/leaflet.browser.print.min.js"
 import "leaflet/dist/leaflet.css"
 import {getLegend} from "../components/maps/legend"
-import { useAuth0 } from "@auth0/auth0-react"
 import {Login} from "./Login"
 import {VAR_CENTER, VAR_ZOOM, INFO_VARIANT} from "../components/constants"
 import { FaLanguage } from "react-icons/fa"
 import {Alerts} from "../components/Alerts"
 
 export const HomePage = () => {
-    const {isAuthenticated} = useAuth0()
-
     const {
         woqlClient,
-        setSuccessMsg,
-        setErrorMsg,
-        loading,
-        setLoading,
         frames,
         language,
         mapConfig,
-        errorMsg
-	} = WOQLClientObj()
+      } = WOQLClientObj()
+
+   const [loading,setLoading] = useState(false)
+   const [successMsg,setSuccessMsg] = useState(false)
+   const [errorMsg,setErrorMsg] = useState(false)
 
     const {
         setOnMarkerClick,
@@ -270,9 +266,8 @@ export const HomePage = () => {
 
     return <React.Fragment>
         <Layout/>
-        {!isAuthenticated &&  <Login/>}
         {errorMsg && <Alerts errorMsg={errorMsg}/>}
-        {isAuthenticated && <div className="content-container">
+        <div className="content-container">
             <MapToolBar setResetMap={setResetMap}
                 resetMap={resetMap}
                 setDisplayFailureChains={setDisplayFailureChains}
@@ -299,7 +294,7 @@ export const HomePage = () => {
                 {loading && <ProgressBar animated now={100} variant={INFO_VARIANT}/>}
 
             </React.Fragment>}
-        </div>}
+        </div>
 
     </React.Fragment>
 }
