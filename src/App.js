@@ -29,6 +29,10 @@ export function App (props){
 
 	const isAuthenticated = clientUser.isAuthenticated;
 	
+	if(window.location.pathname==="/"){
+		return <HelpPage/>
+	}
+	
 	if(!isAuthenticated) { 
         return <div className="mb-5">
 				<Layout/>
