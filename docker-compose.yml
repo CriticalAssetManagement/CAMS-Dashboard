@@ -10,7 +10,7 @@ services:
       - "terminusdb-server"
     entrypoint: ["bash", "-c", "npm i --legacy-peer-deps && npm start"]
   terminusdb-server:
-    image: terminusdb/terminusdb-server:dev
+    image: terminusdb/terminusdb-server:latest
     container_name: terminusdb-server
     hostname: terminusdb-server
     ports:
