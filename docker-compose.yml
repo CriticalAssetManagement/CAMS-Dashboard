@@ -8,6 +8,7 @@ services:
       - .:/app
     depends_on:
       - "terminusdb-server"
+    entrypoint: ["bash", "-c", "npm i --legacy-peer-deps && npm start"]
   terminusdb-server:
     image: terminusdb/terminusdb-server:dev
     container_name: terminusdb-server
