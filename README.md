@@ -19,18 +19,31 @@ This repo features the front end code, it includes:
 
 For more information about the full project, please visit the [CAMS Repo](https://github.com/CriticalAssetManagement/CAMS).
 
-## Getting started locally with the Miami demo (fastest way to get started)
+## LOCAL INSTALL
 
-1. Be sure to install [Docker and the docker-compose plugin](https://docs.docker.com/engine/install/).
-2. Copy `.env.default` to `.env`.
-3. Run `docker compose up`. You might need root access depending on whether your user has been added to the Docker group.
-4. Visit localhost:3036/Miami in your browser.
+Getting started locally with the Miami demo (fastest way to get started)
+
+### Step 1.
+
+Be sure to install [Docker and the docker-compose plugin](https://docs.docker.com/engine/install/).
+
+### Step 2.
+
+Copy `env.default` to `.env`.
+
+### Step 3.
+
+Run `docker compose up`. You might need root access depending on whether your user has been added to the Docker group.
+
+### Step 4.
+
+Visit localhost:3036/Miami in your browser.
 
 These steps will get you up and running and will allow you to contribute to CAMS.
 
-## Getting started for online teams
+## TERMINUSX INSTALL
 
-How to install CAMS locally.
+Getting started for online teams.
 
 ### Step 1 - TerminusDB
 
