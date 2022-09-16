@@ -89,10 +89,4 @@ TerminusX, which is the hosted version of TerminusDB, is used as the database ba
 
 Run inside the CAMS-dashboard directory:
 - `npm install`
-
-
-- Run locally `npm run start`
-
-### Step 4 - Run development environment (docker-compose)
-
-- Run `docker-compose up`
+- `npm run start`
