@@ -76,7 +76,6 @@ export const AccordianSection = ({info}) =>{
                     </Toast>
                 )
             })
-            setLoading(false)
         }
         else {
             infoDisplay.push(
