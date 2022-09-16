@@ -33,7 +33,9 @@ Copy `env.default` to `.env`.
 
 ### Step 3.
 
-Run `docker compose up`. You might need root access depending on whether your user has been added to the Docker group.
+Run `docker compose up` or alternatively `docker-compose up`.
+
+You might need root access depending on whether your user has been added to the Docker group, or you can use `sudo`, for instance: `sudo docker compose up`.
 
 ### Step 4.
 
