@@ -9,7 +9,7 @@ import {getClientAccessControl} from "./utils/clientAccessControl"
 import { useAuth0 } from "@auth0/auth0-react"
 import * as EN_LANGUAGE from "./components/languages/constants_en"
 import * as SPA_LANGUAGE from "./components/languages/constants_spa"
-import {SANTA_ANA_TEAM} from "./constants"
+import {SANTA_ANA_TEAM, MEXICO_TEAM} from "./constants"
 import {getMapConfigQuery} from "./hooks/queries"
 import {VAR_ZOOM, VAR_CENTER} from "./components/constants"
 import {createClientUser} from "./utils/clientUtils"
@@ -94,6 +94,7 @@ export const WOQLClientProvider = ({children, team}) => {
                 
                 // language used is English by default, if team is Santa Ana then language is set to Spanish
                 if(team === SANTA_ANA_TEAM) setLanguage(SPA_LANGUAGE)
+                if(team === MEXICO_TEAM) setLanguage(SPA_LANGUAGE)
     }, [clientUser.email])
 
     /** Get Map config */
