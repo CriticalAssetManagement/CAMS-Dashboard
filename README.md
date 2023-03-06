@@ -43,15 +43,15 @@ Visit localhost:3036/Miami in your browser.
 
 These steps will get you up and running and will allow you to contribute to CAMS.
 
-## TERMINUSX INSTALL
+## TERMINUSCMS INSTALL
 
 Getting started for online teams.
 
-### Step 1 - TerminusDB
+### Step 1 - TerminusCMS
 
-TerminusX, which is the hosted version of TerminusDB, is used as the database back-end to store the critical assets.
+TerminusCMS, which is a hosted content management system built on TerminusDB, is used as the database back-end to store the critical assets.
 
-- Sign up or sign into TerminusDB https://dashboard.terminusdb.com
+- Sign up or log in to TerminusCMS as [dashboard.terminusdb.com](https://dashboard.terminusdb.com)
 
 - Create a new Data Product by the ID ```CAMSDemo``` by clicking "New Data Product" in the upper right corner of the dashboard.
 
@@ -79,11 +79,11 @@ TerminusX, which is the hosted version of TerminusDB, is used as the database ba
     let team = process.env.MY_TEAM                  // your team
     let token = process.env.MY_TOKEN                // your personal token
     let user = process.env.MY_USER                  // your email account used for signing into TerminusX
-    let server = process.env.TERMINUSDB_SERVER      // TerminusX URL https://dashboard.terminusdb.com/
+    let server = process.env.TERMINUSDB_SERVER      // TerminusCMS URL https://dashboard.terminusdb.com/
     ```
 
-    Refer https://terminusdb.com/docs/index/terminusx/quick-start/get-api-key on how to get your team and token information
-    from TerminusX.
+    Refer to [Our the TerminusCMS documentation](https://terminusdb.com/docs/terminuscms/get-api-key) for help about how to get your team and token information
+    from TerminusCMS.
 
 ### Step 4 - Run development environment (NodeJS locally)
 
