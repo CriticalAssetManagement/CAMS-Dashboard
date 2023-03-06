@@ -82,7 +82,7 @@ TerminusCMS, which is a hosted content management system built on TerminusDB, is
     let server = process.env.TERMINUSDB_SERVER      // TerminusCMS URL https://dashboard.terminusdb.com/
     ```
 
-    Refer to [Our the TerminusCMS documentation](https://terminusdb.com/docs/terminuscms/get-api-key) for help about how to get your team and token information
+    Refer to [our TerminusCMS documentation](https://terminusdb.com/docs/terminuscms/get-api-key) for help about how to get your team and token information
     from TerminusCMS.
 
 ### Step 4 - Run development environment (NodeJS locally)
