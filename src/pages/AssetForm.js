@@ -12,6 +12,7 @@ import {DocumentContextObj} from "../hooks/DocumentContextProvider"
 import {DisplayDocuments, ViewDocument, CreateDocument, EditDocument} from "../components/Display"
 import {BiArrowBack} from "react-icons/bi"
 import {renderDates} from "../components/utils"
+import { DocumentSearchComponent } from "../components/DocumentSearchComponent"
 
 export const AssetForm = () => {
     const {
@@ -42,7 +43,7 @@ export const AssetForm = () => {
         setDocumentId,
         setType,
         type,
-        traverseDocument,
+        traverseDocument, 
         goToPreviousLinkedDocument,
         tabControl
     } = DocumentContextObj()
@@ -137,7 +138,7 @@ export const AssetForm = () => {
                 }
                 {tabControl.write && <Tab eventKey={language.CREATE_ASSET_TAB} title={language.CREATE_ASSET_TAB}>
                     {frames && <CreateDocument frames={frames}
-                        handleSelect={handleSelect}
+                        handleSelect={<DocumentSearchComponent/>}
                         type={ASSET_TYPE} 
                         formData={extracted}
                         handleSubmit={handleDocumentSubmit}/>}

@@ -5,6 +5,10 @@ import {VIEW_MODE, CREATE_MODE, EDIT_MODE} from "../pages/constants"
 import {Row, Card} from "react-bootstrap"
 import {Form} from "./Form"
 import {UI_FRAMES} from "./constants"
+import { DocumentNew } from "./DocumentNew"
+import {DocumentSearchComponent} from "./DocumentSearchComponent"
+//import {NewDocumentComponent,useTDBDocuments} from "@terminusdb/terminusdb-documents-ui-template"
+
 
 export const DisplayDocuments = ({results, css, config, type, csvConfig}) => {
     return <div className="text-break m-2 border-0">
@@ -38,22 +42,25 @@ export const ViewDocument = ({frames, type, getDocumentToolBar, onTraverse, Fiel
             />}
         </Row>
     </Card>
-}
+} 
 
 
 export const CreateDocument = ({frames, type, handleSelect, handleSubmit, formData}) => {
 
     return <Card className="text-break p-4">
-        <Form frames={frames}
+        <DocumentNew type={type}/>  
+        {/*<Form frames={frames}
             uiFrame={UI_FRAMES}
             type={type}
             mode={CREATE_MODE} 
             onSubmit={handleSubmit}
             onSelect={handleSelect}
             formData={formData}
-        />
+        />*/}
     </Card>
 }
+
+
 
 export const EditDocument = ({frames, type, editDocument, getDocumentToolBar, handleUpdate, handleSelect}) => {
 

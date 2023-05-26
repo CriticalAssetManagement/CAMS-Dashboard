@@ -35,7 +35,8 @@ module.exports = {
     alias: {
 //       "@terminusdb/terminusdb-client": path.resolve('../terminusdb-client/index.js'),
 //       "@terminusdb/terminusdb-react-table": path.resolve('../terminusdb-react-table/src/index.js'),
-//       "@terminusdb/terminusdb-documents-ui": path.resolve('../terminusdb-documents-ui/src/index.js'),
+         "@terminusdb/terminusdb-documents-ui": path.resolve('../terminusdb-dashboard/packages/tdb-documents-ui/src/index.js'),
+         "@terminusdb/terminusdb-documents-ui-template": path.resolve('../terminusdb-dashboard/packages/tdb-documents-ui-template/src/index.js'),
 //       "@terminusdb/terminusdb-access-control-component": path.resolve('../terminusdb-access-control-component/src/index.js'),   
       react: path.resolve('./node_modules/react')
     },
@@ -67,7 +68,7 @@ module.exports = {
           }
         },
       },
-      {
+      /*{
         test: /\.(css|less)$/,
         use: [
           'style-loader',
@@ -76,6 +77,31 @@ module.exports = {
             options: {
               sourceMap: true,
             },
+          },
+          {
+            loader: 'less-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },*/{
+        test: /\.(css)$/,
+        use: [{
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader', // translates CSS into CommonJS modules
+          },
+          ]
+      },
+      {
+        test: /\.(less)$/,
+        use: [{
+            loader: 'style-loader',
+           },
+           {
+            loader: 'css-loader', // translates CSS into CommonJS modules
           },
           {
             loader: 'less-loader',

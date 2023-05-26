@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react'
 const TerminusDBClient = require("@terminusdb/terminusdb-client")
 export const WOQLContext = React.createContext()
-export const WOQLClientObj = () => useContext(WOQLContext)
+export const WOQLClientObj = () => useContext(WOQLContext) 
 import {DATA_PRODUCT} from "./constants"
 import {HOME_PAGE} from './routing/constants'
 import {AccessControlDashboard} from "@terminusdb/terminusdb-access-control-component"
@@ -13,6 +13,8 @@ import {SANTA_ANA_TEAM, MEXICO_TEAM} from "./constants"
 import {getMapConfigQuery} from "./hooks/queries"
 import {VAR_ZOOM, VAR_CENTER} from "./components/constants"
 import {createClientUser} from "./utils/clientUtils"
+import { ApolloClient,ApolloLink, concat, InMemoryCache, HttpLink } from '@apollo/client';
+
 
 //profiles_test 
 export const WOQLClientProvider = ({children, team}) => {
@@ -27,6 +29,7 @@ export const WOQLClientProvider = ({children, team}) => {
     const [page, setPage] = useState(HOME_PAGE)
     const [frames, setFrames] = useState(false)
     const [prefix, setPrefix] = useState(false)
+    const [apolloClient , setApolloClient] = useState(null)
 
     const [loading, setLoading]=useState(true)
     const [refresh, setRefresh]=useState(false)
@@ -38,6 +41,39 @@ export const WOQLClientProvider = ({children, team}) => {
     const [language, setLanguage]=useState(EN_LANGUAGE) // language
     const [mapConfig, setMapConfig]=useState(false) // map configuration
     
+    const createApolloClient = (client)=>{
+        const httpLink = new HttpLink({uri:client.connectionConfig.branchBase("graphql")})
+        const authMiddleware = new ApolloLink((operation, forward) => {
+              // add the authorization to the headers
+              operation.setContext(({ headers = {} }) => ({
+              headers: {
+                  ...headers,
+                  authorization: `Token ${params.token}`}
+              }));
+              return forward(operation);
+          })
+          
+          const cache = new InMemoryCache({
+              addTypename: false
+          });
+          
+          const value = concat(authMiddleware, httpLink)
+      
+          return new ApolloClient({
+              cache:cache,
+              defaultOptions: {
+                watchQuery: {
+                  fetchPolicy: 'no-cache',
+                  errorPolicy: 'all',
+                },
+                query: {
+                  fetchPolicy: 'no-cache',
+                  errorPolicy: 'all',
+                },
+              },
+              link: value,       
+          });
+      }
 
     const initAccessControlAndClient = async(url,credentials,accessCredential)=>{
         //const jwtoken = await getAccessTokenSilently()
@@ -61,6 +97,7 @@ export const WOQLClientProvider = ({children, team}) => {
             await accessControlDash.callGetUserTeamRole(clientUser.user,team)
             //console.log("accessControlDash", accessControlDash)
             setWoqlClient(client)
+            setApolloClient(createApolloClient(client))
             getMapConfig(client, setMapConfig, setErrorMsg)
             
         }catch(e) {
@@ -162,7 +199,8 @@ export const WOQLClientProvider = ({children, team}) => {
                 //prefix,
                 accessControlDashboard,
                 language,
-                mapConfig
+                mapConfig,
+                apolloClient
             }}
         >
             {children}

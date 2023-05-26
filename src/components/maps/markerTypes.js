@@ -1,13 +1,14 @@
 // map icon component
+import * as L from "leaflet";
 import 'leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css'
 import 'leaflet-extra-markers/dist/js/leaflet.extra-markers.min.js'
 
 const MARKER_COLOR='#e194ff' //'blue-dark' //cyan/ green-dark
 const ICON_SIZE='fa-2x'
 const ICON_COLOR= '#00008b'//'#62ff97'
+ 
 
-
-// Asset Type Icons
+// Asset Type Icons 
 // Creates Others icon
 export const OTHERS_ICON = L.ExtraMarkers.icon({
     shape: 'circle',
